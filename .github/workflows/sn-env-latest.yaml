@@ -3,7 +3,7 @@ name: sn_env latest
 on:
   push:
     branches: 
-      - master
+      - main
 
 jobs:
   build:
