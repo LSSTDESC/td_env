@@ -1,0 +1,39 @@
+name: sn-env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - astropy
+  - astroquery
+  - black
+  - cmake
+  - coloredlogs
+  - extinction
+  - f90nml
+  - flake8
+  - gsl
+  - ipympl
+  - ipython
+  - jinja2
+  - joblib
+  - jupyter
+  - matplotlib
+  - numpy
+  - pandas
+  - pathtools
+  - pip  
+  - psutil
+  - pytest
+  - pyyaml
+  - retrying
+  - root
+  - seaborn
+  - sep
+  - scikit-image
+  - scikit-learn
+  - scipy
+  - sncosmo
+  - tqdm
+  - yaml
+  - pip:
+    - dustmaps
