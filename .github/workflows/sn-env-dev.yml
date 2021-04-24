@@ -25,7 +25,7 @@ jobs:
           cd $GITHUB_WORKSPACE 
           docker build --no-cache -t lsstdesc/sn-py-dev:dev -f $GITHUB_WORKSPACE/Dockerfile . 
       - name: Docker push
-        run: docker push lsstdesc/sn_env:dev
+        run: docker push lsstdesc/sn-py-dev:dev
 
 
 
