@@ -6,18 +6,25 @@ dependencies:
   - astropy
   - astroquery
   - black
+  - celerite
   - cmake
   - coloredlogs
-  - extinction
+  - cython
+  - emcee
+  - extinction=0.4
   - f90nml
   - flake8
   - gsl
+  - h5py=2.10.0
+  - imageio
   - ipympl
   - ipython
   - jinja2
   - joblib
   - jupyter
+  - keras
   - matplotlib
+  - nomkl
   - numpy
   - pandas
   - pathtools
@@ -33,7 +40,11 @@ dependencies:
   - scikit-learn
   - scipy
   - sncosmo
+  - tensorboard
+  - tensorflow=2.0.0
   - tqdm
   - yaml
   - pip:
     - dustmaps
+    - astrorapid
+    - keras-tcn==3.4.0
