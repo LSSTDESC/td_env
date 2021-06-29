@@ -43,7 +43,7 @@ RUN yum clean -y all && \
     rm -rf /var/cache/yum && \
     groupadd -g 1000 -r lsst && useradd -u 1000 --no-log-init -m -r -g lsst lsst && \
     cd /tmp && \
-    bash install-sn-env.sh /usr/local/py3 /tmp/sn-env-nersc-nobuildinfo.yml && \
+    bash install-sn-env.sh /usr/local/py3 /tmp/sn-env.yml && \
     cp /tmp/sn-env-setup.sh /usr/local/py3
     
     
