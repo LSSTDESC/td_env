@@ -26,6 +26,7 @@ conda env create -n sn-env -f $2
 
 source $1/etc/profile.d/conda.sh
 conda activate sn-env
+pip install keras-tcn --no-dependencies
 
 # Install jupyterlab at CC
 if [[ -z $3 ]]

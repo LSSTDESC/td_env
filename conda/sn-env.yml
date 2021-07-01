@@ -47,4 +47,3 @@ dependencies:
   - pip:
     - dustmaps
     - astrorapid
-    - keras-tcn==3.4.0
