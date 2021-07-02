@@ -34,6 +34,7 @@ then
   pip install jupyterlab
 fi
 
+conda clean --all
 
 
 
