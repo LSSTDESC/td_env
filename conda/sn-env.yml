@@ -3,6 +3,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
+  - astroplan
   - astropy
   - astroquery
   - black
@@ -14,6 +15,7 @@ dependencies:
   - extinction=0.4
   - f90nml
   - flake8
+  - george
   - gsl
   - h5py=2.10.0
   - imageio
