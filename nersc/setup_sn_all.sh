@@ -46,18 +46,24 @@ then
   OUTPUTPY="$(which python)"
   echo Now using "${OUTPUTPY}"
 
+  # Aug 24 2020 RK - silly hack for CFITSIO
+  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CFITSIO_DIR/lib
+
 # Setup with LSST Science Pipelines
 elif [[ "$1" == "lsst" ]];
 then
   echo "Setting up SN env with LSST Science Pipelines"
 
-  module load cfitsio/3.47
-  module load root/6.18.00-py3
+#  module load cfitsio/3.47
+#  module load root/6.18.00-py3
 
   source /global/common/software/lsst/cori-haswell-gcc/stack/setup_any_stack.sh w_2021_40
 
   export PYTHONPATH=$PYTHONPATH:/global/common/software/lsst/common/miniconda/sn-sprint-oct21/cvmfs/sw.lsst.eu/linux-x86_64/lsst_distrib/w_2021_40/conda/miniconda3-py38_4.9.2/envs/lsst-scipipe-0.7.0-ext/lib/python3.8/site-packages
 
+  export GSL_DIR="/cvmfs/sw.lsst.eu/linux-x86_64/lsst_distrib/w_2021_40/conda/miniconda3-py38_4.9.2/envs/lsst-scipipe-0.7.0-ext"
+
+  export CFITSIO_DIR="/cvmfs/sw.lsst.eu/linux-x86_64/lsst_distrib/w_2021_40/conda/miniconda3-py38_4.9.2/envs/lsst-scipipe-0.7.0-ext"
 
 else
   echo $1 "is an invalid option, please provide no parameters or use lsst to set up the LSST Science Pipelines"
@@ -66,7 +72,9 @@ fi
 
 # Set up for all cases
 
-export SNANA_DIR="$SN_GROUP/snana/SNANA"
+#export SNANA_DIR="$SN_GROUP/snana/SNANA"       # RK - hope to restore this soon
+export SNANA_DIR="$SN_GROUP/snana/SNANA+STACK"  # RK - temp during switch to using LSST stack
+
 export SNDATA_ROOT="$SN_GROUP/snana/SNDATA_ROOT"
 export SNANA_TESTS="$SN_GROUP/snana/SNANA_TESTS"
 export SNANA_SURVEYS="$SN_GROUP/snana/SURVEYS"
@@ -83,9 +91,6 @@ export PIPPIN_OUTPUT="/global/cscratch1/sd/kessler/PIPPIN_OUTPUT"
 export PIPPIN_DIR="$SN_GROUP/Pippin"
 export SBATCH_TEMPLATES="$SNANA_LSST_ROOT/SBATCH_TEMPLATES"
 export SNANA_DEBUG="$SNANA_LSST_USERS/kessler/debug"
-
-# Aug 24 2020 RK - silly hack for CFITSIO
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CFITSIO_DIR/lib
 
 export PATH=$PATH:${SNANA_DIR}/bin:${SNANA_DIR}/util:${PIPPIN_DIR}
 
