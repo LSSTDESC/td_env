@@ -1,4 +1,4 @@
-mame: sn_env cvmfs
+name: sn_env cvmfs
 
 on: 
   push:
@@ -10,10 +10,10 @@ jobs:
   build:
     name: Build on Ubuntu
     runs-on: ubuntu-20.04
-   steps:
+    steps:
     - uses: cvmfs-contrib/github-action-cvmfs@v2
       with:
-        cvmfs_repositories: 'sw.lsst.eu'
+          cvmfs_repositories: 'sw.lsst.eu'
     - name: Test CernVM-FS
       run: ls /cvmfs/sft.cern.ch/
 
