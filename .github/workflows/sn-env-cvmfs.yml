@@ -15,7 +15,7 @@ jobs:
       with:
           cvmfs_repositories: 'sw.lsst.eu'
     - name: Test CernVM-FS
-      run: ls /cvmfs/sft.cern.ch/
+      run: ls /cvmfs/sw.lsst.eu/
 
 
 #steps:
