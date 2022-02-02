@@ -1,4 +1,4 @@
-ame: sn_env dev
+name: sn_env dev
 
 on: 
   push:
