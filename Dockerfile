@@ -1,50 +1,33 @@
-FROM centos:7
+FROM lsstsqre/centos:7-stack-lsst_distrib-w_2021_40
 MAINTAINER Heather Kelly <heather@slac.stanford.edu>
 
-RUN yum update -y && \
-    yum install -y bash \
-    bison \
-    blas \
-    bzip2 \
-    bzip2-devel \
-    cmake \
-    curl \
-    flex \
-    fontconfig \
-    freetype-devel \
-    gawk \
-    gcc-c++ \
-    gcc-gfortran \
-    gettext \
-    git \
-    glib2-devel \
-    java-1.8.0-openjdk \
-    libcurl-devel \
-    libuuid-devel \
-    libXext \
-    libXrender \
-    libXt-devel \
-    make \
-    mesa-libGL \
-    ncurses-devel \
-    openssl-devel \
-    patch  \
-    perl \
-    perl-ExtUtils-MakeMaker \
-    readline-devel \
-    sed \
-    tar \
-    which \
-    zlib-devel 
+ARG LSST_STACK_DIR=/opt/lsst/software/stack
+
+ARG LSST_USER=lsst
+ARG LSST_GROUP=lsst
+
+WORKDIR $LSST_STACK_DIR
+
+USER root
+RUN yum install -y wget \
+    which
 
 COPY conda /tmp
     
-RUN yum clean -y all && \
-    rm -rf /var/cache/yum && \
-    groupadd -g 1000 -r lsst && useradd -u 1000 --no-log-init -m -r -g lsst lsst && \
+   
+RUN echo "Environment: \n" && env | sort && \
     cd /tmp && \
-    bash install-sn-env.sh /usr/local/py3 /tmp/sn-env.yml && \
-    cp /tmp/sn-env-setup.sh /usr/local/py3
+    /bin/bash -c 'source $LSST_STACK_DIR/loadLSST.bash; \
+                  pip freeze > $LSST_STACK_DIR/require.txt; \
+                  eups distrib install ${EUPS_TAG2:+"-t"} $EUPS_TAG2 $EUPS_PRODUCT2 --nolocks; \
+                  export EUPS_PKGROOT=https://eups.lsst.codes/stack/src; \
+                  eups distrib install ${EUPS_THROUGH_TAG:+"-t"} $EUPS_THROUGH_TAG $EUPS_THROUGH --nolocks; \
+                  eups distrib install ${EUPS_THROUGH_TAG:+"-t"} $EUPS_THROUGH_TAG $EUPS_SKY --nolocks;'
+    
+#    && \
+#    cd /tmp && \
+#    bash install-sn-env.sh /usr/local/py3 /tmp/sn-env.yml && \
+#    cp /tmp/sn-env-setup.sh /usr/local/py3
     
     
 RUN cd /tmp && \
@@ -52,14 +35,14 @@ RUN cd /tmp && \
     
 USER lsst
     
-RUN echo "source /usr/local/py3/etc/profile.d/conda.sh" >> ~/.bashrc
-RUN echo "conda activate sn-env" >> ~/.bashrc
+#RUN echo "source /usr/local/py3/etc/profile.d/conda.sh" >> ~/.bashrc
+#RUN echo "conda activate sn-env" >> ~/.bashrc
     
 ENV HDF5_USE_FILE_LOCKING FALSE
 ENV PYTHONSTARTUP ''
 
-ENV PATH="/usr/local/py3/bin:${PATH}"
+#ENV PATH="/usr/local/py3/bin:${PATH}"
 
-ENV CONDA_DEFAULT_ENV sn-env
+#ENV CONDA_DEFAULT_ENV sn-env
 
 CMD ["/bin/bash"]
