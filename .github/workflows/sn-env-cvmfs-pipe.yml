@@ -27,6 +27,6 @@ jobs:
     - name: do fresh docker build
       run: |
         cd $GITHUB_WORKSPACE 
-        docker run -v /cvmfs:/cvmfs:shared --name="test-env" lsstsqre/centos:7-stack-lsst_distrib-w_2021_40 $GITHUB_WORKSPACE/conda/install.sh
+        docker run -v /cvmfs:/cvmfs:shared --name="test-env" lsstsqre/centos:7-stack-lsst_distrib-w_2021_40 conda/install.sh
         docker commit -m"initial testing" test-env lsstdesc/sn-test-env:dev
         docker push lsstdesc/sn-test-env:dev
