@@ -30,6 +30,6 @@ jobs:
         ls $GITHUB_WORKSPACE
         echo $GITHUB_WORKSPACE
         ls $GITHUB_WORKSPACE/conda
-        docker run -v /cvmfs:/cvmfs:shared -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE --name="test-env" lsstsqre/centos:7-stack-lsst_distrib-w_2021_40 /bin/bash /$GITHUB_WORKSPACE/conda/install.sh
+        docker run -u lsst -v /cvmfs:/cvmfs:shared -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE --name="test-env" lsstsqre/centos:7-stack-lsst_distrib-w_2021_40 /bin/bash /$GITHUB_WORKSPACE/conda/install.sh
         docker commit -m"initial testing" test-env lsstdesc/sn-test-env:dev
         docker push lsstdesc/sn-test-env:dev
