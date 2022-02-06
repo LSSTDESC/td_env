@@ -9,6 +9,7 @@
 
 
 source /opt/lsst/software/stack/loadLSST.bash
+conda install -c conda-forge mamba
 mamba install -c conda-forge coloredlogs
 #pip install --root /opt/software/desc keras-tcn --no-dependencies
 
