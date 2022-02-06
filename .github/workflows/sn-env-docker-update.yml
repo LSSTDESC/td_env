@@ -1,0 +1,29 @@
+name: sn_env update-docker
+
+on: 
+  push:
+    branches:
+      - lsst-pipe
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build on Ubuntu
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Docker login
+      run: echo '${{ secrets.DOCKERHUB_ACCESSTOK }}' | docker login --username heather999 --password-stdin
+    - name: checkout sn_env
+      uses: actions/checkout@v2
+      with:
+         fetch-depth: 0
+         ref: lsst-pipe
+    - name: update docker image
+      run: |
+        cd $GITHUB_WORKSPACE 
+        ls $GITHUB_WORKSPACE
+        echo $GITHUB_WORKSPACE
+        ls $GITHUB_WORKSPACE/conda
+        docker run -u lsst -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE --name="test-env" lsstsqre/centos:7-stack-lsst_distrib-w_2021_40 /bin/bash /$GITHUB_WORKSPACE/conda/update-docker.sh
+        docker commit -m"initial testing" test-env lsstdesc/sn-test-env:docker-dev
+        docker push lsstdesc/sn-test-env:docker-dev
