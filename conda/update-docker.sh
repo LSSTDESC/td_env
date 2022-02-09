@@ -10,6 +10,11 @@
 
 source /opt/lsst/software/stack/loadLSST.bash
 conda install -c conda-forge -y mamba
-mamba install -c conda-forge -y coloredlogs
+
+# Cori offers mpich 3.3.2
+mamba install -c conda-forge -y mpich=3.3.*=external_*
+
+mamba install -c conda-forge -y --file ./sn-env-addtolsst-packlist.txt
+#mamba install -c conda-forge -y coloredlogs
 #pip install --root /opt/software/desc keras-tcn --no-dependencies
 
