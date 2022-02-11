@@ -5,4 +5,6 @@ emcee
 extinction
 george
 pygpu
+tensorboard
+tensorflow
 theano
