@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source /opt/lsst/software/stack/loadLSST.bash
+
 export mpich=3.3
 export mpich_prefix=mpich-$mpich
 
