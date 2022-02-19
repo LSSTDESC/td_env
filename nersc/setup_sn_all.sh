@@ -12,7 +12,7 @@ shopt -s nocasematch
 export SN_GROUP='/global/cfs/cdirs/lsst/groups/SN'
 
 # setup without LSST Science Pipelines
-if [ -z "$1" ] 
+if [[ "$1" == "nolsst" ]];
 then
   module unload python
   module unload PrgEnv-intel/6.0.5
@@ -50,11 +50,10 @@ then
   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CFITSIO_DIR/lib
 
 # Setup with LSST Science Pipelines
-elif [[ "$1" == "lsst" ]];
+elif [ -z "$1" ] 
 then
   echo "Setting up SN env with LSST Science Pipelines"
 
-#  module load cfitsio/3.47
 #  module load root/6.18.00-py3
 
   source /global/common/software/lsst/cori-haswell-gcc/stack/setup_any_stack.sh w_2021_40
@@ -72,8 +71,7 @@ fi
 
 # Set up for all cases
 
-#export SNANA_DIR="$SN_GROUP/snana/SNANA"       # RK - hope to restore this soon
-export SNANA_DIR="$SN_GROUP/snana/SNANA+STACK"  # RK - temp during switch to using LSST stack
+export SNANA_DIR="$SN_GROUP/snana/SNANA"   
 
 export SNDATA_ROOT="$SN_GROUP/snana/SNDATA_ROOT"
 export SNANA_TESTS="$SN_GROUP/snana/SNANA_TESTS"
