@@ -1,0 +1,15 @@
+variables:
+  SCHEDULER_PARAMETERS: "-C haswell -M escori -q xfer -N1 -t 00:15:00"
+
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "schedule"'
+      when: always
+
+test-install-repo:
+  only: 
+    - main
+  tags: [cori]
+  script:
+    - bash conda/install-nersc.sh
+
