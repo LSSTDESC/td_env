@@ -1,0 +1,9 @@
+astroplan
+celerite
+coloredlogs
+emcee
+extinction
+george
+pygpu
+tensorflow
+theano
