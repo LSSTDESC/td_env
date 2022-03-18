@@ -24,8 +24,8 @@ jobs:
         ls $GITHUB_WORKSPACE
         echo $GITHUB_WORKSPACE
         ls $GITHUB_WORKSPACE/conda
-        docker run -u root -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE --name="install-mpich" lsstsqre/centos:7-stack-lsst_distrib-w_2021_40 /bin/bash /$GITHUB_WORKSPACE/conda/install-mpich.sh
+        docker run -u root -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE --name="install-mpich" lsstsqre/centos:7-stack-lsst_distrib-w_2021_40 /bin/bash /$GITHUB_WORKSPACE/docker/install-mpich.sh
         docker commit -m"initial testing" install-mpich lsstdesc/sn-test-env:mpich
-        docker run -u lsst -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE -w $GITHUB_WORKSPACE/conda --name="test-env" lsstdesc/sn-test-env:mpich /bin/bash /$GITHUB_WORKSPACE/conda/update-docker.sh
+        docker run -u lsst -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE -w $GITHUB_WORKSPACE/conda --name="test-env" lsstdesc/sn-test-env:mpich /bin/bash /$GITHUB_WORKSPACE/docker/update-docker.sh
         docker commit -m"initial testing" test-env lsstdesc/sn-test-env:docker-dev
         docker push lsstdesc/sn-test-env:docker-dev
