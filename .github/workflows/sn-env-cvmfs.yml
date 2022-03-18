@@ -1,0 +1,39 @@
+name: sn_env cvmfs
+
+on: 
+  push:
+    branches:
+      - dev
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build on Ubuntu
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: cvmfs-contrib/github-action-cvmfs@v2
+      with:
+          cvmfs_repositories: 'sw.lsst.eu'
+          cvmfs_config_package: 'https://github.com/airnandez/sw-lsst-eu/releases/download/v0.7/cvmfs-config-lsst_0.7_all.deb'
+    - name: Test CernVM-FS
+      run: ls /cvmfs/sw.lsst.eu/
+
+
+#steps:
+#      - name: Check Disk Space
+#        run: df -h && sudo apt-get clean && df -h 
+#      - name: Docker login
+#        run: echo '${{ secrets.DOCKERHUB_ACCESSTOK }}' | docker login --username heather999 --password-stdin
+#      - name: checkout sn_env
+#        uses: actions/checkout@v2
+#        with:
+#          fetch-depth: 0
+#          ref: dev
+#      - name: do fresh docker build
+#        run: |
+#          cd $GITHUB_WORKSPACE 
+#          docker build --no-cache -t lsstdesc/sn-py-dev:dev -f $GITHUB_WORKSPACE/Dockerfile . 
+#      - name: Docker push
+#        run: docker push lsstdesc/sn-py-dev:dev
+
+

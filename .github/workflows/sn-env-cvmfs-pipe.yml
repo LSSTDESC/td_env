@@ -1,4 +1,4 @@
-name: sn_env cvmfs
+name: sn_env cvmfs-pipe
 
 on: 
   push:
@@ -27,24 +27,9 @@ jobs:
     - name: do fresh docker build
       run: |
         cd $GITHUB_WORKSPACE 
-        docker run -v /cvmfs:/cvmfs:shared --name="test-env" lsstsqre/centos:7-stack-lsst_distrib-w_2021_40 $GITHUB_WORKSPACE/conda/install.sh
+        ls $GITHUB_WORKSPACE
+        echo $GITHUB_WORKSPACE
+        ls $GITHUB_WORKSPACE/conda
+        docker run -u lsst -v /cvmfs:/cvmfs:shared -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE --name="test-env" lsstsqre/centos:7-stack-lsst_distrib-w_2021_40 /bin/bash /$GITHUB_WORKSPACE/conda/install.sh
         docker commit -m"initial testing" test-env lsstdesc/sn-test-env:dev
         docker push lsstdesc/sn-test-env:dev
-
-
-#steps:
-#      - name: Check Disk Space
-#        run: df -h && sudo apt-get clean && df -h 
-#      - name: Docker login
-#        run: echo '${{ secrets.DOCKERHUB_ACCESSTOK }}' | docker login --username heather999 --password-stdin
-#      - name: checkout sn_env
-#        uses: actions/checkout@v2
-#        with:
-#          fetch-depth: 0
-#          ref: dev
-#      - name: do fresh docker build
-#        run: |
-#          cd $GITHUB_WORKSPACE 
-#          docker build --no-cache -t lsstdesc/sn-py-dev:dev -f $GITHUB_WORKSPACE/Dockerfile . 
-#      - name: Docker push
-#        run: docker push lsstdesc/sn-py-dev:dev
