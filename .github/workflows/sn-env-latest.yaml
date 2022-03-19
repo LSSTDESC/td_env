@@ -1,9 +1,9 @@
 name: sn_env latest
 
 on:
-  push:
-    branches: 
-      - main
+ # push:
+ #   branches: 
+ #     - main
 
 jobs:
   build:
