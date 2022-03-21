@@ -23,7 +23,7 @@ if [ "$installFlag" ] && [ "$CI_COMMIT_BRANCH"="dev" ]];
 then
     curBuildDir=$commonDevBuildDir/$CI_JOB_ID
     echo "Dev Install Build: " $curBuildDir
-elif [[ $"installFlag" ]];
+elif [[ "$installFlag" ]];
 then
     if [[ -z "$CI_COMMIT_TAG" ]];
     then
