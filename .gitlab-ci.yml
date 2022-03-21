@@ -31,7 +31,7 @@ dev-test:
 dev-deploy:
   stage: deploy
   only:
-    -dev
+    - dev
   tags: [cori]
   script:
     - bash conda/build-nersc.sh w_2022_10 1
