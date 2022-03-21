@@ -21,19 +21,19 @@ commonProdBuildDir=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-pr
 
 if [ "$installFlag" ] && [ "$CI_COMMIT_BRANCH"="dev" ]];
 then
-    curBuildDir=$commonDevBuildDir/$CI_JOB_ID
+    curBuildDir=$commonDevBuildDir/$CI_PIPELINE_ID
     echo "Dev Install Build: " $curBuildDir
 elif [[ "$installFlag" ]];
 then
     if [[ -z "$CI_COMMIT_TAG" ]];
     then
-        prodBuildDir=$CI_JOB_ID
+        prodBuildDir=$CI_PIPELINE_ID
     fi
     curBuildDir=$commonProdBuildDir/$prodBuildDir
     echo "Prod Build: " $curBuildDir
 elif [[ -z "$installFlag" ]];
 then
-    curBuildDir=$scratchBuildDir/$CI_JOB_ID
+    curBuildDir=$scratchBuildDir/$CI_PIPELINE_ID
     echo "Dev Scratch Build: " $curBuildDir
 fi
 
