@@ -37,22 +37,22 @@ then
     echo "Dev Scratch Build: " $curBuildDir
 fi
 
-#mkdir $curBuildDir
-#cp conda/packlist.txt $curBuildDir
-#cd $curBuildDir
+mkdir $curBuildDir
+cp conda/packlist.txt $curBuildDir
+cd $curBuildDir
 
 
 
 # Build Steps
-#curl -LO https://ls.st/lsstinstall
+curl -LO https://ls.st/lsstinstall
 
-#bash ./lsstinstall -T $1
+bash ./lsstinstall -T $1
 
-#source ./loadLSST.bash
+source ./loadLSST.bash
 
-#mamba install -c conda-forge -y mpich=3.3.*=external_*
+mamba install -c conda-forge -y mpich=3.3.*=external_*
 
-#export LD_LIBRARY_PATH=/opt/cray/pe/mpt/7.7.10/gni/mpich-gnu-abi/8.2/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/opt/cray/pe/mpt/7.7.10/gni/mpich-gnu-abi/8.2/lib:$LD_LIBRARY_PATH
 
-#mamba install -c conda-forge -y --file ./packlist.txt
+mamba install -c conda-forge -y --file ./packlist.txt
 
