@@ -35,9 +35,7 @@ then
     echo "Dev Scratch Build: " $curBuildDir
 fi
 
-source $curBuildDir/loadLSST.bash
-
-export LD_LIBRARY_PATH=/opt/cray/pe/mpt/7.7.10/gni/mpich-gnu-abi/8.2/lib:$LD_LIBRARY_PATH
+source $curBuildDir/setup_sn_env.sh
 
 python -c 'import george'
 
