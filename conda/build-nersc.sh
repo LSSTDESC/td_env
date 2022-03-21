@@ -37,7 +37,7 @@ then
     echo "Dev Scratch Build: " $curBuildDir
 fi
 
-mkdir $curBuildDir
+mkdir -p $curBuildDir
 cp conda/packlist.txt $curBuildDir
 cd $curBuildDir
 
