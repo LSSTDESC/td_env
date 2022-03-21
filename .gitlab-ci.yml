@@ -1,15 +1,40 @@
+stages:
+  - build
+  - test
+  - deploy
+
+
 variables:
-  SCHEDULER_PARAMETERS: "-C haswell -M escori -q xfer -N1 -t 00:15:00"
+  SCHEDULER_PARAMETERS: "-C haswell -M escori -q xfer -N1 -t 00:30:00"
 
 workflow:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "schedule"'
       when: always
 
-test-install-repo:
+dev-build:
+  stage: build
   only: 
-    - main
+    - dev
   tags: [cori]
   script:
-    - bash conda/install-nersc.sh
+    - bash conda/build-nersc.sh w_2022_10
+
+dev-test:
+  stage: test
+  only:
+    - dev
+  tags: [cori]
+  script: 
+    - bash conda/test-nersc.sh 
+
+dev-deploy:
+  stage: deploy
+  only:
+    - dev
+  tags: [cori]
+  script:
+    - bash conda/build-nersc.sh w_2022_10 1
+
+
 
