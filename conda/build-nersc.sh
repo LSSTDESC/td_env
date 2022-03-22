@@ -50,6 +50,7 @@ curl -LO https://ls.st/lsstinstall
 bash ./lsstinstall -T $1
 
 source ./loadLSST.bash
+eups distrib install -t $1 lsst_distrib
 
 mamba install -c conda-forge -y mpich=3.3.*=external_*
 
