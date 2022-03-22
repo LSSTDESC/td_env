@@ -4,6 +4,7 @@ coloredlogs
 emcee
 extinction
 george
+lsstdesc-gcr-catalogs
 pygpu
 tensorflow
 theano
