@@ -19,7 +19,11 @@ scratchBuildDir=/global/cscratch1/sd/heatherk/td_env-devbuilds
 commonDevBuildDir=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-dev
 commonProdBuildDir=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-prod
 
-if [ "$installFlag" ] && [ "$CI_COMMIT_REF_NAME"="dev" ]];
+echo "REF_NAME " $CI_COMMIT_REF_NAME
+echo "COMMIT_BRANCH " $CI_COMMIT_BRANCH
+echo "SLUG " $CI_COMMIT_REF_SLUG
+
+if [[ "$installFlag" ] && [ "$CI_COMMIT_REF_NAME"="dev" ]];
 then
     curBuildDir=$commonDevBuildDir/$CI_PIPELINE_ID
     echo "Dev Install Build: " $curBuildDir
