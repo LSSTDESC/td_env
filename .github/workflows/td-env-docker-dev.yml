@@ -31,8 +31,8 @@ jobs:
         docker run -u root -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE --name="install-mpich" lsstsqre/centos:7-stack-lsst_distrib-w_2022_10 /bin/bash /$GITHUB_WORKSPACE/docker/install-mpich.sh
         docker commit -m"initial testing" install-mpich lsstdesc/td-dev:mpich
         docker run -u lsst -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE -w $GITHUB_WORKSPACE/conda --name="td-test-env" lsstdesc/td-dev:mpich /bin/bash /$GITHUB_WORKSPACE/docker/update-docker.sh
-    - name: Test and commit
-      run: |
-        docker run --rm test-td-env /bin/bash -c "source ./loadLSST.bash && setup lsst_distrib && python -c 'import coloredlogs'"
         docker commit -m"initial testing" td-test-env lsstdesc/td-env:${{env.LSST_TAG}}-${{env.DATE_TAG}}-dev
+    - name: Test and push
+      run: |
+        docker run --rm lsstdesc/td-env:${{env.LSST_TAG}}-${{env.DATE_TAG}}-dev /bin/bash -c "source /opt/lsst/software/stack/loadLSST.bash && setup lsst_distrib && python -c 'import coloredlogs'"
         docker push lsstdesc/td-env:${{env.LSST_TAG}}-${{env.DATE_TAG}}-dev
