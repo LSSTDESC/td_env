@@ -1,0 +1,38 @@
+name: td_env docker dev
+
+on: 
+  push:
+    branches:
+      - dev
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build on Ubuntu
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Docker login
+      run: echo '${{ secrets.DOCKERHUB_ACCESSTOK }}' | docker login --username heather999 --password-stdin
+    - name: checkout td_env
+      uses: actions/checkout@v2
+      with:
+         fetch-depth: 0
+         ref: dev
+    - name : Get weekly number and date 
+      run: |
+        echo "LSST_TAG=w_2022_10" >> $GITHUB_ENV
+        echo "DATE_TAG=$(date "+%F")" >> $GITHUB_ENV         
+    - name: update docker image
+      run: |
+        cd $GITHUB_WORKSPACE 
+        ls $GITHUB_WORKSPACE
+        echo $GITHUB_WORKSPACE
+        ls $GITHUB_WORKSPACE/conda
+        docker run -u root -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE --name="install-mpich" lsstsqre/centos:7-stack-lsst_distrib-w_2022_10 /bin/bash /$GITHUB_WORKSPACE/docker/install-mpich.sh
+        docker commit -m"initial testing" install-mpich lsstdesc/td-dev:mpich
+        docker run -u lsst -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE -w $GITHUB_WORKSPACE/conda --name="td-test-env" lsstdesc/td-dev:mpich /bin/bash /$GITHUB_WORKSPACE/docker/update-docker.sh
+    - name: Test and commit
+      run: |
+        docker run --rm test-td-env /bin/bash -c "source ./loadLSST.bash && setup lsst_distrib && python -c 'import coloredlogs'"
+        docker commit -m"initial testing" td-test-env lsstdesc/td-env:${{env.LSST_TAG}}-${{env.DATE_TAG}}-dev
+        docker push lsstdesc/td-env:${{env.LSST_TAG}}-${{env.DATE_TAG}}-dev
