@@ -52,7 +52,7 @@ main-test:
     - main
   tags: [cori]
   script: 
-    - bash conda/test-nersc.sh 
+    - bash conda/test-nersc.sh 1
 
 main-deploy:
   stage: deploy
