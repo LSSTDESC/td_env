@@ -23,6 +23,11 @@ echo "REF_NAME " $CI_COMMIT_REF_NAME
 echo "COMMIT_BRANCH " $CI_COMMIT_BRANCH
 echo "SLUG " $CI_COMMIT_REF_SLUG
 
+if [ "$CI_COMMIT_REF_NAME" = "dev" ];
+then
+    echo "Found DEV"!
+fi
+
 if [ "$installFlag" ] && [ "$CI_COMMIT_REF_NAME" = "dev" ];
 then
     curBuildDir=$commonDevBuildDir/$CI_PIPELINE_ID
