@@ -17,27 +17,25 @@ scratchBuildDir=/global/cscratch1/sd/heatherk/td_env-devbuilds
 commonDevBuildDir=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-dev
 commonProdBuildDir=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-prod
 
-if [ "$installFlag" ] && [ "$CI_COMMIT_BRANCH"="dev" ]];
+if [ "$installFlag" ] && [ "$CI_COMMIT_REF_NAME"="dev" ]];
 then
-    curBuildDir=$commonDevBuildDir/$CI_JOB_ID
+    curBuildDir=$commonDevBuildDir/$CI_PIPELINE_ID
     echo "Dev Install Build: " $curBuildDir
-elif [[ $"installFlag" ]];
+elif [[ "$installFlag" ]];
 then
     if [[ -z "$CI_COMMIT_TAG" ]];
     then
-        prodBuildDir=$CI_JOB_ID
+        prodBuildDir=$CI_PIPELINE_ID
     fi
     curBuildDir=$commonProdBuildDir/$prodBuildDir
     echo "Prod Build: " $curBuildDir
 elif [[ -z "$installFlag" ]];
 then
-    curBuildDir=$scratchBuildDir/$CI_JOB_ID
+    curBuildDir=$scratchBuildDir/$CI_PIPELINE_ID
     echo "Dev Scratch Build: " $curBuildDir
 fi
 
-source $curBuildDir/loadLSST.bash
-
-export LD_LIBRARY_PATH=/opt/cray/pe/mpt/7.7.10/gni/mpich-gnu-abi/8.2/lib:$LD_LIBRARY_PATH
+source $curBuildDir/setup_sn_env.sh
 
 python -c 'import george'
 
