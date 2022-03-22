@@ -19,24 +19,20 @@ scratchBuildDir=/global/cscratch1/sd/heatherk/td_env-devbuilds
 commonDevBuildDir=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-dev
 commonProdBuildDir=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-prod
 
-echo "REF_NAME " $CI_COMMIT_REF_NAME
-echo "COMMIT_BRANCH " $CI_COMMIT_BRANCH
-echo "SLUG " $CI_COMMIT_REF_SLUG
+#echo "REF_NAME " $CI_COMMIT_REF_NAME
+#echo "COMMIT_BRANCH " $CI_COMMIT_BRANCH
+#echo "SLUG " $CI_COMMIT_REF_SLUG
 
-echo "trimmed ref name " 
-trimmed = $CI_COMMIT_REF_NAME | xargs
-echo "trimmed var " $trimmed
+#if [ "$CI_COMMIT_REF_NAME" = "dev" ];
+#then
+#    echo "Found DEV"!
+#fi
 
-if [ "$CI_COMMIT_REF_NAME" = "dev" ];
-then
-    echo "Found DEV"!
-fi
-
-if [ "$installFlag" ] && [ "$CI_COMMIT_REF_NAME" = "dev" ];
+if [ "$installFlag" ] && [ "$CI_COMMIT_REF_NAME" = "dev" ];  # Install dev
 then
     curBuildDir=$commonDevBuildDir/$CI_PIPELINE_ID
     echo "Dev Install Build: " $curBuildDir
-elif [[ "$installFlag" ]];
+elif [[ "$installFlag" ]];  # Install Prod
 then
     if [[ -z "$CI_COMMIT_TAG" ]];
     then
@@ -44,7 +40,7 @@ then
     fi
     curBuildDir=$commonProdBuildDir/$prodBuildDir
     echo "Prod Build: " $curBuildDir
-elif [[ -z "$installFlag" ]];
+elif [[ -z "$installFlag" ]];   # Build dev on SCRATCH
 then
     curBuildDir=$scratchBuildDir/$CI_PIPELINE_ID
     echo "Dev Scratch Build: " $curBuildDir
