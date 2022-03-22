@@ -23,6 +23,10 @@ echo "REF_NAME " $CI_COMMIT_REF_NAME
 echo "COMMIT_BRANCH " $CI_COMMIT_BRANCH
 echo "SLUG " $CI_COMMIT_REF_SLUG
 
+echo "trimmed ref name " 
+trimmed = $CI_COMMIT_REF_NAME | xargs
+echo "trimmed var " $trimmed
+
 if [ "$CI_COMMIT_REF_NAME" = "dev" ];
 then
     echo "Found DEV"!
