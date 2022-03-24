@@ -14,7 +14,6 @@ SCRIPT=`basename ${BASH_SOURCE[0]}`
 usage() {  # Function: Print a help message.
   echo -e \\n"Help documentation for ${BOLD}${SCRIPT}"\\n
   echo "Command line switches are optional. The following switches are recognized."
-  echo "-e  --Support emacs in the env."
   echo "-n  --Setup the env without the LSST Sci Pipelines."
   exit 0
 }
@@ -24,10 +23,9 @@ usage() {  # Function: Print a help message.
 # -p turn off module purge
 # -n Do not setup the LSST Sci Pipelines
 #while getopts e:n: flag
-while getopts "ehn" flag
+while getopts "hn" flag
 do
     case "${flag}" in
-        e) runemacs=1;;
 	h) usage;;
 #        k) keepenv=${OPTARG};;
         n) nolsst=1;;
@@ -109,11 +107,6 @@ then
 
   export CFITSIO_DIR="/cvmfs/sw.lsst.eu/linux-x86_64/lsst_distrib/w_2021_40/conda/miniconda3-py38_4.9.2/envs/lsst-scipipe-0.7.0-ext"
 
-
-  if [[ $runemacs ]];
-  then
-	  export LD_LIBRARY_PATH=/usr/lib64:$LD_LIBRARY_PATH
-  fi
 
 #else
   #echo $1 "is an invalid option, please provide no parameters or use lsst to set up the LSST Science Pipelines"
