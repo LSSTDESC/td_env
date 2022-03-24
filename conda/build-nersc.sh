@@ -66,6 +66,7 @@ mamba install -c conda-forge -y mpich=3.3.*=external_*
 export LD_LIBRARY_PATH=/opt/cray/pe/mpt/7.7.10/gni/mpich-gnu-abi/8.2/lib:$LD_LIBRARY_PATH
 
 mamba install -c conda-forge -y --file ./packlist.txt
+pip install -r ./piplist.txt
 
 # Set permissions
 setfacl -R -m group:lsst:rx $curBuildDir
