@@ -53,7 +53,7 @@ then
 # Setup with LSST Science Pipelines
 elif [ -z "$1" ] 
 then
-  echo "Setting up SN env with LSST Science Pipelines"
+  echo "Setting up TD env with LSST Science Pipelines"
 
 
   source /global/common/software/lsst/cori-haswell-gcc/stack/v23.0.0/setup_sn_env.sh
