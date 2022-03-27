@@ -8,12 +8,40 @@
 # Feb 2020: install SNANA on Cori
 #
 
-shopt -s nocasematch
+SCRIPT=`basename ${BASH_SOURCE[0]}`
 
-export SN_GROUP='/global/cfs/cdirs/lsst/groups/SN'
+usage() {  # Function: Print a help message.
+  echo -e \\n"Help documentation for ${BOLD}${SCRIPT}"\\n
+  echo "Command line switches are optional. The following switches are recognized."
+  echo "-n  --Setup the env without the LSST Sci Pipelines."
+  exit 0
+}
+
+
+# optional parameters
+# -h help
+# -n Do not setup the LSST Sci Pipelines
+#while getopts e:n: flag
+while getopts "hn" flag
+do
+    case "${flag}" in
+        h) usage;;
+        n) nolsst=1;;
+    esac
+done
+
+
+export TD=/global/cfs/cdirs/lsst/groups/TD
+export TD_ALERTS=${TD}/ALERTS
+export TD_DIA=${TD}/DIA
+export TD_SL=${TD}/SL
+export TD_SN=${TD}/SN
+export TD_SOFTWARE=${TD}/SOFTWARE
+
 
 # setup without LSST Science Pipelines
-if [[ "$1" == "nolsst" ]];
+# Broken since March 2022 Cori OS Upgrade
+if [[ $nolsst ]];
 then
   module unload python
   module unload PrgEnv-intel/6.0.5
@@ -51,30 +79,34 @@ then
   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CFITSIO_DIR/lib
 
 # Setup with LSST Science Pipelines
-elif [ -z "$1" ] 
+elif [ -z "$nolsst" ]
 then
   echo "Setting up TD env with LSST Science Pipelines"
 
 
-  source /global/common/software/lsst/cori-haswell-gcc/stack/v23.0.0/setup_sn_env.sh
+  source /global/common/software/lsst/cori-haswell-gcc/stack/td_env-prod/stable/setup_sn_env.sh
   export GSL_DIR=$CONDA_PREFIX
   export CFITSIO_DIR=$CONDA_PREFIX
 
-else
-  echo $1 "is an invalid option, please provide no parameters or use lsst to set up the LSST Science Pipelines"
 fi
 
+# DIA Environment Variables
 
-# Set up for all cases
 
-export SNANA_DIR="$SN_GROUP/snana/SNANA"   
+# SL Environment Variables
 
-export SNDATA_ROOT="$SN_GROUP/snana/SNDATA_ROOT"
-export SNANA_TESTS="$SN_GROUP/snana/SNANA_TESTS"
-export SNANA_SURVEYS="$SN_GROUP/snana/SURVEYS"
+
+# SN Environment Variables
+export SNANA_DIR="$TD_SOFTWARE/SNANA"
+
+export SNDATA_ROOT="$TD_SN/SNANA/SNDATA_ROOT"
+export SNANA_TESTS="$TD_SN/SNANA/SNANA_TESTS"
+export SNANA_SURVEYS="$TD_SN/SNANA/SURVEYS"
+
 export SNANA_LSST_ROOT="$SNANA_SURVEYS/LSST/ROOT"
 export SNANA_LSST_USERS="$SNANA_SURVEYS/LSST/USERS"
 export SNANA_LSST_SIM="/global/cscratch1/sd/kessler/SNANA_LSST_SIM"
+
 export SCRATCH_SIMDIR="/global/cscratch1/sd/kessler/SNANA_LSST_SIM"
 export SNANA_ZTF_SIM="/global/cscratch1/sd/kessler/SNANA_ZTF_SIM"
 export DES_ROOT="$SNANA_SURVEYS/DES/ROOT"
@@ -82,10 +114,14 @@ export PLASTICC_ROOT="$SNANA_SURVEYS/LSST/ROOT/PLASTICC"
 export ELASTICC_ROOT="$SNANA_SURVEYS/LSST/ROOT/ELASTICC"
 export PLASTICC_MODELS="$PLASTICC_ROOT/model_libs"
 export PIPPIN_OUTPUT="/global/cscratch1/sd/kessler/PIPPIN_OUTPUT"
-export PIPPIN_DIR="$SN_GROUP/Pippin"
+export PIPPIN_DIR="$TD_SOFTWARE/Pippin"
 export SBATCH_TEMPLATES="$SNANA_LSST_ROOT/SBATCH_TEMPLATES"
 export SNANA_DEBUG="$SNANA_LSST_USERS/kessler/debug"
 
 export PATH=$PATH:${SNANA_DIR}/bin:${SNANA_DIR}/util:${PIPPIN_DIR}
+
+
+# For GCRCatalogs
+export DESC_GCR_SITE='nersc'
 
 export HDF5_USE_FILE_LOCKING=FALSE
