@@ -84,7 +84,7 @@ then
   echo "Setting up TD env with LSST Science Pipelines"
 
 
-  source /global/common/software/lsst/cori-haswell-gcc/stack/td_env-prod/stable/setup_sn_env.sh
+  source /global/common/software/lsst/cori-haswell-gcc/stack/td_env-prod/stable/setup_td_env.sh
   export GSL_DIR=$CONDA_PREFIX
   export CFITSIO_DIR=$CONDA_PREFIX
 
