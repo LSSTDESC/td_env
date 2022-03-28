@@ -49,7 +49,7 @@ fi
 mkdir -p $curBuildDir
 cp conda/packlist.txt $curBuildDir
 cp conda/piplist.txt $curBuildDir
-cp nersc/setup_sn_env.sh $curBuildDir
+cp nersc/setup_td_env.sh $curBuildDir
 sed -i 's|$1|'$curBuildDir'|g' $curBuildDir/setup_sn_env.sh
 cd $curBuildDir
 
@@ -57,7 +57,7 @@ cd $curBuildDir
 # Build Steps
 curl -LO https://ls.st/lsstinstall
 
-bash ./lsstinstall -T $1
+bash ./lsstinstall -T $1 -e (lsst-scipipe-$1)
 
 source ./loadLSST.bash
 eups distrib install -t $1 lsst_distrib

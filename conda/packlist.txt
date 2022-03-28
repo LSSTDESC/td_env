@@ -6,6 +6,8 @@ extinction
 george
 lsstdesc-gcr-catalogs
 pygpu
+qp
+tables-io
 tensorflow
 theano
 # adding for lenstonomy
