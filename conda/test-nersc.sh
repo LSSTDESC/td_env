@@ -35,7 +35,7 @@ then
     echo "Dev Scratch Build: " $curBuildDir
 fi
 
-source $curBuildDir/setup_sn_env.sh
+source $curBuildDir/setup_td_env.sh
 
 python -c 'import george'
 
