@@ -57,7 +57,7 @@ cd $curBuildDir
 # Build Steps
 curl -LO https://ls.st/lsstinstall
 
-bash ./lsstinstall -T $1
+bash ./lsstinstall -T $1 -e (lsst-scipipe-$1)
 
 source ./loadLSST.bash
 eups distrib install -t $1 lsst_distrib
@@ -68,8 +68,6 @@ export LD_LIBRARY_PATH=/opt/cray/pe/mpt/7.7.10/gni/mpich-gnu-abi/8.2/lib:$LD_LIB
 
 mamba install -c conda-forge -y --file ./packlist.txt
 pip install -r ./piplist.txt
-
-conda config --set env_prompt '(lsst-scipipe-{$1})' --env
 
 # Set permissions
 setfacl -R -m group:lsst:rx $curBuildDir
