@@ -69,7 +69,7 @@ export LD_LIBRARY_PATH=/opt/cray/pe/mpt/7.7.10/gni/mpich-gnu-abi/8.2/lib:$LD_LIB
 mamba install -c conda-forge -y --file ./packlist.txt
 pip install -r ./piplist.txt
 
-conda config --set env_prompt "(lsst-scipipe-{$1})" --system
+conda config --set env_prompt "(lsst-scipipe-$1)" --system
 
 # Set permissions
 setfacl -R -m group:lsst:rx $curBuildDir
