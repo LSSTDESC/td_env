@@ -50,7 +50,7 @@ mkdir -p $curBuildDir
 cp conda/packlist.txt $curBuildDir
 cp conda/piplist.txt $curBuildDir
 cp nersc/setup_td_env.sh $curBuildDir
-sed -i 's|$1|'$curBuildDir'|g' $curBuildDir/setup_sn_env.sh
+sed -i 's|$1|'$curBuildDir'|g' $curBuildDir/setup_td_env.sh
 cd $curBuildDir
 
 
