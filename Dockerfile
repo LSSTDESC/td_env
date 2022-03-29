@@ -1,6 +1,10 @@
-FROM lsstsqre/centos:7-stack-lsst_distrib-w_2021_40
+## DOCKERFILE Not IN USE 
+
+ARG LSST_TAG
+FROM lsstsqre/centos:7-stack-lsst_distrib-$LSST_TAG
 MAINTAINER Heather Kelly <heather@slac.stanford.edu>
 
+ARG LSST_TAG
 ARG LSST_STACK_DIR=/opt/lsst/software/stack
 
 ARG LSST_USER=lsst

@@ -1,10 +1,37 @@
 #!/bin/bash
 
-module unload python
-module swap PrgEnv-intel PrgEnv-gnu
-module unload craype-network-aries
-module unload cray-libsci
-module unload craype
+isloaded="$(module list |& grep python)"
+if [[ "$isloaded" ]];
+then
+  module unload python
+fi
+
+isloaded="$(module list |& grep PrgEnv-intel)"
+if [[ "$isloaded" ]];
+then
+  module swap PrgEnv-intel PrgEnv-gnu
+else
+  module load PrgEnv-gnu
+fi
+
+isloaded="$(module list |& grep craype-network-aries)"
+if [[ "$isloaded" ]];
+then
+  module unload craype-network-aries
+fi
+
+isloaded="$(module list |& grep cray-libsci)"
+if [[ "$isloaded" ]];
+then
+  module unload cray-libsci
+fi
+
+isloaded="$(module list |& grep craype)"
+if [[ "$isloaded" ]];
+then
+  module unload craype
+fi
+
 module load cray-mpich-abi/7.7.10
 
 unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH

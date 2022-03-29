@@ -13,6 +13,7 @@ SCRIPT=`basename ${BASH_SOURCE[0]}`
 usage() {  # Function: Print a help message.
   echo -e \\n"Help documentation for ${BOLD}${SCRIPT}"\\n
   echo "Command line switches are optional. The following switches are recognized."
+  echo "-k  --Setup the env without doing module purge."
   echo "-n  --Setup the env without the LSST Sci Pipelines."
   exit 0
 }
@@ -22,10 +23,11 @@ usage() {  # Function: Print a help message.
 # -h help
 # -n Do not setup the LSST Sci Pipelines
 #while getopts e:n: flag
-while getopts "hn" flag
+while getopts "hkn" flag
 do
     case "${flag}" in
         h) usage;;
+        k) keepenv=1;;
         n) nolsst=1;;
     esac
 done
@@ -38,6 +40,10 @@ export TD_SL=${TD}/SL
 export TD_SN=${TD}/SN
 export TD_SOFTWARE=${TD}/SOFTWARE
 
+if [[ -z "$keepenv" ]];
+then
+  module purge
+fi
 
 # setup without LSST Science Pipelines
 # Broken since March 2022 Cori OS Upgrade
@@ -82,7 +88,6 @@ then
 elif [ -z "$nolsst" ]
 then
   echo "Setting up TD env with LSST Science Pipelines"
-
 
   source /global/common/software/lsst/cori-haswell-gcc/stack/td_env-prod/stable/setup_td_env.sh
   export GSL_DIR=$CONDA_PREFIX
