@@ -3,6 +3,7 @@ celerite
 coloredlogs
 emcee
 extinction
+f90nml
 george
 lsstdesc-gcr-catalogs
 pygpu
