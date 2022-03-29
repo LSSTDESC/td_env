@@ -5,6 +5,7 @@ emcee
 extinction
 f90nml
 george
+ipykernel
 lsstdesc-gcr-catalogs
 pygpu
 tensorflow
