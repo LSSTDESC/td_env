@@ -1,3 +1,4 @@
+#!/bin/bash
 
 # Feb 19 2022: HK Use native install of LSST Sci Pipelines at NERSC
 # Jan 27 2022: HK update to optionally setup LSST Sci Pipelines
