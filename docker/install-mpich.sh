@@ -1,5 +1,7 @@
 #!/bin/bash
 
+yum install -y wget which
+
 source /opt/lsst/software/stack/loadLSST.bash
 
 export mpich=3.3
