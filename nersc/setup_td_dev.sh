@@ -9,7 +9,7 @@
 # Feb 2020: install SNANA on Cori
 #
 
-SCRIPT=`basename ${BASH_SOURCE[0]}`
+SCRIPT=${BASH_SOURCE[0]}
 
 usage() {  # Function: Print a help message.
   echo -e \\n"Help documentation for ${BOLD}${SCRIPT}"\\n
