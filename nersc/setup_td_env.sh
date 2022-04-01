@@ -39,5 +39,12 @@ unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
 export LD_LIBRARY_PATH=$CRAY_MPICH_BASEDIR/mpich-gnu-abi/8.2/lib:$LD_LIBRARY_PATH
 
 export DESC_LSST_INSTALL_DIR=$1
-source $DESC_LSST_INSTALL_DIR/loadLSST.bash
+
+curshell=$(echo $0)
+if [ $curshell = bash ];
+then
+  source $DESC_LSST_INSTALL_DIR/loadLSST.bash
+else
+  source $DESC_LSST_INSTALL_DIR/loadLSST.zsh
+fi
 setup lsst_distrib
