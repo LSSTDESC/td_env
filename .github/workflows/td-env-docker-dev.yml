@@ -40,3 +40,9 @@ jobs:
         docker push lsstdesc/td-env:${{env.LSST_TAG}}-${{env.DATE_TAG}}-dev
         docker tag lsstdesc/td-env:${{env.LSST_TAG}}-${{env.DATE_TAG}}-dev lsstdesc/td-env:dev
         docker push lsstdesc/td-env:dev
+        docker save lsstdesc/td-env:dev > /tmp/desc/lsstdesc-td-env-dev.tar
+    - name: Upload docker tarball
+      uses: actions/upload-artifact@v3
+      with:
+          name: lsstdesc-td-env-dev
+          path: /tmp/desc/lsstdesc-td-env-dev.tar
