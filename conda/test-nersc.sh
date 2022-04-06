@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -eo pipefail
+
 module unload python
 module swap PrgEnv-intel PrgEnv-gnu
 module unload craype-network-aries
@@ -37,5 +39,6 @@ fi
 
 source $curBuildDir/setup_td_env.sh
 
-python -c 'import george'
+python -c 'import lsst.daf.butler'
+python -c 'import coloredlogs'
 
