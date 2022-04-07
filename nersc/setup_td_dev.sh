@@ -89,10 +89,14 @@ then
 elif [ -z "$nolsst" ]
 then
   echo "Setting up TD env with LSST Science Pipelines"
+  
+  export DESC_TD_INSTALL=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-prod/stable
+  source $DESC_TD_INSTALL/setup_td_env.sh
+  export GSL_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
+  export CFITSIO_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
 
-  source /global/common/software/lsst/cori-haswell-gcc/stack/td_env-prod/stable/setup_td_env.sh
-  export GSL_DIR=$CONDA_PREFIX
-  export CFITSIO_DIR=$CONDA_PREFIX
+  #export GSL_DIR=$CONDA_PREFIX
+  #export CFITSIO_DIR=$CONDA_PREFIX
 
 fi
 
