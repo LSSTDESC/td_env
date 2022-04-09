@@ -19,15 +19,6 @@ scratchBuildDir=/global/cscratch1/sd/heatherk/td_env-devbuilds
 commonDevBuildDir=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-dev
 commonProdBuildDir=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-prod
 
-#echo "REF_NAME " $CI_COMMIT_REF_NAME
-#echo "COMMIT_BRANCH " $CI_COMMIT_BRANCH
-#echo "SLUG " $CI_COMMIT_REF_SLUG
-
-#if [ "$CI_COMMIT_REF_NAME" = "dev" ];
-#then
-#    echo "Found DEV"!
-#fi
-
 if [ "$installFlag" ] && [ "$CI_COMMIT_REF_NAME" = "dev" ];  # Install dev
 then
     curBuildDir=$commonDevBuildDir/$CI_PIPELINE_ID
@@ -50,6 +41,7 @@ mkdir -p $curBuildDir
 cp conda/packlist.txt $curBuildDir
 cp conda/piplist.txt $curBuildDir
 cp nersc/setup_td_env.sh $curBuildDir
+cp nersc/sitecustomize.py $curBuildDir
 sed -i 's|$1|'$curBuildDir'|g' $curBuildDir/setup_td_env.sh
 cd $curBuildDir
 

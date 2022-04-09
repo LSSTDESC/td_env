@@ -98,6 +98,15 @@ then
   #export GSL_DIR=$CONDA_PREFIX
   #export CFITSIO_DIR=$CONDA_PREFIX
 
+  export PYTHONPATH=$PYTHONPATH:$DESC_TD_INSTALL
+
+  # SLURM_JOB_ID is set only on compute nodes
+  # DESC_TD_KEEP_MPI will be user-controlled way to keep MPI set up 
+  #if [[ -z "$DESC_TD_KEEP_MPI" && -z "$SLURM_JOB_ID" ]];
+  #then
+  #    export PYTHONSTARTUP=$DESC_TD_INSTALL/nompi4py.py
+  #fi
+
 fi
 
 # DIA Environment Variables
