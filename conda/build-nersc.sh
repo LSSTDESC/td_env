@@ -61,9 +61,21 @@ export LD_LIBRARY_PATH=/opt/cray/pe/mpt/7.7.10/gni/mpich-gnu-abi/8.2/lib:$LD_LIB
 mamba install -c conda-forge -y --file ./packlist.txt
 pip install --no-cache-dir -r ./piplist.txt
 
+conda clean -y -a 
+
+python -m compileall $curBuildDir/conda
+
 conda config --set env_prompt "(lsst-scipipe-$1)" --system
 
+conda env export --no-builds > $curBuildDir/td_env-nersc-$CI_PIPELINE_ID-nobuildinfo.yml
+conda env export > $curBuildDir/td_env-nersc-$CI_PIPELINE_ID.yml
+
+
 # Set permissions
-setfacl -R -m group:lsst:rx $curBuildDir
+setfacl -R -m group::rx $curBuildDir
+setfacl -R -d -m group::rx $curBuildDir
+
 setfacl -R -m user:desc:rwx $curBuildDir
+setfacl -R -d -m user:desc:rwx $curBuildDir
+
 
