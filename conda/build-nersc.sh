@@ -63,7 +63,7 @@ pip install --no-cache-dir -r ./piplist.txt
 
 conda clean -y -a 
 
-python -m compileall $curBuildDir/conda
+python -m compileall $curBuildDir
 
 conda config --set env_prompt "(lsst-scipipe-$1)" --system
 
