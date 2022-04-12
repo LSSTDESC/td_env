@@ -39,6 +39,6 @@ fi
 
 source $curBuildDir/setup_td_env.sh
 
-python -c 'import lsst.daf.butler'
+#python -c 'import lsst.daf.butler'
 python -c 'import coloredlogs'
 
