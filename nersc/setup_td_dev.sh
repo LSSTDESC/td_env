@@ -16,6 +16,7 @@ usage() {  # Function: Print a help message.
   echo "Command line switches are optional. The following switches are recognized."
   echo "-k  --Setup the env without doing module purge."
   echo "-n  --Setup the env without the LSST Sci Pipelines."
+  echo "-s  --Setup the env for shifter."
   exit 0
 }
 
@@ -24,12 +25,13 @@ usage() {  # Function: Print a help message.
 # -h help
 # -n Do not setup the LSST Sci Pipelines
 #while getopts e:n: flag
-while getopts "hkn" flag
+while getopts "hkns" flag
 do
     case "${flag}" in
         h) usage;;
         k) keepenv=1;;
         n) nolsst=1;;
+        s) shifterenv=1;;
     esac
 done
 
@@ -41,7 +43,7 @@ export TD_SL=${TD}/SL
 export TD_SN=${TD}/SN
 export TD_SOFTWARE=${TD}/SOFTWARE
 
-if [[ -z "$keepenv" ]];
+if [[ -z "$keepenv" ]] && [[ -z $SHIFTER_RUNTIME ]];
 then
   module purge
 fi
@@ -84,6 +86,11 @@ then
 
   # Aug 24 2020 RK - silly hack for CFITSIO
   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CFITSIO_DIR/lib
+
+elif [ $shifterenv ] || [ $SHIFTER_RUNTIME ]
+then
+  source /opt/lsst/software/stack/loadLSST.bash
+  setup lsst_distrib
 
 # Setup with LSST Science Pipelines
 elif [ -z "$nolsst" ]
