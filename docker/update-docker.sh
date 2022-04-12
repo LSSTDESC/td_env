@@ -9,7 +9,7 @@ mamba install -c conda-forge -y mpich=3.3.*=external_*
 mamba install -c conda-forge -y --file ./packlist.txt
 pip install --no-cache-dir -r ./piplist.txt
 
-conda clean -a
+conda clean -y -a 
 
 python -m compileall /opt/lsst/software/stack/conda
 
