@@ -1,0 +1,29 @@
+name: td_env docker release
+
+on: 
+ release:
+  types: [published]
+  
+jobs:
+  build:
+    name: Build on Ubuntu
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Docker login
+      run: echo '${{ secrets.DOCKERHUB_ACCESSTOK }}' | docker login --username heather999 --password-stdin    
+    - name : date 
+      run: echo "DATE_TAG=$(date "+%F")" >> $GITHUB_ENV      
+    - name: get docker image, test, tag, push
+      run: |
+        docker pull lsstdesc/td-env:dev
+        docker run --rm lsstdesc/td-env:dev /bin/bash -c "source /opt/lsst/software/stack/loadLSST.bash && setup lsst_distrib && python -c 'import coloredlogs'"
+        docker tag lsstdesc/td-env:dev lsstdesc/td-env:${{ github.event.release.tag_name }}-${{env.DATE_TAG}}-stable
+        docker push lsstdesc/td-env:${{ github.event.release.tag_name }}-${{env.DATE_TAG}}-stable
+        docker tag lsstdesc/td-env:dev lsstdesc/td-env:stable
+        docker push lsstdesc/td-env:stable
+        docker tag lsstdesc/td-env:dev lsstdesc/td-env:${{ github.event.release.tag_name }}
+        docker push lsstdesc/td-env:${{ github.event.release.tag_name }}
+
+
+        
+    
