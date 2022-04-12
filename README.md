@@ -10,7 +10,7 @@ dev branch Docker images are stored on DockerHub and are accessible via
 * OR use the available Shifter image
     * `lsstdesc/td-env:dev`
     ```
-    shifter --image=lsstdesc/td-env:dev /bin/bash 
+    shifter --image=lsstdesc/td-env:stable /bin/bash 
     source /global/cfs/cdirs/lsst/groups/TD/setup_td.sh
     ```
 
