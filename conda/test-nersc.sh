@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eo pipefail
+#set -eo pipefail
 
 module unload python
 module swap PrgEnv-intel PrgEnv-gnu
