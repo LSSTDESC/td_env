@@ -5,6 +5,7 @@ emcee
 extinction
 f90nml
 george
+ipdb
 ipykernel
 lsstdesc-gcr-catalogs
 pygpu
