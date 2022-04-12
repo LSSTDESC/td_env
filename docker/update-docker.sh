@@ -11,3 +11,4 @@ pip install --no-cache-dir -r ./piplist.txt
 
 conda config --set env_prompt "(lsst-scipipe-$1)" --system
 
+cp ../nersc/setup_td_dev.sh /opt/lsst/software/stack
