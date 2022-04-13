@@ -1,32 +1,43 @@
-## DOCKERFILE Not IN USE 
-
-ARG LSST_TAG
-FROM lsstsqre/centos:7-stack-lsst_distrib-$LSST_TAG
+FROM centos:centos7.7.1908
 MAINTAINER Heather Kelly <heather@slac.stanford.edu>
 
 ARG LSST_TAG
 ARG LSST_STACK_DIR=/opt/lsst/software/stack
 
+RUN yum update -y && \
+    patch \
+    wget \
+    which && \
+    yum clean -y all && \
+    rm -rf /var/cache/yum && \
+    groupadd -g 1000 -r lsst && useradd -u 1000 --no-log-init -m -r -g lsst lsst && \
+    mkdir -p $LSST_STACK_DIR && \
+    chown lsst $LSST_STACK_DIR && \
+    chgrp lsst $LSST_STACK_DIR
+
 ARG LSST_USER=lsst
 ARG LSST_GROUP=lsst
 
+USER lsst
+
 WORKDIR $LSST_STACK_DIR
 
-USER root
-RUN yum install -y wget \
-    which
 
-COPY conda /tmp
+#COPY conda /tmp
     
    
 RUN echo "Environment: \n" && env | sort && \
-    cd /tmp && \
-    /bin/bash -c 'source $LSST_STACK_DIR/loadLSST.bash; \
-                  pip freeze > $LSST_STACK_DIR/require.txt; \
-                  eups distrib install ${EUPS_TAG2:+"-t"} $EUPS_TAG2 $EUPS_PRODUCT2 --nolocks; \
-                  export EUPS_PKGROOT=https://eups.lsst.codes/stack/src; \
-                  eups distrib install ${EUPS_THROUGH_TAG:+"-t"} $EUPS_THROUGH_TAG $EUPS_THROUGH --nolocks; \
-                  eups distrib install ${EUPS_THROUGH_TAG:+"-t"} $EUPS_THROUGH_TAG $EUPS_SKY --nolocks;'
+    /bin/bash -c 'curl -LO https://ls.st/lsstinstall; \
+                  bash ./lsstinstall ${LSST_TAG:+"-X"}; \
+                  source ./loadLSST.bash; \
+                  eups distrib install ${LSST_TAG:+"-t"} $LSST_TAG lsst_distrib --nolocks; \
+                  conda clean -y -a; \
+                  python -m compileall $LSST_STACK_DIR; \
+                  conda env export --no-builds > $LSST_STACK_DIR/td_env-docker-nobuildinfo.yml; \
+                  conda env export > $curBuildDir/td_env-docker.yml;'
+                  
+                  #                   conda config --set env_prompt "(lsst-scipipe-$LSST_TAG)" --system; \
+
     
 #    && \
 #    cd /tmp && \
@@ -34,10 +45,9 @@ RUN echo "Environment: \n" && env | sort && \
 #    cp /tmp/sn-env-setup.sh /usr/local/py3
     
     
-RUN cd /tmp && \
-    rm -Rf conda 
+#RUN cd /tmp && \
+#    rm -Rf conda 
     
-USER lsst
     
 #RUN echo "source /usr/local/py3/etc/profile.d/conda.sh" >> ~/.bashrc
 #RUN echo "conda activate sn-env" >> ~/.bashrc
@@ -45,7 +55,7 @@ USER lsst
 ENV HDF5_USE_FILE_LOCKING FALSE
 ENV PYTHONSTARTUP ''
 
-#ENV PATH="/usr/local/py3/bin:${PATH}"
+ENV PATH="${LSST_STACK_DIR}:${PATH}"
 
 #ENV CONDA_DEFAULT_ENV sn-env
 
