@@ -38,9 +38,9 @@ RUN echo "Environment: \n" && env | sort && \
                   conda clean -y -a; \
                   python -m compileall $LSST_STACK_DIR; \
                   conda env export --no-builds > $LSST_STACK_DIR/td_env-docker-nobuildinfo.yml; \
-                  conda env export > $curBuildDir/td_env-docker.yml;'
+                  conda env export > $LSST_STACK_DIR/td_env-docker.yml;'
                   
-                  #                   conda config --set env_prompt "(lsst-scipipe-$LSST_TAG)" --system; \
+#                   conda config --set env_prompt "(lsst-scipipe-$LSST_TAG)" --system; \
 
     
 #    && \
