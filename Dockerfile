@@ -1,7 +1,7 @@
 FROM centos:centos7.7.1908
 MAINTAINER Heather Kelly <heather@slac.stanford.edu>
 
-ARG LSST_TAG
+ARG LSST_TAG=w_2022_10
 ARG LSST_STACK_DIR=/opt/lsst/software/stack
 
 RUN yum update -y && \
