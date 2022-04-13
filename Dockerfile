@@ -10,8 +10,10 @@ RUN yum update -y && \
     which && \
     yum clean -y all && \
     rm -rf /var/cache/yum && \
-    groupadd -g 1000 -r lsst && useradd -u 1000 --no-log-init -m -r -g lsst lsst && \
-    mkdir -p $LSST_STACK_DIR && \
+    groupadd -g 1000 -r lsst && useradd -u 1000 --no-log-init -m -r -g lsst lsst
+    
+   
+RUN mkdir -p $LSST_STACK_DIR && \
     chown lsst $LSST_STACK_DIR && \
     chgrp lsst $LSST_STACK_DIR
 
