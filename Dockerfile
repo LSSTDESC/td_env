@@ -5,11 +5,11 @@ ARG LSST_TAG
 ARG LSST_STACK_DIR=/opt/lsst/software/stack
 
 RUN yum update -y && \
+    yum install -y bash \
     patch \
     wget \
-    which
-    
-RUN yum clean -y all && \
+    which && \
+    yum clean -y all && \
     rm -rf /var/cache/yum 
     
 RUN groupadd -g 1000 -r lsst && useradd -u 1000 --no-log-init -m -r -g lsst lsst
