@@ -31,9 +31,9 @@ WORKDIR $LSST_STACK_DIR
     
    
 RUN echo "Environment: \n" && env | sort && \
-    /bin/bash -c 'curl -LO https://ls.st/lsstinstall; \
-                  bash ./lsstinstall ${LSST_TAG:+"-X"}; \
-                  source ./loadLSST.bash; \
+    curl -LO https://ls.st/lsstinstall && \
+    bash ./lsstinstall ${LSST_TAG:+"-X"} $LSST_TAG && \
+    /bin/bash -c 'source ./loadLSST.bash; \
                   eups distrib install ${LSST_TAG:+"-t"} $LSST_TAG lsst_distrib --nolocks; \
                   conda clean -y -a; \
                   python -m compileall $LSST_STACK_DIR; \
