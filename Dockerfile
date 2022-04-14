@@ -34,17 +34,16 @@ WORKDIR $LSST_STACK_DIR
    
 RUN echo "Environment: \n" && env | sort && \
     curl -LO https://ls.st/lsstinstall && \
-    mkdir -p /tmp/gh && \
-    cd /tmp/gh && \
-    git clone https://github.com/LSSTDESC/td_env && \
-    cd td_env && \ 
-    git checkout $GH_SHA && \
-    cd $LSST_STACK_DIR && \
     bash ./lsstinstall ${LSST_TAG:+"-X"} $LSST_TAG && \
     /bin/bash -c 'source ./loadLSST.bash; \
                   eups distrib install ${LSST_TAG:+"-t"} $LSST_TAG lsst_distrib --nolocks;'
                   
-                  
+RUN mkdir -p /tmp/gh && \
+    cd /tmp/gh && \
+    git clone https://github.com/LSSTDESC/td_env && \
+    cd td_env && \ 
+    git checkout $GH_SHA 
+
 USER root 
 
 RUN cd /tmp/gh/td_env && \
