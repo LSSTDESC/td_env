@@ -49,7 +49,7 @@ cd $curBuildDir
 # Build Steps
 curl -LO https://ls.st/lsstinstall
 #export LSST_CONDA_ENV_NAME=lsst-scipipe-$1
-bash ./lsstinstall -T $1 
+bash ./lsstinstall -X $1 
 
 source ./loadLSST.bash
 eups distrib install -t $1 lsst_distrib
