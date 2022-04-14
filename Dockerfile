@@ -9,6 +9,7 @@ ARG LSST_STACK_DIR=/opt/lsst/software/stack
 
 RUN yum update -y && \
     yum install -y bash \
+    git \
     patch \
     wget \
     which && \
