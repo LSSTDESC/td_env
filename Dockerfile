@@ -2,11 +2,10 @@ FROM centos:centos7.7.1908
 MAINTAINER Heather Kelly <heather@slac.stanford.edu>
 
 ARG GH_SHA
-ARG GH_WORKSPACE
 ARG LSST_TAG=w_2022_10
 ARG LSST_STACK_DIR=/opt/lsst/software/stack
 
-RUN pwd && ls && ls /home && ls /home/runner && echo $GH_WORKSPACE && echo $GH_SHA 
+RUN pwd && ls && ls -a /tmp && ls /tmp/.buildx-cache && echo $GH_SHA 
 
 #RUN yum update -y && \
 #    yum install -y bash \
