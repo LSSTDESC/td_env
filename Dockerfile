@@ -40,6 +40,9 @@ RUN echo "Environment: \n" && env | sort && \
                   conda env export --no-builds > $LSST_STACK_DIR/td_env-docker-nobuildinfo.yml; \
                   conda env export > $LSST_STACK_DIR/td_env-docker.yml;'
                   
+                  
+USER root
+                  
 #                   conda config --set env_prompt "(lsst-scipipe-$LSST_TAG)" --system; \
 
     
@@ -51,9 +54,11 @@ RUN echo "Environment: \n" && env | sort && \
     
 #RUN cd /tmp && \
 #    rm -Rf conda 
+
+USER lsst
     
     
-#RUN echo "source /usr/local/py3/etc/profile.d/conda.sh" >> ~/.bashrc
+RUN echo "source $LSST_STACK_DIR/loadLSST.bash" >> ~/.bashrc
 #RUN echo "conda activate sn-env" >> ~/.bashrc
     
 ENV HDF5_USE_FILE_LOCKING FALSE
