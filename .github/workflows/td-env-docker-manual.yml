@@ -49,6 +49,7 @@ jobs:
           context: .
           build-args: |
             GH_SHA=${{ github.sha }}
+            GH_WORKSPACE=${{ GITHUB_WORKSPACE }}
           load: true
           tags: ${{ env.TEST_TAG }}
  
