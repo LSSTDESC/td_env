@@ -3,6 +3,10 @@ name: td_env docker test
 on: 
   workflow_dispatch:
 
+env:
+  TEST_TAG: lsstdesc/td-env:test
+
+
 jobs:
   build:
     name: Build on Ubuntu
@@ -22,6 +26,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: dev
+     
       - name : Get weekly number and date 
         run: |
           echo "LSST_TAG=w_2022_10" >> $GITHUB_ENV
@@ -31,38 +36,50 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Cache Docker layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache
-          key: '${{ runner.os }}-buildx-${{ github.sha }}'
-          restore-keys: |
-            ${{ runner.os }}-buildx-        
+#      - name: Cache Docker layers
+#        uses: actions/cache@v2
+#        with:
+ #         path: /tmp/.buildx-cache
+#          key: '${{ runner.os }}-buildx-${{ github.sha }}'
+#          restore-keys: |
+#            ${{ runner.os }}-buildx-        
         
       - name: Build 
         id: docker_build
         uses: docker/build-push-action@v2
         with:
-          builder: '${{ steps.buildx.outputs.name }}'
           context: .
-          file: ./Dockerfile
           build-args: |
             GH_SHA=${{ github.sha }}
             load: true
-            push: false
-            tags: lsstdesc/td-env:test-${{env.DATE_TAG}}
-            cache-from: type=local,src=/tmp/.buildx-cache
-            cache-to: type=local,dest=/tmp/.buildx-cache-new
+            tags: ${{ env.TEST_TAG }}
+ 
+ #          builder: '${{ steps.buildx.outputs.name }}'
+
+#           file: ./Dockerfile
+
+ #cache-from: type=local,src=/tmp/.buildx-cache
+ #           cache-to: type=local,dest=/tmp/.buildx-cache-new
    
       - name: test image before pushing
-        run: docker run --rm lsstdesc/td-env:test-${{env.DATE_TAG}} /bin/bash -c "source /opt/lsst/software/stack/loadLSST.bash && setup lsst_distrib"
-      - name: Docker push
-        run: docker push lsstdesc/td-env:test-${{env.DATE_TAG}}
+        run: docker run --rm ${{ env.TEST_TAG }} /bin/bash -c "source /opt/lsst/software/stack/loadLSST.bash && setup lsst_distrib"
+    
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: lsstdesc/td-env:test-${{env.DATE_TAG}}
+    
+    
+  #  - name: Docker push
+  #      run: docker push lsstdesc/td-env:test-${{env.DATE_TAG}}
 
-      - name: Move cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+ #     - name: Move cache
+ #       run: |
+ #         rm -rf /tmp/.buildx-cache
+ #         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
   
         
         
