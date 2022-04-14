@@ -1,6 +1,6 @@
 #!/bin/bash
 
-yum install -y wget which
+# yum install -y wget which  # Handled in dockerfile
 
 source /opt/lsst/software/stack/loadLSST.bash
 
@@ -17,4 +17,5 @@ make install
 make clean                                                        
 cd ..                                                              
 rm -rf $mpich_prefix
+rm $mpich_prefix.tar.gz 
 /sbin/ldconfig
