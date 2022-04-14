@@ -1,9 +1,9 @@
 name: td_env docker dev
 
 on: 
-#  push:
-#    branches:
-#      - dev
+ # push:
+ #   branches:
+ #     - dev
   workflow_dispatch:
 
 jobs:
