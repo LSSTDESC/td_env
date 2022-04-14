@@ -51,8 +51,8 @@ jobs:
           context: .
           build-args: |
             GH_SHA=${{ github.sha }}
-            load: true
-            tags: ${{ env.TEST_TAG }}
+          load: true
+          tags: ${{ env.TEST_TAG }}
  
  #          builder: '${{ steps.buildx.outputs.name }}'
 
