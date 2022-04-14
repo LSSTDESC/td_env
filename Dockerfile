@@ -6,7 +6,7 @@ ARG GH_WORKSPACE
 ARG LSST_TAG=w_2022_10
 ARG LSST_STACK_DIR=/opt/lsst/software/stack
 
-RUN pwd && ls && echo $GH_WORKSPACE && echo $GH_SHA && ls $GH_WORKSPACE
+RUN pwd && ls && ls /home && ls /home/runner && echo $GH_WORKSPACE && echo $GH_SHA 
 
 #RUN yum update -y && \
 #    yum install -y bash \
