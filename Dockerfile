@@ -4,6 +4,8 @@ MAINTAINER Heather Kelly <heather@slac.stanford.edu>
 ARG LSST_TAG=w_2022_10
 ARG LSST_STACK_DIR=/opt/lsst/software/stack
 
+RUN pwd && ls
+
 RUN yum update -y && \
     yum install -y bash \
     patch \
