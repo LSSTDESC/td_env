@@ -5,8 +5,12 @@ emcee
 extinction
 f90nml
 george
+gwpy
 ipdb
 ipykernel
+lalsuite
+ligo.skymap
+ligo.em-bright
 lsstdesc-gcr-catalogs
 pygpu
 tensorflow
