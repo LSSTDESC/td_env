@@ -29,6 +29,7 @@ jobs:
         run: |
           echo "LSST_TAG=w_2022_10" >> $GITHUB_ENV
           echo "DATE_TAG=$(date "+%F")" >> $GITHUB_ENV 
+          echo $GITHUB_WORKSPACE
         
       - name: Set up Docker Buildx
         id: buildx
@@ -49,7 +50,7 @@ jobs:
           context: .
           build-args: |
             GH_SHA=${{ github.sha }}
-            GH_WORKSPACE=${{ GITHUB_WORKSPACE }}
+            GH_WORKSPACE=$GITHUB_WORKSPACE
           load: true
           tags: ${{ env.TEST_TAG }}
  
