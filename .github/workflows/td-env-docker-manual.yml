@@ -35,13 +35,13 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Cache Docker layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache
-          key: '${{ runner.os }}-buildx-${{ github.sha }}'
-          restore-keys: |
-            ${{ runner.os }}-buildx-        
+#      - name: Cache Docker layers
+#        uses: actions/cache@v2
+#        with:
+#          path: /tmp/.buildx-cache
+#          key: '${{ runner.os }}-buildx-${{ github.sha }}'
+#          restore-keys: |
+#           ${{ runner.os }}-buildx-        
         
       - name: Build 
         id: docker_build
@@ -52,8 +52,9 @@ jobs:
             GH_SHA=${{ github.sha }}
           load: true
           tags: ${{ env.TEST_TAG }}
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new
+
+#cache-from: type=local,src=/tmp/.buildx-cache
+#          cache-to: type=local,dest=/tmp/.buildx-cache-new
  
  #          builder: '${{ steps.buildx.outputs.name }}'
 
