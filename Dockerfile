@@ -5,7 +5,7 @@ ARG GH_SHA
 ARG LSST_TAG=w_2022_10
 ARG LSST_STACK_DIR=/opt/lsst/software/stack
 
-RUN pwd && ls && ls -a /tmp && ls /tmp/.buildx-cache && echo $GH_SHA 
+#RUN pwd && ls && echo $GH_SHA 
 
 RUN yum update -y && \
     yum install -y bash \
