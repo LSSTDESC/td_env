@@ -50,7 +50,7 @@ jobs:
           context: .
           build-args: |
             GH_SHA=${{ github.sha }}
-            GH_WORKSPACE=$GITHUB_WORKSPACE
+            GH_WORKSPACE=${{ github.workspace }}
           load: true
           tags: ${{ env.TEST_TAG }}
  
