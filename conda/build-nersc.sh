@@ -15,11 +15,10 @@ dmver=$1
 installFlag=$2
 
 
-scratchBuildDir=/global/cscratch1/sd/heatherk/td_env-devbuilds
 commonDevBuildDir=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-dev
 commonProdBuildDir=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-prod
 
-if [ "$installFlag" ] && [ "$CI_COMMIT_REF_NAME" = "dev" ];  # Install dev
+if [ "$CI_COMMIT_REF_NAME" = "dev" ];  # dev
 then
     curBuildDir=$commonDevBuildDir/$CI_PIPELINE_ID
     echo "Dev Install Build: " $curBuildDir
@@ -31,10 +30,6 @@ then
     fi
     curBuildDir=$commonProdBuildDir/$prodBuildDir
     echo "Prod Build: " $curBuildDir
-elif [[ -z "$installFlag" ]];   # Build dev on SCRATCH
-then
-    curBuildDir=$scratchBuildDir/$CI_PIPELINE_ID
-    echo "Dev Scratch Build: " $curBuildDir
 fi
 
 mkdir -p $curBuildDir
