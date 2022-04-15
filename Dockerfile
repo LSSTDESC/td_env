@@ -32,6 +32,8 @@ RUN echo "Environment: \n" && env | sort && \
     bash ./lsstinstall ${LSST_TAG:+"-X"} $LSST_TAG && \
     /bin/bash -c 'source ./loadLSST.bash; \
                   eups distrib install ${LSST_TAG:+"-t"} $LSST_TAG lsst_distrib --nolocks;' && \
+    (find stack -name "src" ! -path "*/Eigen/*" | xargs rm -Rf) || true && \
+    (find stack -name "doc" | xargs rm -Rf) || true && \
     mkdir -p /tmp/gh && \
     cd /tmp/gh && \
     git clone https://github.com/LSSTDESC/td_env && \
@@ -47,7 +49,9 @@ USER lsst
 RUN cd /tmp/gh/td_env/conda && \
     bash /tmp/gh/td_env/docker/update-docker.sh w_2022_10 && \
     echo "source $LSST_STACK_DIR/loadLSST.bash" >> ~/.bashrc && \
-    echo "setup lsst_distrib" >> ~/.bashrc
+    echo "setup lsst_distrib" >> ~/.bashrc && \
+    rm -Rf /tmp/*
+    
     
 ENV HDF5_USE_FILE_LOCKING FALSE
 ENV PYTHONSTARTUP ''
@@ -57,22 +61,3 @@ ENV PATH="${LSST_STACK_DIR}:${PATH}"
 
 CMD ["/bin/bash"]
 
-
-
-#COPY conda /tmp
-
-#RUN /bin/bash -c 'source ./loadLSST.bash; \
-#                  ./docker/install-mpich.sh;
-                  
-#                   conda config --set env_prompt "(lsst-scipipe-$LSST_TAG)" --system; \
-
-    
-#    && \
-#    cd /tmp && \
-#    bash install-sn-env.sh /usr/local/py3 /tmp/sn-env.yml && \
-#    cp /tmp/sn-env-setup.sh /usr/local/py3
-    
-    
-#RUN cd /tmp && \
-#    rm -Rf conda 
-#ENV CONDA_DEFAULT_ENV sn-env
