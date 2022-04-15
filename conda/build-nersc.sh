@@ -12,7 +12,7 @@ unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
 dmver=$1
 
 # Set to 1 to install into the common sofware area
-installFlag=$2
+#installFlag=$2
 
 
 commonDevBuildDir=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-dev
