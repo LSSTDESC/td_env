@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  TEST_TAG: lsstdesc/td-env:test
+  TEST_TAG: lsstdesc/td-env:dev
 
 
 jobs:
@@ -68,5 +68,7 @@ jobs:
           docker run --rm ${{ env.TEST_TAG }} /bin/bash -c "source ~/.bashrc && python -c 'import lsst.daf.butler'"
           docker tag ${{ env.TEST_TAG }} lsstdesc/td-env:dev-${{env.DATE_TAG}}
           docker push lsstdesc/td-env:dev-${{env.DATE_TAG}}
+          docker tag ${{ env.TEST_TAG }} lsstdesc/td-env:dev
+          docker push lsstdesc/td-env:dev
        
        
