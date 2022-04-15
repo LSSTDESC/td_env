@@ -56,6 +56,8 @@ RUN cd /tmp/gh/td_env/conda && \
     bash /tmp/gh/td_env/docker/update-docker.sh w_2022_10
     
 RUN echo "source $LSST_STACK_DIR/loadLSST.bash" >> ~/.bashrc
+RUN echo "setup lsst_distrib" >> ~/.bashrc
+
 ##RUN echo "conda activate sn-env" >> ~/.bashrc
     
 ENV HDF5_USE_FILE_LOCKING FALSE
