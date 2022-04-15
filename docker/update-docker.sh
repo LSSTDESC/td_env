@@ -13,8 +13,8 @@ conda clean -y -a
 
 python -m compileall /opt/lsst/software/stack/conda
 
-conda env export --no-builds > /opt/lsst/software/stack/td_env-nersc-nobuildinfo.yml
-conda env export > /opt/lsst/software/stack/td_env-nersc.yml
+conda env export --no-builds > /opt/lsst/software/stack/td_env-image-nobuildinfo.yml
+conda env export > /opt/lsst/software/stack/td_env-image.yml
 
 conda config --set env_prompt "(lsst-scipipe-$1)" --system
 
