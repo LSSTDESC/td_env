@@ -14,12 +14,9 @@ RUN yum update -y && \
     wget \
     which && \
     yum clean -y all && \
-    rm -rf /var/cache/yum 
-    
-RUN groupadd -g 1000 -r lsst && useradd -u 1000 --no-log-init -m -r -g lsst lsst
-    
-   
-RUN mkdir -p $LSST_STACK_DIR && \
+    rm -rf /var/cache/yum && \
+    groupadd -g 1000 -r lsst && useradd -u 1000 --no-log-init -m -r -g lsst lsst && \
+    mkdir -p $LSST_STACK_DIR && \
     chown lsst $LSST_STACK_DIR && \
     chgrp lsst $LSST_STACK_DIR
 
@@ -29,17 +26,13 @@ ARG LSST_GROUP=lsst
 USER lsst
 
 WORKDIR $LSST_STACK_DIR
-
-
-    
    
 RUN echo "Environment: \n" && env | sort && \
     curl -LO https://ls.st/lsstinstall && \
     bash ./lsstinstall ${LSST_TAG:+"-X"} $LSST_TAG && \
     /bin/bash -c 'source ./loadLSST.bash; \
-                  eups distrib install ${LSST_TAG:+"-t"} $LSST_TAG lsst_distrib --nolocks;'
-                  
-RUN mkdir -p /tmp/gh && \
+                  eups distrib install ${LSST_TAG:+"-t"} $LSST_TAG lsst_distrib --nolocks;' && \
+    mkdir -p /tmp/gh && \
     cd /tmp/gh && \
     git clone https://github.com/LSSTDESC/td_env && \
     cd td_env && \ 
@@ -50,15 +43,11 @@ USER root
 RUN cd /tmp/gh/td_env && \
     bash ./docker/install-mpich.sh
 
-
 USER lsst
 RUN cd /tmp/gh/td_env/conda && \
-    bash /tmp/gh/td_env/docker/update-docker.sh w_2022_10
-    
-RUN echo "source $LSST_STACK_DIR/loadLSST.bash" >> ~/.bashrc
-RUN echo "setup lsst_distrib" >> ~/.bashrc
-
-##RUN echo "conda activate sn-env" >> ~/.bashrc
+    bash /tmp/gh/td_env/docker/update-docker.sh w_2022_10 && \
+    echo "source $LSST_STACK_DIR/loadLSST.bash" >> ~/.bashrc && \
+    echo "setup lsst_distrib" >> ~/.bashrc
     
 ENV HDF5_USE_FILE_LOCKING FALSE
 ENV PYTHONSTARTUP ''
