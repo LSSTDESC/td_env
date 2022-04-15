@@ -97,7 +97,8 @@ elif [ -z "$nolsst" ]
 then
   echo "Setting up TD env with LSST Science Pipelines"
   
-  export DESC_TD_INSTALL=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-prod/stable
+  #export DESC_TD_INSTALL=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-prod/stable
+  export DESC_TD_INSTALL=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-dev/dev
   source $DESC_TD_INSTALL/setup_td_env.sh
   export GSL_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
   export CFITSIO_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
@@ -143,7 +144,7 @@ export PIPPIN_OUTPUT="/global/cscratch1/sd/kessler/PIPPIN_OUTPUT"
 export PIPPIN_DIR="$TD_SOFTWARE/Pippin"
 export SBATCH_TEMPLATES="$SNANA_LSST_ROOT/SBATCH_TEMPLATES"
 export SNANA_DEBUG="$SNANA_LSST_USERS/kessler/debug"
-export SNANA_SETUP_COMMAND="source $TD/setup_td.sh"
+export SNANA_SETUP_COMMAND="source $TD/setup_td_dev.sh"
 
 export PATH=$PATH:${SNANA_DIR}/bin:${SNANA_DIR}/util:${PIPPIN_DIR}
 
