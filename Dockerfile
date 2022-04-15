@@ -47,7 +47,7 @@ RUN cd /tmp/gh/td_env && \
 
 USER lsst
 RUN cd /tmp/gh/td_env/conda && \
-    bash /tmp/gh/td_env/docker/update-docker.sh w_2022_10 
+    bash /tmp/gh/td_env/docker/update-docker.sh w_2022_10 && \
     echo "source $LSST_STACK_DIR/loadLSST.bash" >> ~/.bashrc && \
     echo "setup lsst_distrib" >> ~/.bashrc 
     
