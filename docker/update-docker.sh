@@ -11,7 +11,8 @@ pip install --no-cache-dir -r ./piplist.txt
 
 conda clean -y -a 
 
-python -m compileall /opt/lsst/software/stack/conda
+# python -m compileall /opt/lsst/software/stack/conda 
+# Backing off compileall for docker images: https://stackoverflow.com/questions/64808915/should-pycache-folders-be-included-in-production-containers
 
 conda env export --no-builds > /opt/lsst/software/stack/td_env-image-nobuildinfo.yml
 conda env export > /opt/lsst/software/stack/td_env-image.yml
