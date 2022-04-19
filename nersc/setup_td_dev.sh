@@ -9,6 +9,8 @@
 # Feb 2020: install SNANA on Cori
 #
 
+echo "RUNNING TD_ENV DEVELOPMENT VERSION"
+
 SCRIPT=${BASH_SOURCE[0]}
 
 usage() {  # Function: Print a help message.
