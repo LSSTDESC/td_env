@@ -60,8 +60,10 @@ conda clean -y -a
 
 python -m compileall $curBuildDir
 
+# Skipping this for now - they files are downloaded to the user's astropy cache
+# Will revisit if it becomes an issue: https://docs.astropy.org/en/stable/utils/data.html
 # Force data files to be dowloaded during installation
-python -c "import ligo.em_bright"
+# python -c "import ligo.em_bright"
 
 conda config --set env_prompt "(lsst-scipipe-$1)" --system
 
