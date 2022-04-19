@@ -60,6 +60,9 @@ conda clean -y -a
 
 python -m compileall $curBuildDir
 
+# Force data files to be dowloaded during installation
+python -c "import ligo.em_bright"
+
 conda config --set env_prompt "(lsst-scipipe-$1)" --system
 
 conda env export --no-builds > $curBuildDir/td_env-nersc-$CI_PIPELINE_ID-nobuildinfo.yml
