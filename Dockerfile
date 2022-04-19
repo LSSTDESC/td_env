@@ -32,6 +32,10 @@ RUN echo "Environment: \n" && env | sort && \
     bash ./lsstinstall ${LSST_TAG:+"-X"} $LSST_TAG && \
     /bin/bash -c 'source ./loadLSST.bash; \
                   eups distrib install ${LSST_TAG:+"-t"} $LSST_TAG lsst_distrib --nolocks;' && \
+    rm -Rf python/doc && \
+    rm -Rf python/phrasebooks && \
+    find stack -name "*.pyc" -delete && \
+    (find stack -name "*.so" ! -path "*/xpa/*" | xargs strip -s -p) || true && \
     (find stack -name "src" ! -path "*/Eigen/*" | xargs rm -Rf) || true && \
     (find stack -name "doc" | xargs rm -Rf) || true && \
     mkdir -p /tmp/gh && \
