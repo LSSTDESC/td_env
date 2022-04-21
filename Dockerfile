@@ -1,4 +1,4 @@
-FROM centos:centos7.7.1908
+FROM ubuntu:20.04
 MAINTAINER Heather Kelly <heather@slac.stanford.edu>
 
 ARG GH_SHA
@@ -7,14 +7,13 @@ ARG LSST_STACK_DIR=/opt/lsst/software/stack
 
 #RUN pwd && ls && echo $GH_SHA 
 
-RUN yum update -y && \
-    yum install -y bash \
+RUN apt-get update -y && \
+    yum install -y curl \
     git \
     patch \
-    wget \
-    which && \
-    yum clean -y all && \
-    rm -rf /var/cache/yum && \
+    wget && \
+    apt-get clean  && \
+    rm -rf /var/cache/apt && \
     groupadd -g 1000 -r lsst && useradd -u 1000 --no-log-init -m -r -g lsst lsst && \
     mkdir -p $LSST_STACK_DIR && \
     chown lsst $LSST_STACK_DIR && \
