@@ -9,12 +9,10 @@ ARG LSST_STACK_DIR=/opt/lsst/software/stack
 
 RUN apt update -y && \
     apt install -y curl \
-    build-essential
-    
-RUN apt install -y g77 \
-    git 
-    
-RUN apt install -y patch \
+    build-essential \
+    gfortran \
+    git \
+    patch \
     wget && \
     apt-get clean  && \
     rm -rf /var/cache/apt && \
