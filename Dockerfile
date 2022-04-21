@@ -8,7 +8,7 @@ ARG LSST_STACK_DIR=/opt/lsst/software/stack
 #RUN pwd && ls && echo $GH_SHA 
 
 RUN apt-get update -y && \
-    yum install -y curl \
+    apt-get install -y curl \
     git \
     patch \
     wget && \
