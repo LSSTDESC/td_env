@@ -7,12 +7,14 @@ ARG LSST_STACK_DIR=/opt/lsst/software/stack
 
 #RUN pwd && ls && echo $GH_SHA 
 
-RUN apt-get update -y && \
-    apt-get install -y curl \
-    build-essential \
-    g77 \
-    git \
-    patch \
+RUN apt update -y && \
+    apt install -y curl \
+    build-essential
+    
+RUN apt install -y g77 \
+    git 
+    
+RUN apt install -y patch \
     wget && \
     apt-get clean  && \
     rm -rf /var/cache/apt && \
