@@ -10,6 +10,7 @@ ARG LSST_STACK_DIR=/opt/lsst/software/stack
 RUN apt-get update -y && \
     apt-get install -y curl \
     git \
+    make \
     patch \
     wget && \
     apt-get clean  && \
