@@ -65,7 +65,7 @@ jobs:
    
       - name: test image before pushing
         run: |
-          docker run --rm ${{ env.TEST_TAG }} /bin/bash -c "source ~/.bashrc && python -c 'import lsst.daf.butler'"
+          docker run --rm ${{ env.TEST_TAG }} /bin/bash -c "source /opt/lsst/software/stack/loadLSST.bash && setup lsst_distrib && python -c 'import lsst.daf.butler'"
           docker tag ${{ env.TEST_TAG }} lsstdesc/td-env:dev-${{env.DATE_TAG}}
           docker push lsstdesc/td-env:dev-${{env.DATE_TAG}}
           docker tag ${{ env.TEST_TAG }} lsstdesc/td-env:dev
