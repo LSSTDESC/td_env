@@ -22,7 +22,7 @@ if [ "$CI_COMMIT_REF_NAME" = "dev" ];  # dev
 then
     curBuildDir=$commonDevBuildDir/$CI_PIPELINE_ID
     echo "Dev Install Build: " $curBuildDir
-elif [[ -z "$CI_COMMIT_TAG" ]];;  # Not a tagged build, use dev area
+elif [[ -z "$CI_COMMIT_TAG" ]];  # Not a tagged build, use dev area
 then
     curBuildDir=$commonDevBuildDir/$CI_PIPELINE_ID
     echo "Dev Install Build: " $curBuildDir
