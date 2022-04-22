@@ -22,13 +22,12 @@ if [ "$CI_COMMIT_REF_NAME" = "dev" ];  # dev
 then
     curBuildDir=$commonDevBuildDir/$CI_PIPELINE_ID
     echo "Dev Install Build: " $curBuildDir
-elif [[ "$installFlag" ]];  # Install Prod
+elif [[ -z "$CI_COMMIT_TAG" ]];;  # Not a tagged build, use dev area
 then
-    if [[ -z "$CI_COMMIT_TAG" ]];
-    then
-        prodBuildDir=$CI_PIPELINE_ID
-    fi
-    curBuildDir=$commonProdBuildDir/$prodBuildDir
+    curBuildDir=$commonDevBuildDir/$CI_PIPELINE_ID
+    echo "Dev Install Build: " $curBuildDir
+else    # Tagged Release, build in production area
+    curBuildDir=$commonProdBuildDir/$CI_COMMIT_TAG-$CI_PIPELINE_ID
     echo "Prod Build: " $curBuildDir
 fi
 
