@@ -31,8 +31,7 @@ WORKDIR $LSST_STACK_DIR
 RUN echo "Environment: \n" && env | sort && \
     curl -LO https://ls.st/lsstinstall && \
     bash ./lsstinstall ${LSST_TAG:+"-X"} $LSST_TAG && \
-    /bin/bash -c 'source ./loadLSST.bash; \
-                  eups distrib install ${LSST_TAG:+"-t"} $LSST_TAG lsst_distrib --nolocks;' && \
+    /bin/bash -c 'source ./loadLSST.bash && eups distrib install ${LSST_TAG:+"-t"} $LSST_TAG lsst_distrib --nolocks;' && \
     rm -Rf python/doc && \
     rm -Rf python/phrasebooks && \
     find stack -name "*.pyc" -delete && \
