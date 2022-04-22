@@ -17,6 +17,7 @@ RUN apt update -y && \
     apt-get clean  && \
     rm -rf /var/cache/apt && \
     groupadd -g 1000 -r lsst && useradd -u 1000 --no-log-init -m -r -g lsst lsst && \
+    usermod --shell /bin/bash lsst && \
     mkdir -p $LSST_STACK_DIR && \
     chown lsst $LSST_STACK_DIR && \
     chgrp lsst $LSST_STACK_DIR
@@ -31,7 +32,8 @@ WORKDIR $LSST_STACK_DIR
 RUN echo "Environment: \n" && env | sort && \
     curl -LO https://ls.st/lsstinstall && \
     bash ./lsstinstall ${LSST_TAG:+"-X"} $LSST_TAG && \
-    /bin/bash -c 'source ./loadLSST.bash && eups distrib install ${LSST_TAG:+"-t"} $LSST_TAG lsst_distrib --nolocks;' && \
+    /bin/bash -c 'source ./loadLSST.bash; \
+                  eups distrib install ${LSST_TAG:+"-t"} $LSST_TAG lsst_distrib --nolocks;' && \
     rm -Rf python/doc && \
     rm -Rf python/phrasebooks && \
     find stack -name "*.pyc" -delete && \
