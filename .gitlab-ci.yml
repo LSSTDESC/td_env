@@ -34,7 +34,7 @@ dev-deploy:
     - dev
   tags: [cori]
   script:
-    - bash conda/build-nersc.sh w_2022_10 1
+    - bash conda/build-nersc.sh w_2022_10
     - bash conda/set-symlinks.sh dev
     
 
@@ -44,7 +44,7 @@ main-build:
     - main
   tags: [cori]
   script:
-    - bash conda/build-nersc.sh w_2022_10 1
+    - bash conda/build-nersc.sh w_2022_10 
 
 main-test:
   stage: test
@@ -52,7 +52,7 @@ main-test:
     - main
   tags: [cori]
   script: 
-    - bash conda/test-nersc.sh 1
+    - bash conda/test-nersc.sh 
 
 main-deploy:
   stage: deploy

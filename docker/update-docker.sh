@@ -11,10 +11,15 @@ pip install --no-cache-dir -r ./piplist.txt
 
 conda clean -y -a 
 
-python -m compileall /opt/lsst/software/stack/conda
+# python -m compileall /opt/lsst/software/stack/conda 
+# Backing off compileall for docker images: https://stackoverflow.com/questions/64808915/should-pycache-folders-be-included-in-production-containers
 
-conda env export --no-builds > /opt/lsst/software/stack/td_env-nersc-nobuildinfo.yml
-conda env export > /opt/lsst/software/stack/td_env-nersc.yml
+# Skipping for now
+# Import of ligo.em_bright to cause associated data files to be downloaded into the image
+# python -c "import ligo.em_bright"
+
+conda env export --no-builds > /opt/lsst/software/stack/td_env-image-nobuildinfo.yml
+conda env export > /opt/lsst/software/stack/td_env-image.yml
 
 conda config --set env_prompt "(lsst-scipipe-$1)" --system
 

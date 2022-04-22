@@ -2,7 +2,6 @@
 
 linkName=$1
 
-scratchBuildDir=/global/cscratch1/sd/heatherk/td_env-devbuilds
 commonDevBuildDir=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-dev
 commonProdBuildDir=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-prod
 

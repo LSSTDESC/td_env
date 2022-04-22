@@ -12,7 +12,7 @@ unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
 dmver=$1
 
 # Set to 1 to install into the common sofware area
-installFlag=$2
+#installFlag=$2
 
 
 commonDevBuildDir=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-dev
@@ -59,6 +59,11 @@ pip install --no-cache-dir -r ./piplist.txt
 conda clean -y -a 
 
 python -m compileall $curBuildDir
+
+# Skipping this for now - they files are downloaded to the user's astropy cache
+# Will revisit if it becomes an issue: https://docs.astropy.org/en/stable/utils/data.html
+# Force data files to be dowloaded during installation
+# python -c "import ligo.em_bright"
 
 conda config --set env_prompt "(lsst-scipipe-$1)" --system
 

@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  TEST_TAG: lsstdesc/td-env:test
+  TEST_TAG: lsstdesc/td-env:dev
 
 
 jobs:
@@ -12,8 +12,6 @@ jobs:
     name: Build on Ubuntu
     runs-on: ubuntu-20.04
     steps:
-#    - name: Docker login
-#      run: echo '${{ secrets.DOCKERHUB_ACCESSTOK }}' | docker login --username heather999 --password-stdin
       
       - name: Docker login
         uses: docker/login-action@v1
@@ -31,6 +29,7 @@ jobs:
         run: |
           echo "LSST_TAG=w_2022_10" >> $GITHUB_ENV
           echo "DATE_TAG=$(date "+%F")" >> $GITHUB_ENV 
+          echo $GITHUB_WORKSPACE
         
       - name: Set up Docker Buildx
         id: buildx
@@ -39,10 +38,10 @@ jobs:
 #      - name: Cache Docker layers
 #        uses: actions/cache@v2
 #        with:
- #         path: /tmp/.buildx-cache
+#          path: /tmp/.buildx-cache
 #          key: '${{ runner.os }}-buildx-${{ github.sha }}'
 #          restore-keys: |
-#            ${{ runner.os }}-buildx-        
+#           ${{ runner.os }}-buildx-        
         
       - name: Build 
         id: docker_build
@@ -51,8 +50,11 @@ jobs:
           context: .
           build-args: |
             GH_SHA=${{ github.sha }}
-          load: true
+          push: true
           tags: ${{ env.TEST_TAG }}
+
+#cache-from: type=local,src=/tmp/.buildx-cache
+#          cache-to: type=local,dest=/tmp/.buildx-cache-new
  
  #          builder: '${{ steps.buildx.outputs.name }}'
 
@@ -62,47 +64,11 @@ jobs:
  #           cache-to: type=local,dest=/tmp/.buildx-cache-new
    
       - name: test image before pushing
-        run: docker run --rm ${{ env.TEST_TAG }} /bin/bash -c "source /opt/lsst/software/stack/loadLSST.bash && setup lsst_distrib"
-    
-      - name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: lsstdesc/td-env:test-${{env.DATE_TAG}}
-    
-    
-  #  - name: Docker push
-  #      run: docker push lsstdesc/td-env:test-${{env.DATE_TAG}}
-
- #     - name: Move cache
- #       run: |
- #         rm -rf /tmp/.buildx-cache
- #         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
-  
-        
-        
-    #- name: build docker image
-      
-      
-      
+        run: |
+          docker run --rm ${{ env.TEST_TAG }} /bin/bash -c "source ~/.bashrc && python -c 'import lsst.daf.butler'"
+          docker tag ${{ env.TEST_TAG }} lsstdesc/td-env:dev-${{env.DATE_TAG}}
+          docker push lsstdesc/td-env:dev-${{env.DATE_TAG}}
+          docker tag ${{ env.TEST_TAG }} lsstdesc/td-env:dev
+          docker push lsstdesc/td-env:dev
        
-  #    run: |
-  ##      cd $GITHUB_WORKSPACE 
-  #      ls $GITHUB_WORKSPACE
-  #      echo $GITHUB_WORKSPACE
-  #      ls $GITHUB_WORKSPACE/conda
-  #      docker run -u root -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE --name="install-mpich" lsstsqre/centos:7-stack-lsst_distrib-w_2022_10 /bin/bash /$GITHUB_WORKSPACE/docker/install-mpich.sh
-  #      docker commit -m"initial testing" install-mpich lsstdesc/td-dev:mpich
-  #      docker run -u lsst -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE -w $GITHUB_WORKSPACE/conda --name="td-test-env" lsstdesc/td-dev:mpich /bin/bash /$GITHUB_WORKSPACE/docker/update-docker.sh ${{env.LSST_TAG}}
-  #      docker commit -m"initial testing" td-test-env lsstdesc/td-dev:test
-  #      docker run -u lsst -w /opt/lsst/software/stack --name="td-setwd" lsstdesc/td-dev:test /bin/bash
-  #      docker commit -m"initial testing" td-setwd lsstdesc/td-env:${{env.LSST_TAG}}-${{env.DATE_TAG}}-dev
-  #  - name: Test and push
-  #    run: |
-  ##      docker run --rm lsstdesc/td-env:${{env.LSST_TAG}}-${{env.DATE_TAG}}-dev /bin/bash -c "source /opt/lsst/software/stack/loadLSST.bash && setup lsst_distrib && python -c 'import coloredlogs'"
-  #      docker push lsstdesc/td-env:${{env.LSST_TAG}}-${{env.DATE_TAG}}-dev
-  #      docker tag lsstdesc/td-env:${{env.LSST_TAG}}-${{env.DATE_TAG}}-dev lsstdesc/td-env:dev
-  #      docker push lsstdesc/td-env:dev
        
