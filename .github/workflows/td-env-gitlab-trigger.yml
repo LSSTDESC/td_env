@@ -1,5 +1,5 @@
 name: td_env gitlab release
-
+# Mirror when there is a release tag
 on: 
  release:
   types: [published]
@@ -12,11 +12,9 @@ jobs:
     - name: Trigger gitlab build
       run: |
         curl -X POST \
-             --fail \
-             -F token=${{ secrets.GITLAB_TRIGGER_TOKEN }} \
-             -F "ref=${{ github.event.release.tag_name }}" \
-             https://software.nersc.gov/api/v4/projects/410/trigger/pipeline
-             
-             
-      #              -F "variables[RUN_NIGHTLY_BUILD]=true" \
-
+        --fail \
+        -F token={{ secrets.GITLAB_TRIGGER_TOKEN }} \
+        -F "ref=main" \
+        -F "variables[TD_ENV_TAG]=${{ github.event.release.tag_name }}" \
+        https://software.nersc.gov/api/v4/projects/402/trigger/pipeline
+ 
