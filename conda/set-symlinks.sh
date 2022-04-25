@@ -13,6 +13,8 @@ else
     if [[ -z "$CI_COMMIT_TAG" ]];
     then
         prodBuildDir=$CI_PIPELINE_ID
+    else 
+        prodBuildDir=$CI_COMMIT_TAG
     fi
     curBuildDir=$commonProdBuildDir/$prodBuildDir
     echo "Prod Build: " $curBuildDir
