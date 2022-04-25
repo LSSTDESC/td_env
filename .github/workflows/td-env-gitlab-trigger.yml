@@ -13,7 +13,7 @@ jobs:
       run: |
         curl -X POST \
         --fail \
-        -F token={{ secrets.GITLAB_TRIGGER_TOKEN }} \
+        -F token=${{ secrets.GITLAB_TRIGGER_TOKEN }} \
         -F "ref=main" \
         -F "variables[TD_ENV_TAG]=${{ github.event.release.tag_name }}" \
         https://software.nersc.gov/api/v4/projects/402/trigger/pipeline
