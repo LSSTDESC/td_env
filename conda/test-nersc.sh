@@ -12,10 +12,11 @@ module load cray-mpich-abi/7.7.10
 unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
 
 # Set to 1 to install into the common sofware area
-#installFlag=$1
+installFlag=$1
 
 commonDevBuildDir=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-dev
 commonProdBuildDir=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-prod
+
 
 if [ "$CI_COMMIT_REF_NAME" = "dev" ];
 then
