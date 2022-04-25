@@ -12,7 +12,7 @@ unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
 dmver=$1
 
 # Set to 1 to install into the common sofware area
-#installFlag=$2
+installFlag=$2
 
 
 commonDevBuildDir=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-dev
@@ -22,12 +22,13 @@ if [ "$CI_COMMIT_REF_NAME" = "dev" ];  # dev
 then
     curBuildDir=$commonDevBuildDir/$CI_PIPELINE_ID
     echo "Dev Install Build: " $curBuildDir
-elif [[ -z "$CI_COMMIT_TAG" ]];  # Not a tagged build, use dev area
+elif [[ "$installFlag" ]];  # Install Prod
 then
-    curBuildDir=$commonDevBuildDir/$CI_PIPELINE_ID
-    echo "Dev Install Build: " $curBuildDir
-else    # Tagged Release, build in production area
-    curBuildDir=$commonProdBuildDir/$CI_COMMIT_TAG-$CI_PIPELINE_ID
+    if [[ -z "$CI_COMMIT_TAG" ]];
+    then
+        prodBuildDir=$CI_PIPELINE_ID
+    fi
+    curBuildDir=$commonProdBuildDir/$prodBuildDir
     echo "Prod Build: " $curBuildDir
 fi
 
