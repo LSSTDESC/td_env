@@ -1,3 +1,4 @@
 gwemlightcurves
 lenstronomy
+pysynphot==0.9.14
 snmachine
