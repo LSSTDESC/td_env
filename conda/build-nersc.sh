@@ -72,6 +72,8 @@ conda config --set env_prompt "(lsst-scipipe-$1)" --system
 conda env export --no-builds > $curBuildDir/td_env-nersc-$CI_PIPELINE_ID-nobuildinfo.yml
 conda env export > $curBuildDir/td_env-nersc-$CI_PIPELINE_ID.yml
 
+# Install bayeSN
+git clone https://github.com/bayesn/bayesn-public
 
 # Set permissions
 setfacl -R -m group::rx $curBuildDir
