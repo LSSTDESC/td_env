@@ -37,6 +37,12 @@ do
     esac
 done
 
+# Check to see if this setup script has already been run in this shell
+if [ $TD ]
+then
+    echo "td_env is already set up"
+    exit 0
+fi
 
 export TD=/global/cfs/cdirs/lsst/groups/TD
 export TD_ALERTS=${TD}/ALERTS
@@ -44,6 +50,7 @@ export TD_DIA=${TD}/DIA
 export TD_SL=${TD}/SL
 export TD_SN=${TD}/SN
 export TD_SOFTWARE=${TD}/SOFTWARE
+export TD_PUBLIC=/global/cfs/cdirs/lsst/www/DESC_TD_PUBLIC
 
 if [[ -z "$keepenv" ]] && [[ -z $SHIFTER_RUNTIME ]];
 then
@@ -104,9 +111,6 @@ then
   source $DESC_TD_INSTALL/setup_td_env.sh
   export GSL_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
   export CFITSIO_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
-
-  #export GSL_DIR=$CONDA_PREFIX
-  #export CFITSIO_DIR=$CONDA_PREFIX
 
   export PYTHONPATH=$PYTHONPATH:$DESC_TD_INSTALL
 
