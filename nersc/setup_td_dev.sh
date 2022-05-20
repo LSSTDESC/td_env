@@ -154,6 +154,9 @@ export SNANA_DEBUG="$SNANA_LSST_USERS/kessler/debug"
 export SNANA_SETUP_COMMAND="source $TD/setup_td_dev.sh"
 export SNANA_IMAGE_DOCKER="lsstdesc/td-env:dev"
 
+# Add env var to point to bayeSN install
+export BAYESN_INSTALL=$DESC_TD_INSTALL/bayesn-public
+
 
 export PATH=$PATH:${SNANA_DIR}/bin:${SNANA_DIR}/util:${PIPPIN_DIR}
 
