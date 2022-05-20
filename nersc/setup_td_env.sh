@@ -48,3 +48,6 @@ else
   source $DESC_LSST_INSTALL_DIR/loadLSST.zsh
 fi
 setup lsst_distrib
+
+# Add env var to point to bayeSN install
+export BAYESN_INSTALL=$DESC_LSST_INSTALL/bayesn-public
