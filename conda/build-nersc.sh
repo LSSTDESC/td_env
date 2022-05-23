@@ -65,6 +65,8 @@ git clone https://github.com/bayesn/bayesn-public
 
 python -m compileall $curBuildDir
 
+# Hard-coding this for now for building at NERSC
+export PYSYN_CDBS=/global/cfs/cdirs/lsst/groups/TD/SOFTWARE/bayeSN/synphot/grp/redcat/trds
 #python $curBuildDir/bayesn-public/fit_sn.py --model T21 --metafile $curBuildDir/bayesn-public/demo_lcs/meta/T21_demo_meta.txt --filters griz --opt $curBuildDir/bayesn-public/demo_lcs/Foundation_DR1/Foundation_DR1_ASASSN-16cs.txt .
 python $curBuildDir/bayesn-public/fit_sn.py --model T21 --fittmax 5 --metafile $curBuildDir/bayesn-public/demo_lcs/meta/T21_demo_meta.txt --filters griz --opt $curBuildDir/bayesn-public/demo_lcs/Foundation_DR1/Foundation_DR1_ASASSN-16cs.txt $TMPDIR
 
