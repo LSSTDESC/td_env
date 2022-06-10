@@ -51,6 +51,9 @@ export TD_SL=${TD}/SL
 export TD_SN=${TD}/SN
 export TD_SOFTWARE=${TD}/SOFTWARE
 export TD_PUBLIC=/global/cfs/cdirs/lsst/www/DESC_TD_PUBLIC
+
+export VERSION_LIBPYTHON=3.8
+
 export PYSYN_CDBS=${TD_SOFTWARE}/bayeSN/synphot/grp/redcat/trds
 
 if [[ -z "$keepenv" ]] && [[ -z $SHIFTER_RUNTIME ]];
