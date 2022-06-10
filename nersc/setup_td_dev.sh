@@ -109,6 +109,8 @@ then
   #export CFITSIO_DIR=$CONDA_PREFIX
 
   export PYTHONPATH=$PYTHONPATH:$DESC_TD_INSTALL
+  
+  export VERSION_LIBPYTHON=3.8
 
   # SLURM_JOB_ID is set only on compute nodes
   # DESC_TD_KEEP_MPI will be user-controlled way to keep MPI set up 
