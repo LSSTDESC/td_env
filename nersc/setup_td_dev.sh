@@ -45,6 +45,9 @@ export TD_SL=${TD}/SL
 export TD_SN=${TD}/SN
 export TD_SOFTWARE=${TD}/SOFTWARE
 
+export VERSION_LIBPYTHON=3.8
+
+
 if [[ -z "$keepenv" ]] && [[ -z $SHIFTER_RUNTIME ]];
 then
   module purge
@@ -109,7 +112,7 @@ then
   #export CFITSIO_DIR=$CONDA_PREFIX
 
   export PYTHONPATH=$PYTHONPATH:$DESC_TD_INSTALL
-
+  
   # SLURM_JOB_ID is set only on compute nodes
   # DESC_TD_KEEP_MPI will be user-controlled way to keep MPI set up 
   #if [[ -z "$DESC_TD_KEEP_MPI" && -z "$SLURM_JOB_ID" ]];
@@ -127,6 +130,7 @@ fi
 
 # SN Environment Variables
 export SNANA_DIR="$TD_SOFTWARE/SNANA"
+export PYTHONPATH=$PYTHONPATH:$SNANA_DIR/src
 
 export SNDATA_ROOT="$TD_SN/SNANA/SNDATA_ROOT"
 export SNANA_TESTS="$TD_SN/SNANA/SNANA_TESTS"
