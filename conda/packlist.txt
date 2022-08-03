@@ -6,6 +6,7 @@ coloredlogs
 emcee
 extinction
 f90nml
+firecrown
 george
 gwpy
 ipdb
