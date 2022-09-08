@@ -56,6 +56,9 @@ export VERSION_LIBPYTHON=3.8
 
 export PYSYN_CDBS=${TD_SOFTWARE}/bayeSN/synphot/grp/redcat/trds
 
+export VERSION_LIBPYTHON=3.8
+
+
 if [[ -z "$keepenv" ]] && [[ -z $SHIFTER_RUNTIME ]];
 then
   module purge
@@ -117,7 +120,7 @@ then
   export CFITSIO_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
 
   export PYTHONPATH=$PYTHONPATH:$DESC_TD_INSTALL
-
+  
   # SLURM_JOB_ID is set only on compute nodes
   # DESC_TD_KEEP_MPI will be user-controlled way to keep MPI set up 
   #if [[ -z "$DESC_TD_KEEP_MPI" && -z "$SLURM_JOB_ID" ]];
