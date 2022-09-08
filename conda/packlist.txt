@@ -1,9 +1,12 @@
 astroplan
 celerite
+cmdstan
+cmdstanpy
 coloredlogs
 emcee
 extinction
 f90nml
+firecrown
 george
 gwpy
 ipdb
