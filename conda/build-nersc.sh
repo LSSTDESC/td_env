@@ -63,6 +63,12 @@ conda clean -y -a
 # Install bayeSN
 git clone https://github.com/bayesn/bayesn-public
 
+#Install RESSPECT
+git clone https://github.com/COINtoolbox/resspect
+cd resspect
+python setup.py install
+cd ..
+
 python -m compileall $curBuildDir
 
 # Hard-coding this for now for building at NERSC
