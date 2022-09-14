@@ -116,9 +116,7 @@ then
   #export DESC_TD_INSTALL=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-prod/stable
   export DESC_TD_INSTALL=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-dev/dev
   source $DESC_TD_INSTALL/setup_td_env.sh
-  
-  module load root/6.26.00
-  
+    
   export GSL_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
   export CFITSIO_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
 
