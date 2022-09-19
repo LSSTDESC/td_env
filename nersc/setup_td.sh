@@ -37,6 +37,12 @@ do
     esac
 done
 
+# Check to see if this setup script has already been run in this shell
+if [ $TD ]
+then
+    echo "td_env is already set up"
+    exit 0
+fi
 
 export TD=/global/cfs/cdirs/lsst/groups/TD
 export TD_ALERTS=${TD}/ALERTS
@@ -44,7 +50,9 @@ export TD_DIA=${TD}/DIA
 export TD_SL=${TD}/SL
 export TD_SN=${TD}/SN
 export TD_SOFTWARE=${TD}/SOFTWARE
+export TD_PUBLIC=/global/cfs/cdirs/lsst/www/DESC_TD_PUBLIC
 
+export PYSYN_CDBS=${TD_SOFTWARE}/bayeSN/synphot/grp/redcat/trds
 export VERSION_LIBPYTHON=3.8
 
 if [[ -z "$keepenv" ]] && [[ -z $SHIFTER_RUNTIME ]];
@@ -104,6 +112,7 @@ then
   export DESC_TD_INSTALL=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-prod/stable
   #export DESC_TD_INSTALL=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-dev/dev
   source $DESC_TD_INSTALL/setup_td_env.sh
+  export ROOT_DIR=$ROOTSYS
   export GSL_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
   export CFITSIO_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
 
@@ -152,6 +161,8 @@ export SNANA_DEBUG="$SNANA_LSST_USERS/kessler/debug"
 export SNANA_SETUP_COMMAND="source $TD/setup_td.sh"
 export SNANA_IMAGE_DOCKER="lsstdesc/td-env:stable"
 
+# Add env var to point to bayeSN install
+export BAYESN_INSTALL=$DESC_TD_INSTALL/bayesn-public
 
 export PATH=$PATH:${SNANA_DIR}/bin:${SNANA_DIR}/util:${PIPPIN_DIR}
 
