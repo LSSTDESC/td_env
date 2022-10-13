@@ -24,6 +24,18 @@ https://github.com/LSSTDESC/td_env/releases/latest
 ## To Request Additional Packages, Report Problems, or Submit Questions
 Please [open an issue](https://github.com/LSSTDESC/td_env/issues) on this repository.
 
+## To Add New Packages to the td_env environment 
+
+1. Clone this repo and checkout the "integration" branch
+2. Add new package names to the `td_env/conda/packlist.txt` (for conda-forge) or `td_env/conda/piplist.txt` (for PyPI)
+    * If this package is not installable from conda-forge or PyPI, please [open an issue](https://github.com/LSSTDESC/td_env/issues) on this repository.
+3. Commit and push your changes to the integration branch
+4. Once changes are pushed to the integration branch automated builds will be triggered:
+    * Docker builds are handled by GitHub actions and will be triggered immediately. The builds can be followed by viewing the [Actions](https://github.com/LSSTDESC/td_env/actions) page.
+        * A successful build will produce a new image available on [Dockerhub](https://hub.docker.com/r/lsstdesc/td-env/tags): `lsstdesc/td_env:integration`
+    * Every 4 hours, a build is triggered at NERSC. 
+        * Integration builds are installed in `/global/common/software/lsst/cori-haswell-gcc/stack/td_env-int`
+
 ## Known Issues
 Due to changes in how cfitsion >=v4.0.0 handles version checking, some packages that depend on cfitsio are now issuing warnings like
 ```
