@@ -13,6 +13,30 @@ workflow:
     - if: '$CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "push"'
       when: always
 
+integration-build:
+  stage: build
+  only: 
+    - integration
+  tags: [cori]
+  script:
+    - bash conda/build-nersc.sh w_2022_10
+
+integration-test:
+  stage: test
+  only:
+    - integration
+  tags: [cori]
+  script: 
+    - bash conda/test-nersc.sh 
+
+integration-deploy:
+  stage: deploy
+  only:
+    - integration
+  tags: [cori]
+  script:
+    - bash conda/set-symlinks.sh dev
+
 dev-build:
   stage: build
   only: 

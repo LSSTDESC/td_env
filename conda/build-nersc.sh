@@ -14,11 +14,15 @@ dmver=$1
 # Set to 1 to install into the common sofware area
 installFlag=$2
 
-
+commonIntBuildDir=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-int
 commonDevBuildDir=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-dev
 commonProdBuildDir=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-prod
 
-if [ "$CI_COMMIT_REF_NAME" = "dev" ];  # dev
+if [ "$CI_COMMIT_REF_NAME" = "integration" ];  # integration
+then
+    curBuildDir=$commonIntBuildDir/$CI_PIPELINE_ID
+    echo "Integration Install Build: " $curBuildDir
+elif [ "$CI_COMMIT_REF_NAME" = "dev" ];  # dev
 then
     curBuildDir=$commonDevBuildDir/$CI_PIPELINE_ID
     echo "Dev Install Build: " $curBuildDir

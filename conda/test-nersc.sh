@@ -14,11 +14,16 @@ unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
 # Set to 1 to install into the common sofware area
 installFlag=$1
 
+commonIntBuildDir=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-int
 commonDevBuildDir=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-dev
 commonProdBuildDir=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-prod
 
 
-if [ "$CI_COMMIT_REF_NAME" = "dev" ];
+if [ "$CI_COMMIT_REF_NAME" = "integration" ];
+then
+    curBuildDir=$commonIntBuildDir/$CI_PIPELINE_ID
+    echo "Integration Install Build: " $curBuildDir
+elif [ "$CI_COMMIT_REF_NAME" = "dev" ];
 then
     curBuildDir=$commonDevBuildDir/$CI_PIPELINE_ID
     echo "Dev Install Build: " $curBuildDir
