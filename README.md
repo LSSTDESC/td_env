@@ -37,6 +37,7 @@ Please [open an issue](https://github.com/LSSTDESC/td_env/issues) on this reposi
         * Integration builds are installed in `/global/common/software/lsst/cori-haswell-gcc/stack/td_env-int`
         * The status of the build can be checked here on GitHub. Clicking "Details" will bring you to the GitLab build logs.
         ![](https://github.com/LSSTDESC/td_env/blob/main/doc/images/checkNERSCstatus.png)
+ 5. If there are data files or set up commands needed for the new package, then please [open an issue](https://github.com/LSSTDESC/td_env/issues) on this repository.
 
 ## Known Issues
 Due to changes in how cfitsion >=v4.0.0 handles version checking, some packages that depend on cfitsio are now issuing warnings like
