@@ -35,6 +35,8 @@ Please [open an issue](https://github.com/LSSTDESC/td_env/issues) on this reposi
         * A successful build will produce a new image available on [Dockerhub](https://hub.docker.com/r/lsstdesc/td-env/tags): `lsstdesc/td_env:integration`
     * Every 4 hours, a build is triggered at NERSC. 
         * Integration builds are installed in `/global/common/software/lsst/cori-haswell-gcc/stack/td_env-int`
+        * The status of the build can be checked here on GitHub. Clicking "Details" will bring you to the GitLab build logs.
+        ![](https://github.com/LSSTDESC/td_env/blob/main/doc/images/checkNERSCstatus.png)
 
 ## Known Issues
 Due to changes in how cfitsion >=v4.0.0 handles version checking, some packages that depend on cfitsio are now issuing warnings like
