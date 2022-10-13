@@ -1,9 +1,9 @@
 name: td_env docker integration
 
 on: 
- # push:
- #   branches:
- #     - integration
+  push:
+    branches:
+      - integration
   workflow_dispatch:
 
 jobs:
