@@ -18,6 +18,9 @@ conda clean -y -a
 # Import of ligo.em_bright to cause associated data files to be downloaded into the image
 # python -c "import ligo.em_bright"
 
+# Additional build steps
+bash ./post-build.sh
+
 conda env export --no-builds > /opt/lsst/software/stack/td_env-image-nobuildinfo.yml
 conda env export > /opt/lsst/software/stack/td_env-image.yml
 

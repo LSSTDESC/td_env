@@ -3,8 +3,8 @@ celerite
 cmdstan
 cmdstanpy
 coloredlogs
-cosmosis
-cosmosis-build-standard-library
+cosmosis>=2.2.2
+cosmosis-build-standard-library>=1.2
 emcee
 extinction
 f90nml
