@@ -20,6 +20,12 @@ then
   module unload craype-network-aries
 fi
 
+isloaded="$(module list |& grep craype-network-ofi)"
+if [[ "$isloaded" ]];
+then
+  module unload craype-network-ofi
+fi
+
 isloaded="$(module list |& grep cray-libsci)"
 if [[ "$isloaded" ]];
 then
@@ -32,11 +38,16 @@ then
   module unload craype
 fi
 
-module load cray-mpich-abi/7.7.10
+
+if [ "$NERSC_HOST" == "cori" ]
+then
+  module load cray-mpich-abi/7.7.19
+  export LD_LIBRARY_PATH=$CRAY_MPICH_BASEDIR/mpich-gnu-abi/8.2/lib:$LD_LIBRARY_PATH
+else
+  module load cray-mpich-abi/8.1.15
+fi
 
 unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
-
-export LD_LIBRARY_PATH=$CRAY_MPICH_BASEDIR/mpich-gnu-abi/8.2/lib:$LD_LIBRARY_PATH
 
 export DESC_LSST_INSTALL_DIR=$1
 
