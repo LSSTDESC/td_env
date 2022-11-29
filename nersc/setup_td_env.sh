@@ -44,7 +44,7 @@ fi
 
 unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
 
-export DESC_LSST_INSTALL_DIR=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-dev/74683
+export DESC_LSST_INSTALL_DIR=$1
 
 curshell=$(echo $0)
 if [ $curshell = bash ];
