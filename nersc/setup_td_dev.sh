@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Nov 1 2022: HMK check NERSC_HOST
 # Feb 19 2022: HK Use native install of LSST Sci Pipelines at NERSC
 # Jan 27 2022: HK update to optionally setup LSST Sci Pipelines
 # Mar 05 2021: define few things for CosmoMC (installed by Vivian)
@@ -117,6 +118,7 @@ then
     
   export GSL_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
   export CFITSIO_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
+  export YAML_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
   export ROOT_DIR=$ROOTSYS
 
   export PYTHONPATH=$PYTHONPATH:$DESC_TD_INSTALL
@@ -146,15 +148,25 @@ export SNANA_SURVEYS="$TD_SN/SNANA/SURVEYS"
 
 export SNANA_LSST_ROOT="$SNANA_SURVEYS/LSST/ROOT"
 export SNANA_LSST_USERS="$SNANA_SURVEYS/LSST/USERS"
-export SNANA_LSST_SIM="/global/cscratch1/sd/kessler/SNANA_LSST_SIM"
+case $NERSC_HOST in
+    "perlmutter")
+        : # settings for Perlmutter
+        export SNANA_SCRATCH="/pscratch/sd/k/kessler"
+        ;;
+    "cori")
+        : # settings for Cori
+        export SNANA_SCRATCH="/global/cscratch1/sd/kessler"
+        ;;
+esac
+export SNANA_LSST_SIM="$SNANA_SCRATCH/SNANA_LSST_SIM"
 
-export SCRATCH_SIMDIR="/global/cscratch1/sd/kessler/SNANA_LSST_SIM"
-export SNANA_ZTF_SIM="/global/cscratch1/sd/kessler/SNANA_ZTF_SIM"
+export SCRATCH_SIMDIR="$SNANA_LSST_SIM"
+export SNANA_ZTF_SIM="$SNANA_SCRATCH/SNANA_ZTF_SIM"
 export DES_ROOT="$SNANA_SURVEYS/DES/ROOT"
 export PLASTICC_ROOT="$SNANA_SURVEYS/LSST/ROOT/PLASTICC"
 export ELASTICC_ROOT="$SNANA_SURVEYS/LSST/ROOT/ELASTICC"
 export PLASTICC_MODELS="$PLASTICC_ROOT/model_libs"
-export PIPPIN_OUTPUT="/global/cscratch1/sd/kessler/PIPPIN_OUTPUT"
+export PIPPIN_OUTPUT="$SNANA_SCRATCH/PIPPIN_OUTPUT"
 export PIPPIN_DIR="$TD_SOFTWARE/Pippin"
 export SBATCH_TEMPLATES="$SNANA_LSST_ROOT/SBATCH_TEMPLATES"
 export SNANA_DEBUG="$SNANA_LSST_USERS/kessler/debug"
