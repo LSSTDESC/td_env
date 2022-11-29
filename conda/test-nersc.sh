@@ -2,12 +2,20 @@
 
 #set -eo pipefail
 
-module unload python
-module swap PrgEnv-intel PrgEnv-gnu
-module unload craype-network-aries
-module unload cray-libsci
-module unload craype
-module load cray-mpich-abi/7.7.10
+if [ "$NERSC_HOST" == "cori" ]
+then
+  module unload python
+  module swap PrgEnv-intel PrgEnv-gnu
+  module unload craype-network-aries
+  module unload cray-libsci
+  module unload craype
+  module load cray-mpich-abi/7.7.19
+  export LD_LIBRARY_PATH=$CRAY_MPICH_BASEDIR/mpich-gnu-abi/8.2/lib:$LD_LIBRARY_PATH
+else
+  module load PrgEnv-gnu
+  module load cpu
+  module load cray-mpich-abi/8.1.15
+fi
 
 unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
 
