@@ -26,7 +26,7 @@ ARG LSST_GROUP=lsst
 USER lsst
 
 WORKDIR $LSST_STACK_DIR
-   
+
 RUN echo "Environment: \n" && env | sort && \
     curl -LO https://ls.st/lsstinstall && \
     bash ./lsstinstall ${LSST_TAG:+"-X"} $LSST_TAG && \
@@ -41,7 +41,7 @@ RUN echo "Environment: \n" && env | sort && \
     mkdir -p /tmp/gh && \
     cd /tmp/gh && \
     git clone https://github.com/LSSTDESC/td_env && \
-    cd td_env && \ 
+    cd td_env && \
     git checkout $GH_SHA 
 
 USER root 
@@ -52,11 +52,12 @@ RUN cd /tmp/gh/td_env && \
 USER lsst
 RUN cd /tmp/gh/td_env/conda && \
     bash /tmp/gh/td_env/docker/update-docker.sh w_2022_10 && \
+    bash post-conda-build.sh && \
     echo "source $LSST_STACK_DIR/loadLSST.bash" >> ~/.bashrc && \
     echo "setup lsst_distrib" >> ~/.bashrc && \
     rm -Rf /tmp/gh
-    
-    
+
+
 ENV HDF5_USE_FILE_LOCKING FALSE
 ENV PYTHONSTARTUP ''
 

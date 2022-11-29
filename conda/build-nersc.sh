@@ -40,6 +40,7 @@ fi
 
 mkdir -p $curBuildDir
 cp conda/packlist.txt $curBuildDir
+cp conda/post-conda-build.sh $curBuildDir
 cp conda/piplist.txt $curBuildDir
 cp nersc/setup_td_env.sh $curBuildDir
 cp nersc/sitecustomize.py $curBuildDir
@@ -72,6 +73,10 @@ git clone https://github.com/COINtoolbox/resspect
 cd resspect
 python setup.py install
 cd ..
+
+# Additional build steps
+bash ./post-conda-build.sh
+
 
 python -m compileall $curBuildDir
 
