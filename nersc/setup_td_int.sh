@@ -63,13 +63,8 @@ then
   module purge
 fi
 
-# setup without LSST Science Pipelines
-# Broken since March 2022 Cori OS Upgrade
-if [[ $nolsst ]];
-then
- 
 
-elif [ $shifterenv ] || [ $SHIFTER_RUNTIME ]
+if [ $shifterenv ] || [ $SHIFTER_RUNTIME ]
 then
   source /opt/lsst/software/stack/loadLSST.bash
   setup lsst_distrib
