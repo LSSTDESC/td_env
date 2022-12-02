@@ -80,6 +80,12 @@ cd resspect
 python setup.py install
 cd ..
 
+# Grab firecrown source so we have the examples subdirectory
+firecrown_ver=$(conda list firecrown | grep firecrown|tr -s " " | cut -d " " -f 2)
+echo $firecrown_ver
+curl -LO https://github.com/LSSTDESC/firecrown/archive/refs/tags/v$firecrown_ver.tar.gz
+tar xvzf v$firecrown_ver.tar.gz
+
 # Additional build steps
 bash ./post-conda-build.sh
 
