@@ -85,6 +85,8 @@ firecrown_ver=$(conda list firecrown | grep firecrown|tr -s " " | cut -d " " -f 
 echo $firecrown_ver
 curl -LO https://github.com/LSSTDESC/firecrown/archive/refs/tags/v$firecrown_ver.tar.gz
 tar xvzf v$firecrown_ver.tar.gz
+# Set up a common directory name without version info to set FIRECROWN_DIR more easily
+ln -s firecrown-$firecrown_ver firecrown
 
 # Additional build steps
 bash ./post-conda-build.sh
