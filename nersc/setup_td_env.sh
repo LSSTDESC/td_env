@@ -58,3 +58,4 @@ setup lsst_distrib
 # For cosmosis and firecrown.  Should try to find a better way to set these
 export CSL_DIR=$CONDA_PREFIX/lib/python3.8/site-packages/cosmosis/cosmosis-standard-library
 export FIRECROWN_SITE_PACKAGES=$CONDA_PREFIX/lib/python3.8/site-packages
+export FIRECROWN_DIR=$DESC_LSST_INSTALL_DIR/firecrown
