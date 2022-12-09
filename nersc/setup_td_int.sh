@@ -17,6 +17,7 @@ SCRIPT=${BASH_SOURCE[0]}
 usage() {  # Function: Print a help message.
   echo -e \\n"Help documentation for ${BOLD}${SCRIPT}"\\n
   echo "Command line switches are optional. The following switches are recognized."
+  echo "-c  --Setup cosmosis."
   echo "-k  --Setup the env without doing module purge."
   echo "-n  --Setup the env without the LSST Sci Pipelines."
   echo "-s  --Setup the env for shifter."
@@ -28,9 +29,10 @@ usage() {  # Function: Print a help message.
 # -h help
 # -n Do not setup the LSST Sci Pipelines
 #while getopts e:n: flag
-while getopts "hkns" flag
+while getopts "chkns" flag
 do
     case "${flag}" in
+        c) cosmosis=1;;
         h) usage;;
         k) keepenv=1;;
         n) nolsst=1;;
@@ -120,6 +122,13 @@ case $NERSC_HOST in
         export SNANA_SCRATCH="/global/cscratch1/sd/kessler"
         ;;
 esac
+
+
+if [[ "$cosmosis" ]];
+then
+  source cosmosis-configure 
+fi
+
 export SNANA_LSST_SIM="$SNANA_SCRATCH/SNANA_LSST_SIM"
 
 export SCRATCH_SIMDIR="$SNANA_LSST_SIM"
