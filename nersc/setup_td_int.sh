@@ -10,6 +10,12 @@
 # Feb 2020: install SNANA on Cori
 #
 
+# Avoid passing parameters from this script to cosmosis
+wrapcosmosis() {
+    source cosmosis-configure
+}
+
+
 echo "RUNNING TD_ENV INTEGRATION VERSION"
 
 SCRIPT=${BASH_SOURCE[0]}
@@ -126,7 +132,7 @@ esac
 
 if [[ "$cosmosis" ]];
 then
-  source cosmosis-configure 
+  wrapcosmosis
 fi
 
 export SNANA_LSST_SIM="$SNANA_SCRATCH/SNANA_LSST_SIM"
