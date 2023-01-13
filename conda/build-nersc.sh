@@ -48,6 +48,7 @@ fi
 
 mkdir -p $curBuildDir
 cp conda/packlist.txt $curBuildDir
+cp conda/post-conda-build.sh $curBuildDir
 cp conda/piplist.txt $curBuildDir
 cp nersc/setup_td_env.sh $curBuildDir
 cp nersc/sitecustomize.py $curBuildDir
@@ -78,6 +79,18 @@ git clone https://github.com/COINtoolbox/resspect
 cd resspect
 python setup.py install
 cd ..
+
+# Grab firecrown source so we have the examples subdirectory
+firecrown_ver=$(conda list firecrown | grep firecrown|tr -s " " | cut -d " " -f 2)
+echo $firecrown_ver
+curl -LO https://github.com/LSSTDESC/firecrown/archive/refs/tags/v$firecrown_ver.tar.gz
+tar xvzf v$firecrown_ver.tar.gz
+# Set up a common directory name without version info to set FIRECROWN_DIR more easily
+ln -s firecrown-$firecrown_ver firecrown
+
+# Additional build steps
+bash ./post-conda-build.sh
+
 
 python -m compileall $curBuildDir
 

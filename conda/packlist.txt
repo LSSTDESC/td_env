@@ -3,6 +3,8 @@ celerite
 cmdstan
 cmdstanpy
 coloredlogs
+cosmosis>=2.2.2
+cosmosis-build-standard-library>=1.2
 emcee
 extinction
 f90nml
@@ -27,4 +29,3 @@ multiprocess>=0.70.8
 nestcheck
 pymultinest
 pyxdg
-
