@@ -21,6 +21,13 @@ Defines, builds and installs a conda environment including the LSST Science Pipe
 ## Current Stable Release
 https://github.com/LSSTDESC/td_env/releases/latest
 
+## Running cosmosis + firecrown
+Cosmosis is available in the td_env integration builds. Users are encouraged to try this out. 
+
+The default `setup_td_int.sh` will prepare the environment by settting $CSL_DIR, $FIRECROWN_DIR, $FIRECROWN_SITE_PACKAGES variables which points to the current integration build directory. Currently the default setup does NOT entirely complete the cosmosis set up and does not run `source cosmosis-configure`. However, this can be enabled by doing:  `source setup_td_int.sh -c`.
+
+To run a test of cosmosis + firecrown after doing `source setup_td_int.sh` please try: `cosmosis $FIRECROWN_DIR/examples/des_y1_3x2pt/des_y1_3x2pt.ini`
+
 ## To Request Additional Packages, Report Problems, or Submit Questions
 Please [open an issue](https://github.com/LSSTDESC/td_env/issues) on this repository.
 
