@@ -151,7 +151,7 @@ export SNANA_LSST_USERS="$SNANA_SURVEYS/LSST/USERS"
 case $NERSC_HOST in
     "perlmutter")
         : # settings for Perlmutter
-        export SNANA_SCRATCH="/pscratch/sd/k/kessler"
+        export SNANA_SCRATCH="/pscratch/sd/d/desctd"
         ;;
     "cori")
         : # settings for Cori
