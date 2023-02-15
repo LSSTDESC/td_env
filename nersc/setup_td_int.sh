@@ -50,7 +50,7 @@ done
 if [ $TD ]
 then
     echo "td_env is already set up"
-    exit 0
+    return 0
 fi
 
 export TD=/global/cfs/cdirs/lsst/groups/TD
