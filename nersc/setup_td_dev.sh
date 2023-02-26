@@ -10,11 +10,16 @@
 # Feb 2020: install SNANA on Cori
 #
 
+wrapcosmosis() {
+    source cosmosis-configure
+}
+
 echo "RUNNING TD_ENV DEVELOPMENT VERSION"
 
 SCRIPT=${BASH_SOURCE[0]}
 
 usage() {  # Function: Print a help message.
+  echo "-c  --Setup cosmosis."
   echo -e \\n"Help documentation for ${BOLD}${SCRIPT}"\\n
   echo "Command line switches are optional. The following switches are recognized."
   echo "-k  --Setup the env without doing module purge."
@@ -28,9 +33,10 @@ usage() {  # Function: Print a help message.
 # -h help
 # -n Do not setup the LSST Sci Pipelines
 #while getopts e:n: flag
-while getopts "hkns" flag
+while getopts "chkns" flag
 do
     case "${flag}" in
+	c) cosmosis=1;;
         h) usage;;
         k) keepenv=1;;
         n) nolsst=1;;
@@ -158,6 +164,13 @@ case $NERSC_HOST in
         export SNANA_SCRATCH="/global/cscratch1/sd/kessler"
         ;;
 esac
+
+if [[ "$cosmosis" ]];
+then
+  wrapcosmosis
+fi
+
+
 export SNANA_LSST_SIM="$SNANA_SCRATCH/SNANA_LSST_SIM"
 
 export SCRATCH_SIMDIR="$SNANA_LSST_SIM"
