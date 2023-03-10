@@ -10,15 +10,18 @@ pip install --no-cache-dir -r ./piplist.txt
 
 conda clean -y -a 
 
+cp ../nersc/setup_td_dev.sh /opt/lsst/software/stack
+
+cd /opt/lsst/software/stack
 # Install bayeSN
 #git clone https://github.com/bayesn/bayesn-public
 ## Skipping full set up until we deal with the required data files in $PYSYN_CDBS
 
 #Install RESSPECT
-#git clone https://github.com/COINtoolbox/resspect
-#cd resspect
-#python setup.py install
-#cd ..
+git clone https://github.com/COINtoolbox/resspect
+cd resspect
+python setup.py install
+cd ..
 
 # Grab firecrown source so we have the examples subdirectory
 firecrown_ver=$(conda list firecrown | grep firecrown|tr -s " " | cut -d " " -f 2)
@@ -44,4 +47,3 @@ conda env export > /opt/lsst/software/stack/td_env-image.yml
 
 conda config --set env_prompt "(lsst-scipipe-$1)" --system
 
-cp ../nersc/setup_td_dev.sh /opt/lsst/software/stack
