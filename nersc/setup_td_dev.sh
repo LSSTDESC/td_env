@@ -111,6 +111,8 @@ then
 elif [ $shifterenv ] || [ $SHIFTER_RUNTIME ]
 then
   unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
+  # SHIFTER LSST Sci Pipelines env does not have the "-exact" suffice, while local NERSC builds do (mystery)
+  export LSST_CONDA_ENV_NAME=lsst-scipipe-2.0.0
   source /opt/lsst/software/stack/loadLSST.bash
   setup lsst_distrib
   
