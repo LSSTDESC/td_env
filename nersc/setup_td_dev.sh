@@ -45,11 +45,11 @@ do
 done
 
 # Check to see if this setup script has already been run in this shell
-if [ $TD ]
-then
-    echo "td_env is already set up"
-    return 0
-fi
+#if [ $TD ]
+#then
+#    echo "td_env is already set up"
+#    return 0
+#fi
 
 export TD=/global/cfs/cdirs/lsst/groups/TD
 export TD_ALERTS=${TD}/ALERTS
@@ -110,8 +110,15 @@ then
 
 elif [ $shifterenv ] || [ $SHIFTER_RUNTIME ]
 then
+  unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
   source /opt/lsst/software/stack/loadLSST.bash
   setup lsst_distrib
+  
+  # For cosmosis and firecrown.  Should try to find a better way to set these
+  export CSL_DIR=$CONDA_PREFIX/lib/python3.8/site-packages/cosmosis/cosmosis-standard-library
+  export FIRECROWN_SITE_PACKAGES=$CONDA_PREFIX/lib/python3.8/site-packages
+  export FIRECROWN_DIR=/opt/lsst/software/stack/firecrown
+  export FIRECROWN_EXAMPLES_DIR=$FIRECROWN_DIR/examples
 
 # Setup with LSST Science Pipelines
 elif [ -z "$nolsst" ]
