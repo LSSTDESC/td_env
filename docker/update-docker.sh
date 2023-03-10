@@ -11,14 +11,14 @@ pip install --no-cache-dir -r ./piplist.txt
 conda clean -y -a 
 
 # Install bayeSN
-git clone https://github.com/bayesn/bayesn-public
+#git clone https://github.com/bayesn/bayesn-public
 ## Skipping full set up until we deal with the required data files in $PYSYN_CDBS
 
 #Install RESSPECT
-git clone https://github.com/COINtoolbox/resspect
-cd resspect
-python setup.py install
-cd ..
+#git clone https://github.com/COINtoolbox/resspect
+#cd resspect
+#python setup.py install
+#cd ..
 
 # Grab firecrown source so we have the examples subdirectory
 firecrown_ver=$(conda list firecrown | grep firecrown|tr -s " " | cut -d " " -f 2)
@@ -36,8 +36,8 @@ ln -s firecrown-$firecrown_ver firecrown
 # Import of ligo.em_bright to cause associated data files to be downloaded into the image
 # python -c "import ligo.em_bright"
 
-# Additional build steps
-bash ./post-conda-build.sh
+# Additional build steps Called in Dockerfile
+# bash ./post-conda-build.sh
 
 conda env export --no-builds > /opt/lsst/software/stack/td_env-image-nobuildinfo.yml
 conda env export > /opt/lsst/software/stack/td_env-image.yml
