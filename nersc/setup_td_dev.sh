@@ -10,11 +10,16 @@
 # Feb 2020: install SNANA on Cori
 #
 
+wrapcosmosis() {
+    source cosmosis-configure
+}
+
 echo "RUNNING TD_ENV DEVELOPMENT VERSION"
 
 SCRIPT=${BASH_SOURCE[0]}
 
 usage() {  # Function: Print a help message.
+  echo "-c  --Setup cosmosis."
   echo -e \\n"Help documentation for ${BOLD}${SCRIPT}"\\n
   echo "Command line switches are optional. The following switches are recognized."
   echo "-k  --Setup the env without doing module purge."
@@ -28,9 +33,10 @@ usage() {  # Function: Print a help message.
 # -h help
 # -n Do not setup the LSST Sci Pipelines
 #while getopts e:n: flag
-while getopts "hkns" flag
+while getopts "chkns" flag
 do
     case "${flag}" in
+	c) cosmosis=1;;
         h) usage;;
         k) keepenv=1;;
         n) nolsst=1;;
@@ -39,11 +45,11 @@ do
 done
 
 # Check to see if this setup script has already been run in this shell
-if [ $TD ]
-then
-    echo "td_env is already set up"
-    exit 0
-fi
+#if [ $TD ]
+#then
+#    echo "td_env is already set up"
+#    return 0
+#fi
 
 export TD=/global/cfs/cdirs/lsst/groups/TD
 export TD_ALERTS=${TD}/ALERTS
@@ -104,8 +110,17 @@ then
 
 elif [ $shifterenv ] || [ $SHIFTER_RUNTIME ]
 then
+  unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
+  # SHIFTER LSST Sci Pipelines env does not have the "-exact" suffice, while local NERSC builds do (mystery)
+  export LSST_CONDA_ENV_NAME=lsst-scipipe-2.0.0
   source /opt/lsst/software/stack/loadLSST.bash
   setup lsst_distrib
+  
+  # For cosmosis and firecrown.  Should try to find a better way to set these
+  export CSL_DIR=$CONDA_PREFIX/lib/python3.8/site-packages/cosmosis/cosmosis-standard-library
+  export FIRECROWN_SITE_PACKAGES=$CONDA_PREFIX/lib/python3.8/site-packages
+  export FIRECROWN_DIR=/opt/lsst/software/stack/firecrown
+  export FIRECROWN_EXAMPLES_DIR=$FIRECROWN_DIR/examples
 
 # Setup with LSST Science Pipelines
 elif [ -z "$nolsst" ]
@@ -151,13 +166,20 @@ export SNANA_LSST_USERS="$SNANA_SURVEYS/LSST/USERS"
 case $NERSC_HOST in
     "perlmutter")
         : # settings for Perlmutter
-        export SNANA_SCRATCH="/pscratch/sd/k/kessler"
+        export SNANA_SCRATCH="/pscratch/sd/d/desctd"
         ;;
     "cori")
         : # settings for Cori
         export SNANA_SCRATCH="/global/cscratch1/sd/kessler"
         ;;
 esac
+
+if [[ "$cosmosis" ]];
+then
+  wrapcosmosis
+fi
+
+
 export SNANA_LSST_SIM="$SNANA_SCRATCH/SNANA_LSST_SIM"
 
 export SCRATCH_SIMDIR="$SNANA_LSST_SIM"

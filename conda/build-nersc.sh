@@ -12,7 +12,7 @@ then
 else
   module load PrgEnv-gnu
   module load cpu
-  module load cray-mpich-abi/8.1.15
+  module load cray-mpich-abi/8.1.22
 fi
 
 unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
@@ -62,7 +62,7 @@ curl -LO https://ls.st/lsstinstall
 bash ./lsstinstall -X $1 
 
 source ./loadLSST.bash
-eups distrib install -t $1 lsst_distrib
+eups distrib install -t $1 lsst_distrib --nolocks
 
 mamba install -c conda-forge -y mpich=3.4.*=external_*
 
