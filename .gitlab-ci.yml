@@ -19,7 +19,7 @@ integration-build:
     - integration
   tags: [cori]
   script:
-    - bash conda/build-nersc.sh w_2022_10
+    - bash conda/build-nersc.sh v24_0_0
 
 integration-test:
   stage: test
