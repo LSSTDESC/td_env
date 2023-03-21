@@ -62,9 +62,9 @@ curl -LO https://ls.st/lsstinstall
 bash ./lsstinstall -X $1 
 
 source ./loadLSST.bash
-eups distrib install -t $1 lsst_distrib
+eups distrib install -t $1 lsst_distrib --nolocks
 
-mamba install -c conda-forge -y mpich=3.4.*=external_*
+mamba install -c conda-forge -y mpich=4.0.3=external_*
 
 mamba install -c conda-forge -y --file ./packlist.txt
 pip install --no-cache-dir -r ./piplist.txt
