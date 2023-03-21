@@ -14,7 +14,7 @@ then
 else
   module load PrgEnv-gnu
   module load cpu
-  module load cray-mpich-abi/8.1.15
+  module load cray-mpich-abi/8.1.24
 fi
 
 unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
