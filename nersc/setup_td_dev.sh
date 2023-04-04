@@ -205,4 +205,4 @@ export PATH=$PATH:${SNANA_DIR}/bin:${SNANA_DIR}/util:${PIPPIN_DIR}
 # For GCRCatalogs
 export DESC_GCR_SITE='nersc'
 
-export HDF5_USE_FILE_LOCKING=FALSE
+#export HDF5_USE_FILE_LOCKING=FALSE No longer necessary on Perlmutter
