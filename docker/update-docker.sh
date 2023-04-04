@@ -39,7 +39,7 @@ ln -s firecrown-$firecrown_ver firecrown
 # Import of ligo.em_bright to cause associated data files to be downloaded into the image
 # python -c "import ligo.em_bright"
 
-# Additional build steps Called in Dockerfile
+# Additional build steps -- Handlined in Dockerfile
 # bash ./post-conda-build.sh
 
 conda env export --no-builds > /opt/lsst/software/stack/td_env-image-nobuildinfo.yml
