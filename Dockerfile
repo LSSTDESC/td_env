@@ -2,7 +2,7 @@ FROM centos:centos7.7.1908
 MAINTAINER Heather Kelly <heather@slac.stanford.edu>
 
 ARG GH_SHA
-ARG LSST_TAG=w_2022_10
+ARG LSST_TAG=V24_0_0
 ARG LSST_STACK_DIR=/opt/lsst/software/stack
 
 #RUN pwd && ls && echo $GH_SHA 
@@ -51,7 +51,7 @@ RUN cd /tmp/gh/td_env && \
 
 USER lsst
 RUN cd /tmp/gh/td_env/conda && \
-    bash /tmp/gh/td_env/docker/update-docker.sh w_2022_10 && \
+    bash /tmp/gh/td_env/docker/update-docker.sh V24_0_0 && \
     bash post-conda-build.sh && \
     echo "source $LSST_STACK_DIR/loadLSST.bash" >> ~/.bashrc && \
     echo "setup lsst_distrib" >> ~/.bashrc && \
