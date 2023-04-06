@@ -36,7 +36,7 @@ jobs:
         docker commit -m"initial testing" install-mpich lsstdesc/td-int:mpich
         docker run -u lsst -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE -w $GITHUB_WORKSPACE/conda --name="td-test-env" lsstdesc/td-int:mpich /bin/bash /$GITHUB_WORKSPACE/docker/update-docker.sh ${{env.LSST_TAG}}
         docker commit -m"initial testing" td-test-env lsstdesc/td-int:test
-        docker rmi -f lsstdesc/td-dev:mpich
+        docker rmi -f lsstdesc/td-int:mpich
         docker run -u lsst -w /opt/lsst/software/stack --name="td-setwd" lsstdesc/td-int:test /bin/bash
         docker commit -m"initial testing" td-setwd lsstdesc/td-env:${{env.LSST_TAG}}-${{env.DATE_TAG}}-int
         docker rmi -f lsstdesc/td-int:test
