@@ -5,7 +5,7 @@ stages:
 
 
 variables:
-  SCHEDULER_PARAMETERS: "-C haswell -M escori -q xfer -N1 -t 02:00:00"
+#  SCHEDULER_PARAMETERS: "-C haswell -M escori -q xfer -N1 -t 02:00:00"  # HMK turn off for now until perlmutter runner is available
 
 workflow:
   rules:
