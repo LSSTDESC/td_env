@@ -4,7 +4,7 @@
 
 source /opt/lsst/software/stack/loadLSST.bash
 
-export mpich=4.0.2
+export mpich=3.4
 export mpich_prefix=mpich-$mpich
 
 curl -LO https://www.mpich.org/static/downloads/$mpich/$mpich_prefix.tar.gz 
