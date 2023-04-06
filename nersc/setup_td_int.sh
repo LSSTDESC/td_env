@@ -147,8 +147,8 @@ export PIPPIN_OUTPUT="$SNANA_SCRATCH/PIPPIN_OUTPUT"
 export PIPPIN_DIR="$TD_SOFTWARE/Pippin"
 export SBATCH_TEMPLATES="$SNANA_LSST_ROOT/SBATCH_TEMPLATES"
 export SNANA_DEBUG="$SNANA_LSST_USERS/kessler/debug"
-export SNANA_SETUP_COMMAND="source $TD/setup_td_dev.sh"
-export SNANA_IMAGE_DOCKER="lsstdesc/td-env:dev"
+export SNANA_SETUP_COMMAND="source $TD/setup_td_int.sh"
+export SNANA_IMAGE_DOCKER="lsstdesc/td-env:int"
 
 # Add env var to point to bayeSN install
 export BAYESN_INSTALL=$DESC_TD_INSTALL/bayesn-public
@@ -159,5 +159,3 @@ export PATH=$PATH:${SNANA_DIR}/bin:${SNANA_DIR}/util:${PIPPIN_DIR}
 
 # For GCRCatalogs
 export DESC_GCR_SITE='nersc'
-
-# export HDF5_USE_FILE_LOCKING=FALSE
