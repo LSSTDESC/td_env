@@ -24,7 +24,7 @@ jobs:
          ref: dev
     - name : Get weekly number and date 
       run: |
-        echo "LSST_TAG=w_2022_10" >> $GITHUB_ENV
+        echo "LSST_TAG=V24_0_0" >> $GITHUB_ENV
         echo "DATE_TAG=$(date "+%F")" >> $GITHUB_ENV         
     - name: update docker image
       run: |
@@ -32,7 +32,7 @@ jobs:
         ls $GITHUB_WORKSPACE
         echo $GITHUB_WORKSPACE
         ls $GITHUB_WORKSPACE/conda
-        docker run -u root -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE --name="install-mpich" lsstsqre/centos:7-stack-lsst_distrib-w_2022_10 /bin/bash /$GITHUB_WORKSPACE/docker/install-mpich.sh
+        docker run -u root -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE --name="install-mpich" lsstsqre/centos:7-stack-lsst_distrib-V24_0_0 /bin/bash /$GITHUB_WORKSPACE/docker/install-mpich.sh
         docker commit -m"initial testing" install-mpich lsstdesc/td-dev:mpich
         docker run -u lsst -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE -w $GITHUB_WORKSPACE/conda --name="td-test-env" lsstdesc/td-dev:mpich /bin/bash /$GITHUB_WORKSPACE/docker/update-docker.sh ${{env.LSST_TAG}}
         docker commit -m"initial testing" td-test-env lsstdesc/td-dev:test
