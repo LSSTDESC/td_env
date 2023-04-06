@@ -24,7 +24,7 @@ jobs:
          ref: integration
     - name : Get weekly number and date 
       run: |
-        echo "LSST_TAG=V24_0_0 >> $GITHUB_ENV
+        echo "LSST_TAG=V24_0_0" >> $GITHUB_ENV
         echo "DATE_TAG=$(date "+%F")" >> $GITHUB_ENV         
     - name: update docker image
       run: |
