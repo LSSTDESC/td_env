@@ -83,7 +83,7 @@ then
   echo "Setting up TD env with LSST Science Pipelines"
   
   #export DESC_TD_INSTALL=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-prod/stable
-  export DESC_TD_INSTALL=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-int/integration
+  export DESC_TD_INSTALL=/global/common/software/lsst/gitlab/td_env-int/integration
   source $DESC_TD_INSTALL/setup_td_env.sh
     
   export GSL_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
