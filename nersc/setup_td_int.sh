@@ -63,7 +63,7 @@ export TD_PUBLIC=/global/cfs/cdirs/lsst/www/DESC_TD_PUBLIC
 
 export PYSYN_CDBS=${TD_SOFTWARE}/bayeSN/synphot/grp/redcat/trds
 
-export VERSION_LIBPYTHON=3.8
+export VERSION_LIBPYTHON=3.10
 
 
 if [[ -z "$keepenv" ]] && [[ -z $SHIFTER_RUNTIME ]];
