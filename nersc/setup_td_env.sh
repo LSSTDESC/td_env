@@ -34,3 +34,12 @@ export CSL_DIR=$CONDA_PREFIX/lib/python3.10/site-packages/cosmosis/cosmosis-stan
 export FIRECROWN_SITE_PACKAGES=$CONDA_PREFIX/lib/python3.10/site-packages
 export FIRECROWN_DIR=$DESC_LSST_INSTALL_DIR/firecrown
 export FIRECROWN_EXAMPLES_DIR=$FIRECROWN_DIR/examples
+
+# Fixes missing support in the Perlmutter libfabric:
+# https://docs.nersc.gov/development/languages/python/using-python-perlmutter/#missing-support-for-matched-proberecv
+export MPI4PY_RC_RECV_MPROBE=0
+
+# Tries to prevent cosmosis from launching any subprocesses, since that is 
+# not allowed on Perlmutter.
+export COSMOSIS_NO_SUBPROCESS=1
+

@@ -21,6 +21,7 @@ ligo.em-bright
 lsstdesc-gcr-catalogs
 pygpu
 root_base
+sncosmo
 tensorflow
 theano
 # adding for lenstonomy
