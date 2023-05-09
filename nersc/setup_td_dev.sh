@@ -117,11 +117,20 @@ then
   setup lsst_distrib
   
   # For cosmosis and firecrown.  Should try to find a better way to set these
-  export CSL_DIR=$CONDA_PREFIX/lib/python3.8/site-packages/cosmosis/cosmosis-standard-library
-  export FIRECROWN_SITE_PACKAGES=$CONDA_PREFIX/lib/python3.8/site-packages
+  export CSL_DIR=$CONDA_PREFIX/lib/python3.10/site-packages/cosmosis/cosmosis-standard-library
+  export FIRECROWN_SITE_PACKAGES=$CONDA_PREFIX/lib/python3.10/site-packages
   export FIRECROWN_DIR=/opt/lsst/software/stack/firecrown
   export FIRECROWN_EXAMPLES_DIR=$FIRECROWN_DIR/examples
 
+  # Fixes missing support in the Perlmutter libfabric:
+  # https://docs.nersc.gov/development/languages/python/using-python-perlmutter/  #missing-support-for-matched-proberecv
+  export MPI4PY_RC_RECV_MPROBE=0
+
+  # Tries to prevent cosmosis from launching any subprocesses, since that is
+  # not allowed on Perlmutter.
+  export COSMOSIS_NO_SUBPROCESS=1
+
+#
 # Setup with LSST Science Pipelines
 elif [ -z "$nolsst" ]
 then
@@ -205,4 +214,6 @@ export PATH=$PATH:${SNANA_DIR}/bin:${SNANA_DIR}/util:${PIPPIN_DIR}
 
 # For GCRCatalogs
 export DESC_GCR_SITE='nersc'
+
+export HDF5_USE_FILE_LOCKING=FALSE
 
