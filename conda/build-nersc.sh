@@ -12,7 +12,8 @@ then
 else
   module load PrgEnv-gnu
   module load cpu
-  module load cray-mpich-abi/8.1.22
+  module load cray-mpich-abi/8.1.25
+  module load evp-patch
 fi
 
 unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
@@ -22,9 +23,14 @@ dmver=$1
 # Set to 1 to install into the common sofware area
 installFlag=$2
 
-commonIntBuildDir=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-int
-commonDevBuildDir=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-dev
-commonProdBuildDir=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-prod
+export BUILD_ID_DATE=`echo "$(date "+%F-%M-%S")"`
+export CI_COMMIT_REF_NAME=prod
+export CI_PIPELINE_ID=$BUILD_ID_DATE
+
+commonIntBuildDir=/global/common/software/lsst/gitlab/td_env-int
+commonDevBuildDir=/global/common/software/lsst/gitlab/td_env-dev
+commonProdBuildDir=/global/common/software/lsst/gitlab/td_env-prod
+
 
 if [ "$CI_COMMIT_REF_NAME" = "integration" ];  # integration
 then

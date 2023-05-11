@@ -5,6 +5,7 @@ cmdstanpy
 coloredlogs
 cosmosis>=2.2.2
 cosmosis-build-standard-library>=1.2
+cudatoolkit==11.7.0
 emcee
 extinction
 f90nml
@@ -14,11 +15,13 @@ gwpy
 ipdb
 ipykernel
 lalsuite
+lenstronomy
 ligo.skymap
 ligo.em-bright
 lsstdesc-gcr-catalogs
 pygpu
 root_base
+sncosmo
 tensorflow
 theano
 # adding for lenstonomy

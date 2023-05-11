@@ -61,7 +61,7 @@ export TD_PUBLIC=/global/cfs/cdirs/lsst/www/DESC_TD_PUBLIC
 
 export PYSYN_CDBS=${TD_SOFTWARE}/bayeSN/synphot/grp/redcat/trds
 
-export VERSION_LIBPYTHON=3.8
+export VERSION_LIBPYTHON=3.10
 
 
 if [[ -z "$keepenv" ]] && [[ -z $SHIFTER_RUNTIME ]];
@@ -112,16 +112,25 @@ elif [ $shifterenv ] || [ $SHIFTER_RUNTIME ]
 then
   unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
   # SHIFTER LSST Sci Pipelines env does not have the "-exact" suffice, while local NERSC builds do (mystery)
-  export LSST_CONDA_ENV_NAME=lsst-scipipe-2.0.0
+  export LSST_CONDA_ENV_NAME=lsst-scipipe-4.1.0
   source /opt/lsst/software/stack/loadLSST.bash
   setup lsst_distrib
   
   # For cosmosis and firecrown.  Should try to find a better way to set these
-  export CSL_DIR=$CONDA_PREFIX/lib/python3.8/site-packages/cosmosis/cosmosis-standard-library
-  export FIRECROWN_SITE_PACKAGES=$CONDA_PREFIX/lib/python3.8/site-packages
+  export CSL_DIR=$CONDA_PREFIX/lib/python3.10/site-packages/cosmosis/cosmosis-standard-library
+  export FIRECROWN_SITE_PACKAGES=$CONDA_PREFIX/lib/python3.10/site-packages
   export FIRECROWN_DIR=/opt/lsst/software/stack/firecrown
   export FIRECROWN_EXAMPLES_DIR=$FIRECROWN_DIR/examples
 
+  # Fixes missing support in the Perlmutter libfabric:
+  # https://docs.nersc.gov/development/languages/python/using-python-perlmutter/  #missing-support-for-matched-proberecv
+  export MPI4PY_RC_RECV_MPROBE=0
+
+  # Tries to prevent cosmosis from launching any subprocesses, since that is
+  # not allowed on Perlmutter.
+  export COSMOSIS_NO_SUBPROCESS=1
+
+#
 # Setup with LSST Science Pipelines
 elif [ -z "$nolsst" ]
 then
@@ -193,6 +202,7 @@ export PIPPIN_DIR="$TD_SOFTWARE/Pippin"
 export SBATCH_TEMPLATES="$SNANA_LSST_ROOT/SBATCH_TEMPLATES"
 export SNANA_DEBUG="$SNANA_LSST_USERS/kessler/debug"
 export SNANA_SETUP_COMMAND="source $TD/setup_td_dev.sh"
+export TD_SETUP_COMMAND=$SNANA_SETUP_COMMAND
 export SNANA_IMAGE_DOCKER="lsstdesc/td-env:dev"
 
 # Add env var to point to bayeSN install
@@ -205,4 +215,5 @@ export PATH=$PATH:${SNANA_DIR}/bin:${SNANA_DIR}/util:${PIPPIN_DIR}
 # For GCRCatalogs
 export DESC_GCR_SITE='nersc'
 
-#export HDF5_USE_FILE_LOCKING=FALSE
+export HDF5_USE_FILE_LOCKING=FALSE
+
