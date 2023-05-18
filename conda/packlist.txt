@@ -21,6 +21,7 @@ ligo.em-bright
 lsstdesc-gcr-catalogs
 pygpu
 root_base
+sacc==0.7
 sncosmo
 tensorflow
 theano
