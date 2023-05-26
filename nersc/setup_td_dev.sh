@@ -16,17 +16,17 @@ wrapcosmosis() {
 
 echo "RUNNING TD_ENV DEVELOPMENT VERSION"
 
-SCRIPT=${BASH_SOURCE[0]}
+#SCRIPT=${BASH_SOURCE[0]}
 
-usage() {  # Function: Print a help message.
-  echo "-c  --Setup cosmosis."
-  echo -e \\n"Help documentation for ${BOLD}${SCRIPT}"\\n
-  echo "Command line switches are optional. The following switches are recognized."
-  echo "-k  --Setup the env without doing module purge."
-  echo "-n  --Setup the env without the LSST Sci Pipelines."
-  echo "-s  --Setup the env for shifter."
-  exit 0
-}
+#usage() {  # Function: Print a help message.
+#  echo "-c  --Setup cosmosis."
+#  echo -e \\n"Help documentation for ${BOLD}${SCRIPT}"\\n
+#  echo "Command line switches are optional. The following switches are recognized."
+#  echo "-k  --Setup the env without doing module purge."
+#  echo "-n  --Setup the env without the LSST Sci Pipelines."
+#  echo "-s  --Setup the env for shifter."
+#  exit 0
+#}
 
 
 # optional parameters
