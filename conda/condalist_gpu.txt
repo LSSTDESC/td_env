@@ -1,0 +1,16 @@
+bokeh
+colorama
+cudatoolkit==11.7
+jupyter
+matplotlib
+natsort
+numpy
+pandas==1.5.3
+pybind11
+pytest
+pyyaml
+seaborn
+scipy
+tabulate
+tqdm
+unidecode
