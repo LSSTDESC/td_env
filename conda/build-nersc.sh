@@ -1,20 +1,11 @@
 #!/bin/bash
 
-if [ "$NERSC_HOST" == "cori" ]
-then
-  module unload python
-  module swap PrgEnv-intel PrgEnv-gnu
-  module unload craype-network-aries
-  module unload cray-libsci
-  module unload craype
-  module load cray-mpich-abi/7.7.19
-  export LD_LIBRARY_PATH=$CRAY_MPICH_BASEDIR/mpich-gnu-abi/8.2/lib:$LD_LIBRARY_PATH
-else
-  module load PrgEnv-gnu
-  module load cpu
-  module load cray-mpich-abi/8.1.25
-  module load evp-patch
-fi
+
+module load PrgEnv-gnu
+module load cpu
+module load cray-mpich-abi/8.1.25
+module load evp-patch
+
 
 unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
 
@@ -55,6 +46,8 @@ mkdir -p $curBuildDir
 cp conda/packlist.txt $curBuildDir
 cp conda/post-conda-build.sh $curBuildDir
 cp conda/piplist.txt $curBuildDir
+cp conda/piplist_gpu.txt $curBuildDir
+cp conda/condalist_gpu.txt $curBuildDir
 cp nersc/setup_td_env.sh $curBuildDir
 cp nersc/sitecustomize.py $curBuildDir
 sed -i 's|$1|'$curBuildDir'|g' $curBuildDir/setup_td_env.sh
@@ -109,7 +102,7 @@ python $curBuildDir/bayesn-public/fit_sn.py --model T21 --fittmax 5 --metafile $
 # Force data files to be dowloaded during installation
 # python -c "import ligo.em_bright"
 
-conda config --set env_prompt "(lsst-scipipe-$1)" --system
+conda config --set env_prompt "(lsst-scipipe-$1)" --env
 
 conda env export --no-builds > $curBuildDir/td_env-nersc-$CI_PIPELINE_ID-nobuildinfo.yml
 conda env export > $curBuildDir/td_env-nersc-$CI_PIPELINE_ID.yml

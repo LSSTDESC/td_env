@@ -18,27 +18,29 @@ wrapcosmosis() {
 
 echo "RUNNING TD_ENV INTEGRATION VERSION"
 
-SCRIPT=${BASH_SOURCE[0]}
+#SCRIPT=${BASH_SOURCE[0]}
 
-usage() {  # Function: Print a help message.
-  echo -e \\n"Help documentation for ${BOLD}${SCRIPT}"\\n
-  echo "Command line switches are optional. The following switches are recognized."
-  echo "-c  --Setup cosmosis."
-  echo "-k  --Setup the env without doing module purge."
-  echo "-n  --Setup the env without the LSST Sci Pipelines."
-  echo "-s  --Setup the env for shifter."
-  exit 0
-}
+#usage() {  # Function: Print a help message.
+#  echo -e \\n"Help documentation for ${BOLD}${SCRIPT}"\\n
+#  echo "Command line switches are optional. The following switches are recognized."
+#  echo "-c  --Setup cosmosis."
+#  echo "-g  --Setup gpu env."
+#  echo "-k  --Setup the env without doing module purge."
+#  echo "-n  --Setup the env without the LSST Sci Pipelines."
+#  echo "-s  --Setup the env for shifter."
+#  exit 0
+#}
 
 
 # optional parameters
 # -h help
 # -n Do not setup the LSST Sci Pipelines
 #while getopts e:n: flag
-while getopts "chkns" flag
+while getopts "cghkns" flag
 do
     case "${flag}" in
         c) cosmosis=1;;
+        g) gpuenv=1;;
         h) usage;;
         k) keepenv=1;;
         n) nolsst=1;;
@@ -77,10 +79,21 @@ then
   source /opt/lsst/software/stack/loadLSST.bash
   setup lsst_distrib
 
+elif [ $gpuenv ]
+then
+  echo "Setting up TD GPU env"
+  export TD_ENV="TD-GPU"
+  export DESC_TD_INSTALL=/global/common/software/lsst/gitlab/td_env-int/integration
+
+  source $DESC_TD_INSTALL/conda/etc/profile.d/conda.sh
+  conda activate td-gpu
+
 # Setup with LSST Science Pipelines
 elif [ -z "$nolsst" ]
 then
   echo "Setting up TD env with LSST Science Pipelines"
+
+  export TD_ENV="TD-CPU-SCI-PIPE"
   
   #export DESC_TD_INSTALL=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-prod/stable
   export DESC_TD_INSTALL=/global/common/software/lsst/gitlab/td_env-int/integration
@@ -151,6 +164,7 @@ export SNANA_SETUP_COMMAND="source $TD/setup_td_dev.sh"
 export TD_SETUP_COMMAND=$SNANA_SETUP_COMMAND
 export SNANA_IMAGE_DOCKER="lsstdesc/td-env:dev"
 
+
 # Add env var to point to bayeSN install
 export BAYESN_INSTALL=$DESC_TD_INSTALL/bayesn-public
 
@@ -160,3 +174,5 @@ export PATH=$PATH:${SNANA_DIR}/bin:${SNANA_DIR}/util:${PIPPIN_DIR}
 
 # For GCRCatalogs
 export DESC_GCR_SITE='nersc'
+
+export HDF5_USE_FILE_LOCKING=FALSE
