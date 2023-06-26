@@ -1,11 +1,11 @@
 #!/bin/bash
 
-#if [ "$NERSC_HOST" == "perlmutter" ]
+
 module load PrgEnv-gnu
 module load cpu
 module load cray-mpich-abi/8.1.25
 module load evp-patch
-#fi
+
 
 unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
 
@@ -15,7 +15,7 @@ dmver=$1
 installFlag=$2
 
 export BUILD_ID_DATE=`echo "$(date "+%F-%M-%S")"`
-export CI_COMMIT_REF_NAME=integration
+export CI_COMMIT_REF_NAME=dev
 export CI_PIPELINE_ID=$BUILD_ID_DATE
 
 commonIntBuildDir=/global/common/software/lsst/gitlab/td_env-int
