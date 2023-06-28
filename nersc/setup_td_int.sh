@@ -68,7 +68,7 @@ export PYSYN_CDBS=${TD_SOFTWARE}/bayeSN/synphot/grp/redcat/trds
 export VERSION_LIBPYTHON=3.10
 
 
-if [[ -z "$keepenv" ]] && [[ -z $SHIFTER_RUNTIME ]];
+if [[ -z "$keepenv" ]] && [[ -z "$gpuenv" ]] && [[ -z $SHIFTER_RUNTIME ]];
 then
   module purge
 fi
@@ -83,6 +83,13 @@ elif [ $gpuenv ]
 then
   echo "Setting up TD GPU env"
   export TD_ENV="TD-GPU"
+  # Making sure the absolutely necesary modules are loaded for GPU support
+  module load gpu
+  module load craype
+  module load cray-mpich/8.1.25
+  module load cudatoolkit/11.7
+  module load evp-patch
+
   export DESC_TD_INSTALL=/global/common/software/lsst/gitlab/td_env-int/integration
 
   source $DESC_TD_INSTALL/conda/etc/profile.d/conda.sh
