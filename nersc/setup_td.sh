@@ -116,7 +116,7 @@ then
   setup lsst_distrib
   #
    # For cosmosis and firecrown.  Should try to find a better way to set these
-   export CSL_DIR=$CONDA_PREFIX/lib/python3.10/site-packages/cosmosis/cosmosis-standard-library
+  export CSL_DIR=$CONDA_PREFIX/lib/python3.10/site-packages/cosmosis/cosmosis-standard-library
   export FIRECROWN_SITE_PACKAGES=$CONDA_PREFIX/lib/python3.10/site-packages
   export FIRECROWN_DIR=/opt/lsst/software/stack/firecrown
   export FIRECROWN_EXAMPLES_DIR=$FIRECROWN_DIR/examples
@@ -165,11 +165,12 @@ fi
 export SNANA_DIR="$TD_SOFTWARE/SNANA"
 export PYTHONPATH=$PYTHONPATH:$SNANA_DIR/src
 
-export SNDATA_ROOT="$TD_SN/SNANA/SNDATA_ROOT"
+export SNDATA_ROOT="/pscratch/sd/d/desctd/cfs_mirror/SNDATA_ROOT"
 export SNANA_TESTS="$TD_SN/SNANA/SNANA_TESTS"
 export SNANA_SURVEYS="$TD_SN/SNANA/SURVEYS"
 
-export SNANA_LSST_ROOT="$SNANA_SURVEYS/LSST/ROOT"
+export SNANA_LSST_ROOT="/pscratch/sd/d/desctd/cfs_mirror/SNANA_LSST_ROOT"
+export SNANA_LSST_ROOT_LEGACY="/global/cfs/cdirs/lsst/groups/TD/SN/SNANA/SURVEYS/LSST/ROOT"
 export SNANA_LSST_USERS="$SNANA_SURVEYS/LSST/USERS"
 case $NERSC_HOST in
     "perlmutter")
