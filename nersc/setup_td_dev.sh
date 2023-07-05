@@ -187,11 +187,12 @@ fi
 export SNANA_DIR="$TD_SOFTWARE/SNANA"
 export PYTHONPATH=$PYTHONPATH:$SNANA_DIR/src
 
-export SNDATA_ROOT="$TD_SN/SNANA/SNDATA_ROOT"
+export SNDATA_ROOT="/pscratch/sd/d/desctd/cfs_mirror/SNDATA_ROOT"
 export SNANA_TESTS="$TD_SN/SNANA/SNANA_TESTS"
 export SNANA_SURVEYS="$TD_SN/SNANA/SURVEYS"
 
-export SNANA_LSST_ROOT="$SNANA_SURVEYS/LSST/ROOT"
+export SNANA_LSST_ROOT="/pscratch/sd/d/desctd/cfs_mirror/SNANA_LSST_ROOT"
+export SNANA_LSST_ROOT_LEGACY="/global/cfs/cdirs/lsst/groups/TD/SN/SNANA/SURVEYS/LSST/ROOT"
 export SNANA_LSST_USERS="$SNANA_SURVEYS/LSST/USERS"
 case $NERSC_HOST in
     "perlmutter")
