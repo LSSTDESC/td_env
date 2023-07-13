@@ -175,6 +175,9 @@ export SNANA_LSST_ROOT=$CFS_MIRROR/SNANA/SURVEYS/LSST/ROOT
 export SNANA_LSST_ROOT_LEGACY="/global/cfs/cdirs/lsst/groups/TD/SN/SNANA/SURVEYS/LSST/ROOT"
 export SNANA_LSST_USERS="$SNANA_SURVEYS/LSST/USERS"
 
+export SNANA_YSE_ROOT=$CFS_MIRROR/SNANA/SURVEYS/YSE/ROOT
+export SNANA_YSE_USERS="$SNANA_SURVEYS/YSE/USERS"
+
 export PLASTICC_ROOT=$SNANA_LSST_ROOT/PLASTICC
 export PLASTICC_MODELS=$SNANA_LSST_ROOT/PLASTICC/model_libs
 
@@ -182,24 +185,16 @@ export ELASTICC_ROOT=$SNANA_LSST_ROOT/ELASTICC
 export ELASTICC_HOSTLIB=$ELASTICC_ROOT/HOSTLIB/HOSTLIBS/ONE_YR
 export ELASTICC_WGTMAP=$ELASTICC_ROOT/HOSTLIB/WGTMAPS
 
-case $NERSC_HOST in
-    "perlmutter")
-        : # settings for Perlmutter
-        export SNANA_SCRATCH="/pscratch/sd/d/desctd"
-        ;;
-    "cori")
-        : # settings for Cori
-        export SNANA_SCRATCH="/global/cscratch1/sd/kessler"
-        ;;
-esac
+export SNANA_SCRATCH="/pscratch/sd/d/desctd"
+export SNANA_LSST_SIM="$SNANA_SCRATCH/SNANA_LSST_SIM"
+export SNANA_YSE_SIM="$SNANA_SCRATCH/SNANA_YSE_SIM"
+
 
 if [[ "$cosmosis" ]];
 then
   wrapcosmosis
 fi
 
-
-export SNANA_LSST_SIM="$SNANA_SCRATCH/SNANA_LSST_SIM"
 
 export SCRATCH_SIMDIR="$SNANA_LSST_SIM"
 export SNANA_ZTF_SIM="$SNANA_SCRATCH/SNANA_ZTF_SIM"
