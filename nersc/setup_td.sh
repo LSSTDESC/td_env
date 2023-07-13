@@ -189,6 +189,9 @@ export SNANA_SCRATCH="/pscratch/sd/d/desctd"
 export SNANA_LSST_SIM="$SNANA_SCRATCH/SNANA_LSST_SIM"
 export SNANA_YSE_SIM="$SNANA_SCRATCH/SNANA_YSE_SIM"
 
+export SCONE_DIR="$TD_SOFTWARE/classifiers/scone"
+export SNN_DIR="$TD_SOFTWARE/classifiers/SuperNNova"
+
 
 if [[ "$cosmosis" ]];
 then
