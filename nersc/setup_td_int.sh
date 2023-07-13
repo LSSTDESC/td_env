@@ -154,25 +154,14 @@ export ELASTICC_HOSTLIB=$ELASTICC_ROOT/HOSTLIB/HOSTLIBS/ONE_YR
 export ELASTICC_WGTMAP=$ELASTICC_ROOT/HOSTLIB/WGTMAPS
 
 
-case $NERSC_HOST in
-    "perlmutter")
-        : # settings for Perlmutter
-        export SNANA_SCRATCH="/pscratch/sd/d/desctd"
-        ;;
-    "cori")
-        : # settings for Cori
-        export SNANA_SCRATCH="/global/cscratch1/sd/kessler"
-        ;;
-esac
-
+export SNANA_SCRATCH="/pscratch/sd/d/desctd"
+export SNANA_LSST_SIM="$SNANA_SCRATCH/SNANA_LSST_SIM"
+export SNANA_YSE_SIM="$SNANA_SCRATCH/SNANA_YSE_SIM"
 
 if [[ "$cosmosis" ]];
 then
   wrapcosmosis
 fi
-
-export SNANA_LSST_SIM="$SNANA_SCRATCH/SNANA_LSST_SIM"
-export SNANA_YSE_SIM="$SNANA_SCRATCH/SNANA_YSE_SIM"
 
 
 export SCRATCH_SIMDIR="$SNANA_LSST_SIM"
