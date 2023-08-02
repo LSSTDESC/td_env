@@ -75,7 +75,8 @@ git clone https://github.com/bayesn/bayesn-public
 #Install RESSPECT
 git clone https://github.com/COINtoolbox/resspect
 cd resspect
-python setup.py install
+#python setup.py install
+python3 -m pip install .
 cd ..
 
 # Grab firecrown source so we have the examples subdirectory
