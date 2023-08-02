@@ -1,3 +1,4 @@
 astrodash
+eazy
 gwemlightcurves
 pysynphot==0.9.14
