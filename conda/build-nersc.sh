@@ -79,6 +79,16 @@ cd resspect
 python3 -m pip install .
 cd ..
 
+# install eazy from source due to inability to install via pip
+git clone https://github.com/gbrammer/eazy-py.git
+### Build the python code
+cd eazy-py
+### Install and run the test suite, which also downloads the templates and
+### filters from the eazy-photoz repository if necessary
+pip install .[test] -r requirements.txt
+pytest
+
+
 # Grab firecrown source so we have the examples subdirectory
 firecrown_ver=$(conda list firecrown | grep firecrown|tr -s " " | cut -d " " -f 2)
 echo $firecrown_ver
@@ -90,6 +100,8 @@ ln -s firecrown-$firecrown_ver firecrown
 # Additional build steps
 bash ./post-conda-build.sh
 
+# Download astrodash models from zenodo as mentioned in astrodash README on github
+curl -LO https://zenodo.org/record/7760927/files/models_v06.zip
 
 python -m compileall $curBuildDir
 
