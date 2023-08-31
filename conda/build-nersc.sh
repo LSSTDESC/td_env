@@ -87,7 +87,8 @@ cd eazy-py
 ### filters from the eazy-photoz repository if necessary
 pip install .[test] -r requirements.txt
 pytest
-
+cd ..
+pip install git+https://github.com/gbrammer/dust_attenuation.git
 
 # Grab firecrown source so we have the examples subdirectory
 firecrown_ver=$(conda list firecrown | grep firecrown|tr -s " " | cut -d " " -f 2)
@@ -101,7 +102,10 @@ ln -s firecrown-$firecrown_ver firecrown
 bash ./post-conda-build.sh
 
 # Download astrodash models from zenodo as mentioned in astrodash README on github
+cd $CONDA_PREFIX/lib/python3.10/site-packages/astrodash
 curl -LO https://zenodo.org/record/7760927/files/models_v06.zip
+unzip models_v06.zip
+cd $curBuildDir
 
 python -m compileall $curBuildDir
 
