@@ -16,7 +16,7 @@ jobs:
     - name: Docker login
       run: echo '${{ secrets.DOCKERHUB_ACCESSTOK }}' | docker login --username heather999 --password-stdin
     - name : Docker prune
-      run: sudo docker system prune && df -h 
+      run: sudo docker system prune --all --force && df -h 
     - name: checkout td_env
       uses: actions/checkout@v3
       with:
