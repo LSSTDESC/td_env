@@ -33,10 +33,11 @@ echo "RUNNING TD_ENV STABLE VERSION"
 # -h help
 # -n Do not setup the LSST Sci Pipelines
 #while getopts e:n: flag
-while getopts "chkns" flag
+while getopts "cghkns" flag
 do
     case "${flag}" in
 	c) cosmosis=1;;
+ 	g) gpuenv=1;;
         k) keepenv=1;;
         n) nolsst=1;;
         s) shifterenv=1;;
@@ -129,10 +130,29 @@ then
   # not allowed on Perlmutter.
   export COSMOSIS_NO_SUBPROCESS=1
 
+elif [ $gpuenv ]
+then
+  echo "Setting up TD GPU env"
+  export TD_ENV="TD-GPU"
+  # Making sure the absolutely necesary modules are loaded for GPU support
+  module load gpu
+  module load craype
+  module load cray-mpich/8.1.25
+  module load cudatoolkit/11.7
+  module load evp-patch
+
+  export DESC_TD_INSTALL=/global/common/software/lsst/gitlab/td_env-dev/dev
+ 
+  source $DESC_TD_INSTALL/conda/etc/profile.d/conda.sh
+  conda activate td-gpu
+
+
 # Setup with LSST Science Pipelines
 elif [ -z "$nolsst" ]
 then
   echo "Setting up TD env with LSST Science Pipelines"
+
+  export TD_ENV="TD-CPU-SCI-PIPE"
   
   export DESC_TD_INSTALL=/global/common/software/lsst/gitlab/td_env-prod/stable
   source $DESC_TD_INSTALL/setup_td_env.sh
