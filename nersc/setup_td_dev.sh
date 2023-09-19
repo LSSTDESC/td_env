@@ -16,27 +16,29 @@ wrapcosmosis() {
 
 echo "RUNNING TD_ENV DEVELOPMENT VERSION"
 
-SCRIPT=${BASH_SOURCE[0]}
+#SCRIPT=${BASH_SOURCE[0]}
 
-usage() {  # Function: Print a help message.
-  echo "-c  --Setup cosmosis."
-  echo -e \\n"Help documentation for ${BOLD}${SCRIPT}"\\n
-  echo "Command line switches are optional. The following switches are recognized."
-  echo "-k  --Setup the env without doing module purge."
-  echo "-n  --Setup the env without the LSST Sci Pipelines."
-  echo "-s  --Setup the env for shifter."
-  exit 0
-}
+#usage() {  # Function: Print a help message.
+#  echo "-c  --Setup cosmosis."
+#  echo -e \\n"Help documentation for ${BOLD}${SCRIPT}"\\n
+#  echo "Command line switches are optional. The following switches are recognized."
+#  echo "-g  --Setup gpu env."
+#  echo "-k  --Setup the env without doing module purge."
+#  echo "-n  --Setup the env without the LSST Sci Pipelines."
+#  echo "-s  --Setup the env for shifter."
+#  exit 0
+#}
 
 
 # optional parameters
 # -h help
 # -n Do not setup the LSST Sci Pipelines
 #while getopts e:n: flag
-while getopts "chkns" flag
+while getopts "cghkns" flag
 do
     case "${flag}" in
 	c) cosmosis=1;;
+	g) gpuenv=1;;
         h) usage;;
         k) keepenv=1;;
         n) nolsst=1;;
@@ -64,7 +66,7 @@ export PYSYN_CDBS=${TD_SOFTWARE}/bayeSN/synphot/grp/redcat/trds
 export VERSION_LIBPYTHON=3.10
 
 
-if [[ -z "$keepenv" ]] && [[ -z $SHIFTER_RUNTIME ]];
+if [[ -z "$keepenv" ]] && [[ -z "$gpuenv" ]] && [[ -z $SHIFTER_RUNTIME ]];
 then
   module purge
 fi
@@ -131,10 +133,29 @@ then
   export COSMOSIS_NO_SUBPROCESS=1
 
 #
+elif [ $gpuenv ]
+then
+  echo "Setting up TD GPU env"
+  export TD_ENV="TD-GPU"
+  # Making sure the absolutely necesary modules are loaded for GPU support
+  module load gpu
+  module load craype
+  module load cray-mpich/8.1.25
+  module load cudatoolkit/11.7
+  module load evp-patch
+
+  export DESC_TD_INSTALL=/global/common/software/lsst/gitlab/td_env-dev/dev
+ 
+  source $DESC_TD_INSTALL/conda/etc/profile.d/conda.sh
+  conda activate td-gpu
+
+
 # Setup with LSST Science Pipelines
 elif [ -z "$nolsst" ]
 then
   echo "Setting up TD env with LSST Science Pipelines"
+
+  export TD_ENV="TD-CPU-SCI-PIPE"
   
   #export DESC_TD_INSTALL=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-prod/stable
   export DESC_TD_INSTALL=/global/common/software/lsst/gitlab/td_env-dev/dev
@@ -166,22 +187,34 @@ fi
 export SNANA_DIR="$TD_SOFTWARE/SNANA"
 export PYTHONPATH=$PYTHONPATH:$SNANA_DIR/src
 
-export SNDATA_ROOT="$TD_SN/SNANA/SNDATA_ROOT"
+export CFS_MIRROR=/pscratch/sd/d/desctd/cfs_mirror
+
+export SNDATA_ROOT=$CFS_MIRROR/SNANA/SNDATA_ROOT
+
 export SNANA_TESTS="$TD_SN/SNANA/SNANA_TESTS"
 export SNANA_SURVEYS="$TD_SN/SNANA/SURVEYS"
 
-export SNANA_LSST_ROOT="$SNANA_SURVEYS/LSST/ROOT"
+export SNANA_LSST_ROOT=$CFS_MIRROR/SNANA/SURVEYS/LSST/ROOT
+export SNANA_LSST_ROOT_LEGACY="/global/cfs/cdirs/lsst/groups/TD/SN/SNANA/SURVEYS/LSST/ROOT"
 export SNANA_LSST_USERS="$SNANA_SURVEYS/LSST/USERS"
-case $NERSC_HOST in
-    "perlmutter")
-        : # settings for Perlmutter
-        export SNANA_SCRATCH="/pscratch/sd/d/desctd"
-        ;;
-    "cori")
-        : # settings for Cori
-        export SNANA_SCRATCH="/global/cscratch1/sd/kessler"
-        ;;
-esac
+
+export SNANA_YSE_ROOT=$CFS_MIRROR/SNANA/SURVEYS/YSE/ROOT
+export SNANA_YSE_USERS="$SNANA_SURVEYS/YSE/USERS"
+
+export PLASTICC_ROOT=$SNANA_LSST_ROOT/PLASTICC
+export PLASTICC_MODELS=$SNANA_LSST_ROOT/PLASTICC/model_libs
+
+export ELASTICC_ROOT=$SNANA_LSST_ROOT/ELASTICC
+export ELASTICC_HOSTLIB=$ELASTICC_ROOT/HOSTLIB/HOSTLIBS/ONE_YR
+export ELASTICC_WGTMAP=$ELASTICC_ROOT/HOSTLIB/WGTMAPS
+
+export SNANA_SCRATCH="/pscratch/sd/d/desctd"
+export SNANA_LSST_SIM="$SNANA_SCRATCH/SNANA_LSST_SIM"
+export SNANA_YSE_SIM="$SNANA_SCRATCH/SNANA_YSE_SIM"
+
+export SCONE_DIR="$TD_SOFTWARE/classifiers/scone"
+export SNN_DIR="$TD_SOFTWARE/classifiers/SuperNNova"
+
 
 if [[ "$cosmosis" ]];
 then
@@ -189,14 +222,9 @@ then
 fi
 
 
-export SNANA_LSST_SIM="$SNANA_SCRATCH/SNANA_LSST_SIM"
-
 export SCRATCH_SIMDIR="$SNANA_LSST_SIM"
 export SNANA_ZTF_SIM="$SNANA_SCRATCH/SNANA_ZTF_SIM"
 export DES_ROOT="$SNANA_SURVEYS/DES/ROOT"
-export PLASTICC_ROOT="$SNANA_SURVEYS/LSST/ROOT/PLASTICC"
-export ELASTICC_ROOT="$SNANA_SURVEYS/LSST/ROOT/ELASTICC"
-export PLASTICC_MODELS="$PLASTICC_ROOT/model_libs"
 export PIPPIN_OUTPUT="$SNANA_SCRATCH/PIPPIN_OUTPUT"
 export PIPPIN_DIR="$TD_SOFTWARE/Pippin"
 export SBATCH_TEMPLATES="$SNANA_LSST_ROOT/SBATCH_TEMPLATES"

@@ -18,27 +18,29 @@ wrapcosmosis() {
 
 echo "RUNNING TD_ENV INTEGRATION VERSION"
 
-SCRIPT=${BASH_SOURCE[0]}
+#SCRIPT=${BASH_SOURCE[0]}
 
-usage() {  # Function: Print a help message.
-  echo -e \\n"Help documentation for ${BOLD}${SCRIPT}"\\n
-  echo "Command line switches are optional. The following switches are recognized."
-  echo "-c  --Setup cosmosis."
-  echo "-k  --Setup the env without doing module purge."
-  echo "-n  --Setup the env without the LSST Sci Pipelines."
-  echo "-s  --Setup the env for shifter."
-  exit 0
-}
+#usage() {  # Function: Print a help message.
+#  echo -e \\n"Help documentation for ${BOLD}${SCRIPT}"\\n
+#  echo "Command line switches are optional. The following switches are recognized."
+#  echo "-c  --Setup cosmosis."
+#  echo "-g  --Setup gpu env."
+#  echo "-k  --Setup the env without doing module purge."
+#  echo "-n  --Setup the env without the LSST Sci Pipelines."
+#  echo "-s  --Setup the env for shifter."
+#  exit 0
+#}
 
 
 # optional parameters
 # -h help
 # -n Do not setup the LSST Sci Pipelines
 #while getopts e:n: flag
-while getopts "chkns" flag
+while getopts "cghkns" flag
 do
     case "${flag}" in
         c) cosmosis=1;;
+        g) gpuenv=1;;
         h) usage;;
         k) keepenv=1;;
         n) nolsst=1;;
@@ -63,7 +65,7 @@ export TD_PUBLIC=/global/cfs/cdirs/lsst/www/DESC_TD_PUBLIC
 
 export PYSYN_CDBS=${TD_SOFTWARE}/bayeSN/synphot/grp/redcat/trds
 
-export VERSION_LIBPYTHON=3.8
+export VERSION_LIBPYTHON=3.10
 
 
 if [[ -z "$keepenv" ]] && [[ -z $SHIFTER_RUNTIME ]];
@@ -77,13 +79,24 @@ then
   source /opt/lsst/software/stack/loadLSST.bash
   setup lsst_distrib
 
+elif [ $gpuenv ]
+then
+  echo "Setting up TD GPU env"
+  export TD_ENV="TD-GPU"
+  export DESC_TD_INSTALL=/global/common/software/lsst/gitlab/td_env-int/integration
+
+  source $DESC_TD_INSTALL/conda/etc/profile.d/conda.sh
+  conda activate td-gpu
+
 # Setup with LSST Science Pipelines
 elif [ -z "$nolsst" ]
 then
   echo "Setting up TD env with LSST Science Pipelines"
+
+  export TD_ENV="TD-CPU-SCI-PIPE"
   
   #export DESC_TD_INSTALL=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-prod/stable
-  export DESC_TD_INSTALL=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-int/integration
+  export DESC_TD_INSTALL=/global/common/software/lsst/gitlab/td_env-int/integration
   source $DESC_TD_INSTALL/setup_td_env.sh
     
   export GSL_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
@@ -148,7 +161,9 @@ export PIPPIN_DIR="$TD_SOFTWARE/Pippin"
 export SBATCH_TEMPLATES="$SNANA_LSST_ROOT/SBATCH_TEMPLATES"
 export SNANA_DEBUG="$SNANA_LSST_USERS/kessler/debug"
 export SNANA_SETUP_COMMAND="source $TD/setup_td_dev.sh"
+export TD_SETUP_COMMAND=$SNANA_SETUP_COMMAND
 export SNANA_IMAGE_DOCKER="lsstdesc/td-env:dev"
+
 
 # Add env var to point to bayeSN install
 export BAYESN_INSTALL=$DESC_TD_INSTALL/bayesn-public

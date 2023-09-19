@@ -1,20 +1,10 @@
 #!/bin/bash
 
-if [ "$NERSC_HOST" == "cori" ]
-then
-  module unload python
-  module swap PrgEnv-intel PrgEnv-gnu
-  module unload craype-network-aries
-  module unload cray-libsci
-  module unload craype
-  module load cray-mpich-abi/7.7.19
-  export LD_LIBRARY_PATH=$CRAY_MPICH_BASEDIR/mpich-gnu-abi/8.2/lib:$LD_LIBRARY_PATH
-else
-  module load PrgEnv-gnu
-  module load cpu
-  module load cray-mpich-abi/8.1.25
-  module load evp-patch
-fi
+module load PrgEnv-gnu
+module load cpu
+module load cray-mpich-abi/8.1.25
+module load evp-patch
+
 
 unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
 
@@ -24,13 +14,13 @@ dmver=$1
 installFlag=$2
 
 export BUILD_ID_DATE=`echo "$(date "+%F-%M-%S")"`
+
 export CI_COMMIT_REF_NAME=prod
 export CI_PIPELINE_ID=$BUILD_ID_DATE
 
 commonIntBuildDir=/global/common/software/lsst/gitlab/td_env-int
 commonDevBuildDir=/global/common/software/lsst/gitlab/td_env-dev
 commonProdBuildDir=/global/common/software/lsst/gitlab/td_env-prod
-
 
 if [ "$CI_COMMIT_REF_NAME" = "integration" ];  # integration
 then
@@ -56,6 +46,8 @@ mkdir -p $curBuildDir
 cp conda/packlist.txt $curBuildDir
 cp conda/post-conda-build.sh $curBuildDir
 cp conda/piplist.txt $curBuildDir
+cp conda/piplist_gpu.txt $curBuildDir
+cp conda/condalist_gpu.txt $curBuildDir
 cp nersc/setup_td_env.sh $curBuildDir
 cp nersc/sitecustomize.py $curBuildDir
 sed -i 's|$1|'$curBuildDir'|g' $curBuildDir/setup_td_env.sh
@@ -83,8 +75,20 @@ git clone https://github.com/bayesn/bayesn-public
 #Install RESSPECT
 git clone https://github.com/COINtoolbox/resspect
 cd resspect
-python setup.py install
+#python setup.py install
+python3 -m pip install .
 cd ..
+
+# install eazy from source due to inability to install via pip
+git clone https://github.com/gbrammer/eazy-py.git
+### Build the python code
+cd eazy-py
+### Install and run the test suite, which also downloads the templates and
+### filters from the eazy-photoz repository if necessary
+pip install .[test] -r requirements.txt
+pytest
+cd ..
+pip install git+https://github.com/gbrammer/dust_attenuation.git
 
 # Grab firecrown source so we have the examples subdirectory
 firecrown_ver=$(conda list firecrown | grep firecrown|tr -s " " | cut -d " " -f 2)
@@ -97,6 +101,11 @@ ln -s firecrown-$firecrown_ver firecrown
 # Additional build steps
 bash ./post-conda-build.sh
 
+# Download astrodash models from zenodo as mentioned in astrodash README on github
+cd $CONDA_PREFIX/lib/python3.10/site-packages/astrodash
+curl -LO https://zenodo.org/record/7760927/files/models_v06.zip
+unzip models_v06.zip
+cd $curBuildDir
 
 python -m compileall $curBuildDir
 
@@ -110,7 +119,7 @@ python $curBuildDir/bayesn-public/fit_sn.py --model T21 --fittmax 5 --metafile $
 # Force data files to be dowloaded during installation
 # python -c "import ligo.em_bright"
 
-conda config --set env_prompt "(lsst-scipipe-$1)" --system
+conda config --set env_prompt "(lsst-scipipe-$1)" --env
 
 conda env export --no-builds > $curBuildDir/td_env-nersc-$CI_PIPELINE_ID-nobuildinfo.yml
 conda env export > $curBuildDir/td_env-nersc-$CI_PIPELINE_ID.yml

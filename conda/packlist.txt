@@ -20,7 +20,9 @@ ligo.skymap
 ligo.em-bright
 lsstdesc-gcr-catalogs
 pygpu
+pyqt
 root_base
+sacc
 sncosmo
 tensorflow
 theano
