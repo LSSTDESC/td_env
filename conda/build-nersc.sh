@@ -74,6 +74,7 @@ pip install --no-cache-dir -r ./piplist.txt
 
 conda clean -y -a 
 
+# Hard-coding this for now for building at NERSC
 export PYSYN_CDBS=/global/cfs/cdirs/lsst/groups/TD/SOFTWARE/bayeSN/synphot/grp/redcat/trds
 
 # Install bayeSN
@@ -114,10 +115,8 @@ curl -LO https://zenodo.org/record/7760927/files/models_v06.zip
 unzip models_v06.zip
 cd $curBuildDir
 
-#python -m compileall $curBuildDir
+python -m compileall $curBuildDir
 
-# Hard-coding this for now for building at NERSC
-export PYSYN_CDBS=/global/cfs/cdirs/lsst/groups/TD/SOFTWARE/bayeSN/synphot/grp/redcat/trds
 #python $curBuildDir/bayesn-public/fit_sn.py --model T21 --metafile $curBuildDir/bayesn-public/demo_lcs/meta/T21_demo_meta.txt --filters griz --opt $curBuildDir/bayesn-public/demo_lcs/Foundation_DR1/Foundation_DR1_ASASSN-16cs.txt .
 python $curBuildDir/bayesn-public/fit_sn.py --model T21 --fittmax 5 --metafile $curBuildDir/bayesn-public/demo_lcs/meta/T21_demo_meta.txt --filters griz --opt $curBuildDir/bayesn-public/demo_lcs/Foundation_DR1/Foundation_DR1_ASASSN-16cs.txt $TMPDIR
 
