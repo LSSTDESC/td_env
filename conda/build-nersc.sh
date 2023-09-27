@@ -53,6 +53,9 @@ cp nersc/sitecustomize.py $curBuildDir
 sed -i 's|$1|'$curBuildDir'|g' $curBuildDir/setup_td_env.sh
 cd $curBuildDir
 
+export PYTHONNOUSERSITE=1
+export CONDA_CACHE_DIR=$curBuildDir/conda/pkgs
+
 
 # Build Steps
 curl -LO https://ls.st/lsstinstall
@@ -62,12 +65,16 @@ bash ./lsstinstall -X $1
 source ./loadLSST.bash
 eups distrib install -t $1 lsst_distrib --nolocks
 
+python -m pip cache purge
+
 mamba install -c conda-forge -y mpich=3.4.*=external_*
 
 mamba install -c conda-forge -y --file ./packlist.txt
 pip install --no-cache-dir -r ./piplist.txt
 
 conda clean -y -a 
+
+export PYSYN_CDBS=/global/cfs/cdirs/lsst/groups/TD/SOFTWARE/bayeSN/synphot/grp/redcat/trds
 
 # Install bayeSN
 git clone https://github.com/bayesn/bayesn-public
@@ -76,7 +83,7 @@ git clone https://github.com/bayesn/bayesn-public
 git clone https://github.com/COINtoolbox/resspect
 cd resspect
 #python setup.py install
-python3 -m pip install .
+python3 -m pip install --no-deps --no-cache-dir .
 cd ..
 
 # install eazy from source due to inability to install via pip
@@ -85,10 +92,10 @@ git clone https://github.com/gbrammer/eazy-py.git
 cd eazy-py
 ### Install and run the test suite, which also downloads the templates and
 ### filters from the eazy-photoz repository if necessary
-pip install .[test] -r requirements.txt
+pip install --no-cache-dir .[test] -r requirements.txt
 pytest
 cd ..
-pip install git+https://github.com/gbrammer/dust_attenuation.git
+pip install --no-cache-dir git+https://github.com/gbrammer/dust_attenuation.git
 
 # Grab firecrown source so we have the examples subdirectory
 firecrown_ver=$(conda list firecrown | grep firecrown|tr -s " " | cut -d " " -f 2)
@@ -107,7 +114,7 @@ curl -LO https://zenodo.org/record/7760927/files/models_v06.zip
 unzip models_v06.zip
 cd $curBuildDir
 
-python -m compileall $curBuildDir
+#python -m compileall $curBuildDir
 
 # Hard-coding this for now for building at NERSC
 export PYSYN_CDBS=/global/cfs/cdirs/lsst/groups/TD/SOFTWARE/bayeSN/synphot/grp/redcat/trds
@@ -118,6 +125,8 @@ python $curBuildDir/bayesn-public/fit_sn.py --model T21 --fittmax 5 --metafile $
 # Will revisit if it becomes an issue: https://docs.astropy.org/en/stable/utils/data.html
 # Force data files to be dowloaded during installation
 # python -c "import ligo.em_bright"
+
+conda env config vars set PYTHONNOUSERSITE=1
 
 conda config --set env_prompt "(lsst-scipipe-$1)" --env
 

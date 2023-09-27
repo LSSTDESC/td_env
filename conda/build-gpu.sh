@@ -17,6 +17,8 @@ cd $curBuildDir
 
 # Build Steps
 
+export PYTHONNOUSERSITE=1
+
 source $curBuildDir/conda/etc/profile.d/conda.sh
 conda create -y --name td-gpu python=3.10
 
@@ -31,6 +33,7 @@ pip install --no-cache-dir -r ./piplist_gpu.txt
 
 conda clean -y -a 
 
+conda env config vars set PYTHONNOUSERSITE=1
 
 #python -m compileall $curBuildDir
 
