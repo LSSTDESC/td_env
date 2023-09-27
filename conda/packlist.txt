@@ -34,3 +34,6 @@ multiprocess>=0.70.8
 nestcheck
 pymultinest
 pyxdg
+# adding for resspect
+seaborn
+xgboost
