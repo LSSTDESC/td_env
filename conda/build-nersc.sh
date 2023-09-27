@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 module load PrgEnv-gnu
 module load cpu
 module load cray-mpich-abi/8.1.25
@@ -15,7 +14,8 @@ dmver=$1
 installFlag=$2
 
 export BUILD_ID_DATE=`echo "$(date "+%F-%M-%S")"`
-export CI_COMMIT_REF_NAME=dev
+
+export CI_COMMIT_REF_NAME=prod
 export CI_PIPELINE_ID=$BUILD_ID_DATE
 
 commonIntBuildDir=/global/common/software/lsst/gitlab/td_env-int

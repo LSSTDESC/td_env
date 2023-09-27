@@ -16,17 +16,17 @@ wrapcosmosis() {
 
 echo "RUNNING TD_ENV STABLE VERSION"
 
-SCRIPT=${BASH_SOURCE[0]}
+#SCRIPT=${BASH_SOURCE[0]}
 
-usage() {  # Function: Print a help message.
-  echo "-c  --Setup cosmosis."
-  echo -e \\n"Help documentation for ${BOLD}${SCRIPT}"\\n
-  echo "Command line switches are optional. The following switches are recognized."
-  echo "-k  --Setup the env without doing module purge."
-  echo "-n  --Setup the env without the LSST Sci Pipelines."
-  echo "-s  --Setup the env for shifter."
-  exit 0
-}
+#usage() {  # Function: Print a help message.
+#  echo "-c  --Setup cosmosis."
+#  echo -e \\n"Help documentation for ${BOLD}${SCRIPT}"\\n
+#  echo "Command line switches are optional. The following switches are recognized."
+#  echo "-k  --Setup the env without doing module purge."
+#  echo "-n  --Setup the env without the LSST Sci Pipelines."
+#  echo "-s  --Setup the env for shifter."
+# exit 0
+#}
 
 
 # optional parameters
@@ -37,7 +37,6 @@ while getopts "chkns" flag
 do
     case "${flag}" in
 	c) cosmosis=1;;
-        h) usage;;
         k) keepenv=1;;
         n) nolsst=1;;
         s) shifterenv=1;;
@@ -61,7 +60,7 @@ export TD_SOFTWARE=${TD}/SOFTWARE
 export TD_PUBLIC=/global/cfs/cdirs/lsst/www/DESC_TD_PUBLIC
 
 export PYSYN_CDBS=${TD_SOFTWARE}/bayeSN/synphot/grp/redcat/trds
-export VERSION_LIBPYTHON=3.8
+export VERSION_LIBPYTHON=3.10
 
 if [[ -z "$keepenv" ]] && [[ -z $SHIFTER_RUNTIME ]];
 then
@@ -112,23 +111,30 @@ then
   unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
   # SHIFTER LSST Sci Pipelines env does not have the "-exact" suffice, 
   # while local NERSC builds do (mystery)
-  export LSST_CONDA_ENV_NAME=lsst-scipipe-2.0.0
+  export LSST_CONDA_ENV_NAME=lsst-scipipe-4.1.0
   source /opt/lsst/software/stack/loadLSST.bash
   setup lsst_distrib
   #
    # For cosmosis and firecrown.  Should try to find a better way to set these
-  export CSL_DIR=$CONDA_PREFIX/lib/python3.8/site-packages/cosmosis/cosmosis-standard-library
-  export FIRECROWN_SITE_PACKAGES=$CONDA_PREFIX/lib/python3.8/site-packages
+  export CSL_DIR=$CONDA_PREFIX/lib/python3.10/site-packages/cosmosis/cosmosis-standard-library
+  export FIRECROWN_SITE_PACKAGES=$CONDA_PREFIX/lib/python3.10/site-packages
   export FIRECROWN_DIR=/opt/lsst/software/stack/firecrown
   export FIRECROWN_EXAMPLES_DIR=$FIRECROWN_DIR/examples
+
+  # Fixes missing support in the Perlmutter libfabric:
+  # https://docs.nersc.gov/development/languages/python/using-python-perlmutter/  #missing-support-for-matched-proberecv
+  export MPI4PY_RC_RECV_MPROBE=0
+
+  # Tries to prevent cosmosis from launching any subprocesses, since that is
+  # not allowed on Perlmutter.
+  export COSMOSIS_NO_SUBPROCESS=1
 
 # Setup with LSST Science Pipelines
 elif [ -z "$nolsst" ]
 then
   echo "Setting up TD env with LSST Science Pipelines"
   
-  export DESC_TD_INSTALL=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-prod/stable
-  #export DESC_TD_INSTALL=/global/common/software/lsst/cori-haswell-gcc/stack/td_env-dev/dev
+  export DESC_TD_INSTALL=/global/common/software/lsst/gitlab/td_env-prod/stable
   source $DESC_TD_INSTALL/setup_td_env.sh
   export ROOT_DIR=$ROOTSYS
   export GSL_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
@@ -159,22 +165,33 @@ fi
 export SNANA_DIR="$TD_SOFTWARE/SNANA"
 export PYTHONPATH=$PYTHONPATH:$SNANA_DIR/src
 
-export SNDATA_ROOT="$TD_SN/SNANA/SNDATA_ROOT"
+export CFS_MIRROR=/pscratch/sd/d/desctd/cfs_mirror
+
+export SNDATA_ROOT=$CFS_MIRROR/SNANA/SNDATA_ROOT
 export SNANA_TESTS="$TD_SN/SNANA/SNANA_TESTS"
 export SNANA_SURVEYS="$TD_SN/SNANA/SURVEYS"
 
-export SNANA_LSST_ROOT="$SNANA_SURVEYS/LSST/ROOT"
+export SNANA_LSST_ROOT=$CFS_MIRROR/SNANA/SURVEYS/LSST/ROOT
+export SNANA_LSST_ROOT_LEGACY="/global/cfs/cdirs/lsst/groups/TD/SN/SNANA/SURVEYS/LSST/ROOT"
 export SNANA_LSST_USERS="$SNANA_SURVEYS/LSST/USERS"
-case $NERSC_HOST in
-    "perlmutter")
-        : # settings for Perlmutter
-        export SNANA_SCRATCH="/pscratch/sd/d/desctd"
-        ;;
-    "cori")
-        : # settings for Cori
-        export SNANA_SCRATCH="/global/cscratch1/sd/kessler"
-        ;;
-esac
+
+export SNANA_YSE_ROOT=$CFS_MIRROR/SNANA/SURVEYS/YSE/ROOT
+export SNANA_YSE_USERS="$SNANA_SURVEYS/YSE/USERS"
+
+export PLASTICC_ROOT=$SNANA_LSST_ROOT/PLASTICC
+export PLASTICC_MODELS=$SNANA_LSST_ROOT/PLASTICC/model_libs
+
+export ELASTICC_ROOT=$SNANA_LSST_ROOT/ELASTICC
+export ELASTICC_HOSTLIB=$ELASTICC_ROOT/HOSTLIB/HOSTLIBS/ONE_YR
+export ELASTICC_WGTMAP=$ELASTICC_ROOT/HOSTLIB/WGTMAPS
+
+export SNANA_SCRATCH="/pscratch/sd/d/desctd"
+export SNANA_LSST_SIM="$SNANA_SCRATCH/SNANA_LSST_SIM"
+export SNANA_YSE_SIM="$SNANA_SCRATCH/SNANA_YSE_SIM"
+
+export SCONE_DIR="$TD_SOFTWARE/classifiers/scone"
+export SNN_DIR="$TD_SOFTWARE/classifiers/SuperNNova"
+
 
 if [[ "$cosmosis" ]];
 then
@@ -182,19 +199,15 @@ then
 fi
 
 
-export SNANA_LSST_SIM="$SNANA_SCRATCH/SNANA_LSST_SIM"
-
 export SCRATCH_SIMDIR="$SNANA_LSST_SIM"
 export SNANA_ZTF_SIM="$SNANA_SCRATCH/SNANA_ZTF_SIM"
 export DES_ROOT="$SNANA_SURVEYS/DES/ROOT"
-export PLASTICC_ROOT="$SNANA_SURVEYS/LSST/ROOT/PLASTICC"
-export ELASTICC_ROOT="$SNANA_SURVEYS/LSST/ROOT/ELASTICC"
-export PLASTICC_MODELS="$PLASTICC_ROOT/model_libs"
 export PIPPIN_OUTPUT="$SNANA_SCRATCH/PIPPIN_OUTPUT"
 export PIPPIN_DIR="$TD_SOFTWARE/Pippin"
 export SBATCH_TEMPLATES="$SNANA_LSST_ROOT/SBATCH_TEMPLATES"
 export SNANA_DEBUG="$SNANA_LSST_USERS/kessler/debug"
 export SNANA_SETUP_COMMAND="source $TD/setup_td.sh"
+export TD_SETUP_COMMAND=$SNANA_SETUP_COMMAND
 export SNANA_IMAGE_DOCKER="lsstdesc/td-env:stable"
 
 # Add env var to point to bayeSN install

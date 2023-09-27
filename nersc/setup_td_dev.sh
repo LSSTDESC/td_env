@@ -149,7 +149,7 @@ then
   source $DESC_TD_INSTALL/conda/etc/profile.d/conda.sh
   conda activate td-gpu
 
-#
+
 # Setup with LSST Science Pipelines
 elif [ -z "$nolsst" ]
 then
