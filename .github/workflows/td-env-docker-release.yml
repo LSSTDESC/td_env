@@ -7,10 +7,34 @@ on:
 jobs:
   build:
     name: Build on Ubuntu
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
+    # https://github.com/jlumbroso/free-disk-space/issues/14
+    - name: Update Package List and Remove Dotnet
+      run: |
+        sudo apt-get update
+        sudo apt-get remove -y '^dotnet-.*'
+    - name: Free Disk Space (Ubuntu)
+      uses: jlumbroso/free-disk-space@main
+      with:
+        # this might remove tools that are actually needed,
+        # if set to "true" but frees about 6 GB
+        tool-cache: false    
+        # all of these default to true, but feel free to set to
+        # "false" if necessary for your workflow
+        android: true
+        dotnet: true
+        haskell: true
+        large-packages: true
+        docker-images: true
+        swap-storage: true
     - name: Docker login
-      run: echo '${{ secrets.DOCKERHUB_ACCESSTOK }}' | docker login --username heather999 --password-stdin    
+      uses: docker/login-action@v2
+      with:
+        username: heather999
+        password: '${{ secrets.DOCKERHUB_ACCESSTOK }}' 
+    #- name: Docker login
+    #  run: echo '${{ secrets.DOCKERHUB_ACCESSTOK }}' | docker login --username heather999 --password-stdin    
     - name : date 
       run: echo "DATE_TAG=$(date "+%F")" >> $GITHUB_ENV      
     - name: get docker image, test, tag, push
