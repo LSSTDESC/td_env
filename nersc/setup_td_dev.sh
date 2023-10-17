@@ -61,7 +61,7 @@ export TD_SN=${TD}/SN
 export TD_SOFTWARE=${TD}/SOFTWARE
 export TD_PUBLIC=/global/cfs/cdirs/lsst/www/DESC_TD_PUBLIC
 
-export PYSYN_CDBS=${TD_SOFTWARE}/bayeSN/synphot/grp/redcat/trds
+#export PYSYN_CDBS=${TD_SOFTWARE}/bayeSN/synphot/grp/redcat/trds
 
 export VERSION_LIBPYTHON=3.10
 
@@ -141,7 +141,7 @@ then
   module load gpu
   module load craype
   module load cray-mpich/8.1.25
-  module load cudatoolkit/11.7
+#  module load cudatoolkit/11.7
   module load evp-patch
 
   export DESC_TD_INSTALL=/global/common/software/lsst/gitlab/td_env-dev/dev
@@ -234,7 +234,7 @@ export TD_SETUP_COMMAND=$SNANA_SETUP_COMMAND
 export SNANA_IMAGE_DOCKER="lsstdesc/td-env:dev"
 
 # Add env var to point to bayeSN install
-export BAYESN_INSTALL=$DESC_TD_INSTALL/bayesn-public
+#export BAYESN_INSTALL=$DESC_TD_INSTALL/bayesn-public
 
 
 export PATH=$PATH:${SNANA_DIR}/bin:${SNANA_DIR}/util:${PIPPIN_DIR}
