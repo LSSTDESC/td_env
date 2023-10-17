@@ -20,7 +20,7 @@ cd /opt/lsst/software/stack
 #Install RESSPECT
 git clone https://github.com/COINtoolbox/resspect
 cd resspect
-python3 -m pip install .
+python3 -m pip install --no-deps --no-cache-dir .
 cd ..
 
 # install eazy from source due to inability to install via pip
