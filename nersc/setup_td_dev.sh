@@ -145,6 +145,9 @@ then
   module load evp-patch
 
   export DESC_TD_INSTALL=/global/common/software/lsst/gitlab/td_env-dev/dev
+
+  export DESC_BAYESN_FILTERS=/dvs_ro/cfs/cdirs/lsst/groups/TD/SOFTWARE/bayeSN/bayesn-filters
+  export DESC_BAYESN_SAMPLE_DATA=/dvs_ro/cfs/cdirs/lsst/groups/TD/SOFTWARE/bayeSN/sample_data
  
   source $DESC_TD_INSTALL/conda/etc/profile.d/conda.sh
   conda activate td-gpu
