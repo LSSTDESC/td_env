@@ -49,11 +49,11 @@ do
 done
 
 # Check to see if this setup script has already been run in this shell
-if [ $TD ]
-then
-    echo "td_env is already set up"
-    return 0
-fi
+#if [ $TD ]
+#then
+#    echo "td_env is already set up"
+#    return 0
+#fi
 
 export TD=/global/cfs/cdirs/lsst/groups/TD
 export TD_ALERTS=${TD}/ALERTS
