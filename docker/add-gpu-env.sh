@@ -26,5 +26,5 @@ conda env config vars set PYTHONNOUSERSITE=1
 
 conda config --set env_prompt "({name})" --env
 
-conda env export --no-builds > $curBuildDir/td_env-nersc-gpu-nobuildinfo.yml
-conda env export > $curBuildDir/td_env-nersc-gpu.yml
+conda env export --no-builds > /opt/lsst/software/stack/td_env-nersc-gpu-nobuildinfo.yml
+conda env export > /opt/lsst/software/stack/td_env-nersc-gpu.yml
