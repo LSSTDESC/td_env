@@ -1,5 +1,6 @@
 #!/bin/bash
 
+cd /opt/lsst/software/stack
 #source /opt/lsst/software/stack/loadLSST.bash
 #source /opt/lsst/software/stack/conda/current/etc/profile.d/conda.sh
 source /opt/lsst/software/stack/conda/current/bin/activate
