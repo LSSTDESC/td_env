@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # yum install -y wget which  # Handled in dockerfile
+yum install -y unzip  # needed later to unzip config files for TD env
 
 source /opt/lsst/software/stack/loadLSST.bash
 
