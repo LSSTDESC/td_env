@@ -141,7 +141,7 @@ then
   module load gpu
   module load craype
   module load cray-mpich/8.1.25
-#  module load cudatoolkit/11.7
+  module unload cudatoolkit
   module load evp-patch
 
   export DESC_TD_INSTALL=/global/common/software/lsst/gitlab/td_env-dev/dev
