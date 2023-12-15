@@ -2,12 +2,15 @@ arviz
 astropy
 bokeh
 colorama
+coloredlogs
 cudatoolkit==11.8
 extinction
+f90nml
 george
 h5py
 ipykernel
 jupyter
+lsstdesc-diffsky
 matplotlib
 mpi4py
 natsort

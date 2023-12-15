@@ -20,16 +20,23 @@ cd $curBuildDir
 export PYTHONNOUSERSITE=1
 
 source $curBuildDir/conda/etc/profile.d/conda.sh
-conda create -y --name td-gpu python=3.10
+conda create -y --name td-gpu python=3.11
 
 conda activate td-gpu
 
-mamba install -y jaxlib=*=*cuda* jax cuda-nvcc -c conda-forge -c nvidia
-# Install pytorch was 11.7, trying 11.8
+CONDA_OVERRIDE_CUDA="11.8" mamba install -y "tensorflow==2.14.0=cuda118*" -c conda-forge
 mamba install -y  pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia
+#mamba install -y jaxlib=*=*cuda* jax cuda-nvcc -c conda-forge -c nvidia
 mamba install -c conda-forge -y --file ./condalist_gpu.txt
+#
+#
 # Install mpi4py
 #MPICC="cc -shared" pip install --force --no-cache-dir --no-binary=mpi4py mpi4py
+# Using pip install for jax until I can sort out issue installing alongside 
+# tensorflow using conda-forge
+#
+pip install --upgrade "jax[cuda11_pip]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+
 pip install --no-cache-dir -r ./piplist_gpu.txt
 
 #install bayeSN
