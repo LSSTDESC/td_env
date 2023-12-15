@@ -1,7 +1,8 @@
 #!/bin/bash
 
 #source /opt/lsst/software/stack/loadLSST.bash
-source /opt/lsst/software/stack/conda/etc/profile.d/conda.sh
+#source /opt/lsst/software/stack/conda/current/etc/profile.d/conda.sh
+source /opt/lsst/software/stack/conda/current/bin/activate
 conda create -y --name td-gpu python=3.11
 
 conda activate td-gpu
