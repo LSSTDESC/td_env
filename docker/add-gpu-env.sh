@@ -21,7 +21,7 @@ cd /opt/lsst/software/stack
 git clone https://github.com/bayesn/bayesn.git
 cd bayesn
 python3 -m pip install --no-deps --no-cache-dir .
-
+cd ..
 conda clean -y -a 
 
 conda env config vars set PYTHONNOUSERSITE=1
