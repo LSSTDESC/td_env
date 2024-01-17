@@ -237,14 +237,12 @@ export PIPPIN_DIR="$TD_SOFTWARE/Pippin"
 export SBATCH_TEMPLATES="$SNANA_LSST_ROOT/SBATCH_TEMPLATES"
 export SNANA_DEBUG="$SNANA_LSST_USERS/kessler/debug"
 
-# Assumes that if we setup GPU environment the first time, we want the GPU env for all time in this set of runs
-if [[ -z "$gpuenv" ]]
-then
-    export SNANA_SETUP_COMMAND="source $TD/setup_td_dev.sh"
-else
-    export SNANA_SETUP_COMMAND="source $TD/setup_td_dev.sh -g"
+if [[ "$gpuenv" ]]
+    export TD_GPU_ENV=1
+    export SNANA_GPU_ENV=1
 fi
 
+export SNANA_SETUP_COMMAND="source $TD/setup_td_dev.sh"
 export TD_SETUP_COMMAND=$SNANA_SETUP_COMMAND
 export SNANA_IMAGE_DOCKER="lsstdesc/td-env:dev"
 
