@@ -238,11 +238,13 @@ export SBATCH_TEMPLATES="$SNANA_LSST_ROOT/SBATCH_TEMPLATES"
 export SNANA_DEBUG="$SNANA_LSST_USERS/kessler/debug"
 
 if [[ "$gpuenv" ]]
+then
     export TD_GPU_ENV=1
     export SNANA_GPU_ENV=1
+    export SNANA_SETUP_COMMAND="source $TD/setup_td_dev.sh -g"
+else
+    export SNANA_SETUP_COMMAND="source $TD/setup_td_dev.sh"
 fi
-
-export SNANA_SETUP_COMMAND="source $TD/setup_td_dev.sh"
 export TD_SETUP_COMMAND=$SNANA_SETUP_COMMAND
 export SNANA_IMAGE_DOCKER="lsstdesc/td-env:dev"
 
