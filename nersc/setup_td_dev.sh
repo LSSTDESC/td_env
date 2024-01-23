@@ -140,7 +140,7 @@ then
   # Making sure the absolutely necesary modules are loaded for GPU support
   module load gpu
   module load craype
-  module load cray-mpich/8.1.25
+  module load cray-mpich-abi
   module unload cudatoolkit
   module load evp-patch
 
