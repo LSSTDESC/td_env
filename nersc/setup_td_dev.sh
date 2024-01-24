@@ -71,67 +71,39 @@ then
   module purge
 fi
 
-# setup without LSST Science Pipelines
-# Broken since March 2022 Cori OS Upgrade
-if [[ $nolsst ]];
+ 
+
+if [ $shifterenv ] || [ $SHIFTER_RUNTIME ]
 then
-  module unload python
-  module unload PrgEnv-intel/6.0.5
-  module load PrgEnv-gnu/6.0.5
-  module swap gcc gcc/9.3.0
-  module rm craype-network-aries
-  module rm cray-libsci
-  module unload craype
-  module load cfitsio/3.47
-  module load gsl
-  module load root/6.18.00-py3
-  module load intel/19.1.3.304  # for CosmoMC (Mar 5 2021)
-  export CC=gcc
-
-  export COSMOMC_DIR="$SN_GROUP/CosmoMCBBC"
-  export PATH=$PATH:${COSMOMC_DIR}
-
-  # Set up SN python
-  export LSST_INST_DIR=/global/common/software/lsst/common/miniconda
-  export SN_PYTHON_VER=sn-py
-  module unload python
-  unset PYTHONHOME
-  unset PYTHONPATH
-  export PYTHONNOUSERSITE=' '
-
-  # Just in case GCRCatalogs is installed
-  export DESC_GCR_SITE='nersc'
-
-  source $LSST_INST_DIR/$SN_PYTHON_VER/etc/profile.d/conda.sh
-  conda activate root
-  OUTPUTPY="$(which python)"
-  echo Now using "${OUTPUTPY}"
-
-  # Aug 24 2020 RK - silly hack for CFITSIO
-  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CFITSIO_DIR/lib
-
-elif [ $shifterenv ] || [ $SHIFTER_RUNTIME ]
-then
-  unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
-  # SHIFTER LSST Sci Pipelines env does not have the "-exact" suffice, while local NERSC builds do (mystery)
-  export LSST_CONDA_ENV_NAME=lsst-scipipe-4.1.0
-  source /opt/lsst/software/stack/loadLSST.bash
-  setup lsst_distrib
+  if [ $gpuenv ]
+  then
+    echo "Setting up TD GPU env in Shifter"
+    export TD_ENV="TD-GPU"
+    export DESC_TD_INSTALL=/opt/lsst/software/stack/conda/current
+ 
+    source $DESC_TD_INSTALL/bin/activate
+    conda activate td-gpu
+  else
+    unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
+    # SHIFTER LSST Sci Pipelines env does not have the "-exact" suffice, while local NERSC builds do (mystery)
+    export LSST_CONDA_ENV_NAME=lsst-scipipe-4.1.0
+    source /opt/lsst/software/stack/loadLSST.bash
+    setup lsst_distrib
   
-  # For cosmosis and firecrown.  Should try to find a better way to set these
-  export CSL_DIR=$CONDA_PREFIX/lib/python3.10/site-packages/cosmosis/cosmosis-standard-library
-  export FIRECROWN_SITE_PACKAGES=$CONDA_PREFIX/lib/python3.10/site-packages
-  export FIRECROWN_DIR=/opt/lsst/software/stack/firecrown
-  export FIRECROWN_EXAMPLES_DIR=$FIRECROWN_DIR/examples
+    # For cosmosis and firecrown.  Should try to find a better way to set these
+    export CSL_DIR=$CONDA_PREFIX/lib/python3.10/site-packages/cosmosis/cosmosis-standard-library
+    export FIRECROWN_SITE_PACKAGES=$CONDA_PREFIX/lib/python3.10/site-packages
+    export FIRECROWN_DIR=/opt/lsst/software/stack/firecrown
+    export FIRECROWN_EXAMPLES_DIR=$FIRECROWN_DIR/examples
 
-  # Fixes missing support in the Perlmutter libfabric:
-  # https://docs.nersc.gov/development/languages/python/using-python-perlmutter/  #missing-support-for-matched-proberecv
-  export MPI4PY_RC_RECV_MPROBE=0
+    # Fixes missing support in the Perlmutter libfabric:
+    # https://docs.nersc.gov/development/languages/python/using-python-perlmutter/  #missing-support-for-matched-proberecv
+    export MPI4PY_RC_RECV_MPROBE=0
 
-  # Tries to prevent cosmosis from launching any subprocesses, since that is
-  # not allowed on Perlmutter.
-  export COSMOSIS_NO_SUBPROCESS=1
-
+    # Tries to prevent cosmosis from launching any subprocesses, since that is
+    # not allowed on Perlmutter.
+    export COSMOSIS_NO_SUBPROCESS=1
+  fi
 #
 elif [ $gpuenv ]
 then
@@ -145,9 +117,6 @@ then
   module load evp-patch
 
   export DESC_TD_INSTALL=/global/common/software/lsst/gitlab/td_env-dev/dev
-
-#  export DESC_BAYESN_FILTERS=/dvs_ro/cfs/cdirs/lsst/groups/TD/SOFTWARE/bayeSN/bayesn-filters
-#  export DESC_BAYESN_SAMPLE_DATA=/dvs_ro/cfs/cdirs/lsst/groups/TD/SOFTWARE/bayeSN/sample_data
  
   source $DESC_TD_INSTALL/conda/etc/profile.d/conda.sh
   conda activate td-gpu
