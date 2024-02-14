@@ -17,10 +17,13 @@ pip install --upgrade "jax[cuda11_pip]" -f https://storage.googleapis.com/jax-re
 pip install --no-cache-dir -r ./piplist_gpu.txt
 
 cd /opt/lsst/software/stack
-#install bayeSN
-git clone https://github.com/bayesn/bayesn.git
+#install specific version of bayeSN
+curl -LO https://github.com/bayesn/bayesn/archive/refs/tags/v0.3.1.tar.gz
+tar xzf v0.3.1.tar.gz
+ln -s bayesn-0.3.1 bayesn
 cd bayesn
 python3 -m pip install --no-deps --no-cache-dir .
+
 cd ..
 conda clean -y -a 
 
