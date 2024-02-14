@@ -63,7 +63,7 @@ export TD_PUBLIC=/global/cfs/cdirs/lsst/www/DESC_TD_PUBLIC
 
 #export PYSYN_CDBS=${TD_SOFTWARE}/bayeSN/synphot/grp/redcat/trds
 
-export VERSION_LIBPYTHON=3.10
+#export VERSION_LIBPYTHON=3.10
 
 
 if [[ -z "$keepenv" ]] && [[ -z "$gpuenv" ]] && [[ -z $SHIFTER_RUNTIME ]];
@@ -83,12 +83,21 @@ then
     source $DESC_TD_INSTALL/etc/profile.d/conda.sh
    # source $DESC_TD_INSTALL/bin/activate
     conda activate td-gpu
+    export GSL_DIR=$CONDA_PREFIX
+    export CFITSIO_DIR=$CONDA_PREFIX
+    export YAML_DIR=$CONDA_PREFIX
+    export ROOT_DIR=$ROOTSYS
   else
+    export TD_ENV="TD-CPU-SCI-PIPE"
     unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
     # SHIFTER LSST Sci Pipelines env does not have the "-exact" suffice, while local NERSC builds do (mystery)
     export LSST_CONDA_ENV_NAME=lsst-scipipe-4.1.0
     source /opt/lsst/software/stack/loadLSST.bash
     setup lsst_distrib
+    export GSL_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
+    export CFITSIO_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
+    export YAML_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
+    export ROOT_DIR=$ROOTSYS
   
     # For cosmosis and firecrown.  Should try to find a better way to set these
     export CSL_DIR=$CONDA_PREFIX/lib/python3.10/site-packages/cosmosis/cosmosis-standard-library
@@ -121,6 +130,10 @@ then
   source $DESC_TD_INSTALL/conda/etc/profile.d/conda.sh
   conda activate td-gpu
 
+  export GSL_DIR=$CONDA_PREFIX
+  export CFITSIO_DIR=$CONDA_PREFIX
+  export YAML_DIR=$CONDA_PREFIX
+  export ROOT_DIR=$ROOTSYS
 
 # Setup with LSST Science Pipelines
 elif [ -z "$nolsst" ]
@@ -148,6 +161,11 @@ then
   #fi
 
 fi
+
+# Set this after conda environment is setup
+python_ver_major=$(python -c 'import sys; print(sys.version_info.major)')
+python_ver_minor=$(python -c 'import sys; print(sys.version_info.minor)')
+export VERSION_LIBPYTHON="$python_ver_major.$python_ver_minor"
 
 # DIA Environment Variables
 

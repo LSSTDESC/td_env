@@ -1,12 +1,14 @@
 arviz
 astropy
 bokeh
+cfitsio
 colorama
 coloredlogs
 cudatoolkit==11.8
 extinction
 f90nml
 george
+gsl
 h5py
 ipykernel
 jupyter
@@ -21,6 +23,7 @@ pandas
 pybind11
 pytest
 pyyaml
+root_base
 ruamel.yaml
 seaborn
 scipy
