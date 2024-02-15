@@ -20,6 +20,7 @@ cd /opt/lsst/software/stack
 #install specific version of bayeSN
 curl -LO https://github.com/bayesn/bayesn/archive/refs/tags/v0.3.1.tar.gz
 tar xzf v0.3.1.tar.gz
+rm v0.3.1.tar.gz
 ln -s bayesn-0.3.1 bayesn
 cd bayesn
 python3 -m pip install --no-deps --no-cache-dir .
