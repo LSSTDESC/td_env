@@ -52,15 +52,17 @@ jobs:
         ls $GITHUB_WORKSPACE
         echo $GITHUB_WORKSPACE
         ls $GITHUB_WORKSPACE/conda
-        docker run -u root -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE --name="install-mpich" lsstsqre/centos:7-stack-lsst_distrib-w_2022_32 /bin/bash /$GITHUB_WORKSPACE/docker/install-mpich.sh
+        docker run -u root --label=lsstdesc.build=lsstdesc-test -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE --name="install-mpich" lsstsqre/centos:7-stack-lsst_distrib-w_2022_32 /bin/bash /$GITHUB_WORKSPACE/docker/install-mpich.sh
         docker commit -m"initial testing" install-mpich lsstdesc/td-dev:mpich
         docker rmi -f lsstsqre/centos:7-stack-lsst_distrib-w_2022_32
-        docker run -u lsst -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE -w $GITHUB_WORKSPACE/conda --name="td-test-env" lsstdesc/td-dev:mpich /bin/bash /$GITHUB_WORKSPACE/docker/update-docker.sh ${{env.LSST_TAG}}
+        docker run -u lsst --label=lsstdesc.build=lsstdesc-step2 -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE -w $GITHUB_WORKSPACE/conda --name="td-test-env" lsstdesc/td-dev:mpich /bin/bash /$GITHUB_WORKSPACE/docker/update-docker.sh ${{env.LSST_TAG}}
         docker commit -m"initial testing" td-test-env lsstdesc/td-dev:test
         docker rmi -f lsstdesc/td-dev:mpich
+        docker image prune -f --filter "label=lsstdesc.build=lsstdesc=test"
         docker run -u lsst -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE -w $GITHUB_WORKSPACE/conda --name="td-gpu-env" lsstdesc/td-dev:test /bin/bash /$GITHUB_WORKSPACE/docker/add-gpu-env.sh
         docker commit -m"initial testing" td-gpu-env lsstdesc/td-dev:gpu
         docker rmi -f lsstdesc/td-dev:test
+        docker image prune -f --filter "label=lsstdesc.build=lsstdesc-step2"
         docker run -u lsst -w /opt/lsst/software/stack --name="td-setwd" lsstdesc/td-dev:gpu /bin/bash
         docker commit -m"initial testing" td-setwd lsstdesc/td-env:${{env.LSST_TAG}}-${{env.DATE_TAG}}-dev
         docker rmi -f lsstdesc/td-dev:gpu
