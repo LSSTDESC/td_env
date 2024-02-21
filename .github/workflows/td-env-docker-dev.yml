@@ -56,8 +56,6 @@ jobs:
         docker commit -m"initial testing" install-mpich lsstdesc/td-dev:mpich
         docker run -u lsst -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE -w $GITHUB_WORKSPACE/conda --name="td-test-env" lsstdesc/td-dev:mpich /bin/bash /$GITHUB_WORKSPACE/docker/update-docker.sh ${{env.LSST_TAG}}
         docker commit -m"initial testing" td-test-env lsstdesc/td-dev:test
-#        docker run -u lsst -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE -w $GITHUB_WORKSPACE/conda --name="td-gpu-env" lsstdesc/td-dev:test /bin/bash /$GITHUB_WORKSPACE/docker/add-gpu-env.sh
-#        docker commit -m"initial testing" td-gpu-env lsstdesc/td-dev:gpu
         docker run -u lsst -w /opt/lsst/software/stack --name="td-setwd" lsstdesc/td-dev:test /bin/bash
         docker commit -m"initial testing" td-setwd lsstdesc/td-env-cpu:${{env.LSST_TAG}}-${{env.DATE_TAG}}-dev
     - name: Test and push
@@ -66,6 +64,10 @@ jobs:
         docker push lsstdesc/td-env-cpu:${{env.LSST_TAG}}-${{env.DATE_TAG}}-dev
         docker tag lsstdesc/td-env-cpu:${{env.LSST_TAG}}-${{env.DATE_TAG}}-dev lsstdesc/td-env-cpu:dev
         docker push lsstdesc/td-env-cpu:dev
+        
+#        docker run -u lsst -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE -w $GITHUB_WORKSPACE/conda --name="td-gpu-env" lsstdesc/td-dev:test /bin/bash /$GITHUB_WORKSPACE/docker/add-gpu-env.sh
+#        docker commit -m"initial testing" td-gpu-env lsstdesc/td-dev:gpu
+
 #        mkdir -p /tmp/desc
 #        docker save lsstdesc/td-env:dev > /tmp/desc/lsstdesc-td-env-dev.tar
 #    - name: Upload docker tarball
