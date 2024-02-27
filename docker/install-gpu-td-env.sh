@@ -15,6 +15,8 @@ setup_conda() {
 
 unset PYTHONPATH
 
+export PYTHONDONTWRITEBYTECODE=1
+
 # Try Mambaforge latest
 url="https://github.com/conda-forge/miniforge/releases/latest/download"
 url="$url/Mambaforge-Linux-x86_64.sh"
