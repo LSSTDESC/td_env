@@ -239,7 +239,7 @@ export SNANA_IMAGE_DOCKER="lsstdesc/td-env:dev"
 #export BAYESN_INSTALL=$DESC_TD_INSTALL/bayesn-public
 
 
-export PATH=$PATH:${SNANA_DIR}/bin:${SNANA_DIR}/util:${PIPPIN_DIR}
+export PATH=$PATH:${SNANA_DIR}/bin:${SNANA_DIR}/util:${PIPPIN_DIR}:${SCONE_DIR}
 
 
 # For GCRCatalogs
