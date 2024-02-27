@@ -6,6 +6,9 @@ on:
  #     - dev
   workflow_dispatch:
 
+env:
+  TEST_TAG: lsstdesc/td-env-gpu:test-dev
+
 jobs:
   build:
     name: Build on Ubuntu
@@ -52,20 +55,32 @@ jobs:
         echo $GITHUB_WORKSPACE
         ls $GITHUB_WORKSPACE/conda
 
-        
-        docker run -u root -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE --name="install-mpich" lsstsqre/centos:7-stack-lsst_distrib-w_2022_32 /bin/bash /$GITHUB_WORKSPACE/docker/install-mpich.sh
-        docker commit -m"initial testing" install-mpich lsstdesc/td-dev:mpich
-        docker run -u lsst -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE -w $GITHUB_WORKSPACE/conda --name="td-test-env" lsstdesc/td-dev:mpich /bin/bash /$GITHUB_WORKSPACE/docker/update-docker.sh ${{env.LSST_TAG}}
-        docker commit -m"initial testing" td-test-env lsstdesc/td-dev:test
-        docker run -u lsst -w /opt/lsst/software/stack --name="td-setwd" lsstdesc/td-dev:test /bin/bash
-        docker commit -m"initial testing" td-setwd lsstdesc/td-env-gpu:${{env.LSST_TAG}}-${{env.DATE_TAG}}-dev
-    - name: Test and push
-      run: |
-        docker run --rm lsstdesc/td-env-gpu:${{env.LSST_TAG}}-${{env.DATE_TAG}}-dev /bin/bash -c "python -c 'import coloredlogs'"
-        docker push lsstdesc/td-env-gpu:${{env.LSST_TAG}}-${{env.DATE_TAG}}-dev
-        docker tag lsstdesc/td-env-gpu:${{env.LSST_TAG}}-${{env.DATE_TAG}}-dev lsstdesc/td-env-gpu:dev
-        docker push lsstdesc/td-env-gpu:dev
-        
-#        docker run -u lsst -v $GITHUB_WORKSPACE:$GITHUB_WORKSPACE -w $GITHUB_WORKSPACE/conda --name="td-gpu-env" lsstdesc/td-dev:test /bin/bash /$GITHUB_WORKSPACE/docker/add-gpu-env.sh
-#        docker commit -m"initial testing" td-gpu-env lsstdesc/td-dev:gpu
+    - name: Set up Docker Buildx
+      id: buildx
+      uses: docker/setup-buildx-action@v3
 
+    - name: pull old build
+      run: |
+        docker pull lsstdesc/td-env:gpu
+        docker tag lsstdesc/td-env:gpu lsstdesc/td-env:gpu-old
+        docker push lsstdesc/td-env:gpu-old
+        
+    - name: Build 
+      id: docker_build
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        build-args: |
+          GH_SHA=${{ github.sha }}
+          push: true
+          tags: ${{ env.TEST_TAG }}
+
+   
+    - name: test image before pushing
+      run: |
+        docker run --rm ${{ env.TEST_TAG }} /bin/bash -c "source /opt/desc/py/etc/profile.d/conda.sh && conda activate base && python -c 'import coloredlogs'"
+        docker tag ${{ env.TEST_TAG }} lsstdesc/td-env-gpu:dev-${{env.DATE_TAG}}
+        docker push lsstdesc/td-env-gpu:dev-${{env.DATE_TAG}}
+        docker tag ${{ env.TEST_TAG }} lsstdesc/td-env-gpu:dev
+        docker push lsstdesc/td-env-gpu:dev
+      
