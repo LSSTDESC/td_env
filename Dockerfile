@@ -11,8 +11,7 @@ RUN apt update -y && \
     gfortran \
     git \
     patch \
-    wget \
-    which && \
+    wget && \
     apt-get clean  && \
     rm -rf /var/cache/apt && \
     groupadd -g 1000 -r lsst && useradd -u 1000 --no-log-init -m -r -g lsst lsst && \
