@@ -27,7 +27,7 @@ which python
 #export PATH=$1/bin:$PATH
 echo $DESC_TD_ENV_GPU_INSTALL_DIR
 setup_conda
-mamba install -c conda-forge -y mpich=4.1.2.*=external_*
+mamba install -c conda-forge -y mpich=4.2.0.*=external_*
 which python
 which conda
 mamba install -c conda-forge -y --file $2
