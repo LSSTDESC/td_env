@@ -61,9 +61,9 @@ jobs:
 
     - name: pull old build
       run: |
-        docker pull lsstdesc/td-env:gpu
-        docker tag lsstdesc/td-env:gpu lsstdesc/td-env:gpu-old
-        docker push lsstdesc/td-env:gpu-old
+        docker pull lsstdesc/td-env-gpu:dev
+        docker tag lsstdesc/td-env-gpu:dev lsstdesc/td-env-gpu:old
+        docker push lsstdesc/td-env-gpu:old
         
     - name: Build 
       id: docker_build
@@ -72,7 +72,7 @@ jobs:
         context: .
         build-args: |
           GH_SHA=${{ github.sha }}
-          push: true
+          load: true
           tags: ${{ env.TEST_TAG }}
 
    
