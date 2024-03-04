@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export mpich=4.2.0
+export mpich=4.1.2
 export mpich_prefix=mpich-$mpich
 
 curl -LO https://www.mpich.org/static/downloads/$mpich/$mpich_prefix.tar.gz 
