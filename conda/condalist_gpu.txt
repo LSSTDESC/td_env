@@ -15,6 +15,7 @@ jupyter
 lsstdesc-diffsky
 matplotlib
 mpi4py
+mpich=4.1.2=external_*
 natsort
 numpyro
 numpy
