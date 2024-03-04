@@ -11,6 +11,7 @@ RUN apt update -y && \
     gfortran \
     git \
     patch \
+    unzip \
     wget && \
     apt-get clean  && \
     rm -rf /var/cache/apt && \
@@ -20,7 +21,7 @@ RUN apt update -y && \
     git clone https://github.com/LSSTDESC/td_env && \
     cd td_env && \
     git checkout $PR_BRANCH && \
-    bash ./docker/install-mpich.sh && \
+    bash ./docker/install-mpich-for-gpu.sh && \
     cd /tmp && \
     chown -R lsst td_env && \ 
     mkdir -p $DESC_TD_ENV_DIR && \
