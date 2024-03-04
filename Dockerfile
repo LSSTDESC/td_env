@@ -11,6 +11,7 @@ RUN apt update -y && \
     gfortran \
     git \
     patch \
+    python3 \
     unzip \
     wget && \
     apt-get clean  && \
@@ -26,7 +27,8 @@ RUN apt update -y && \
     chown -R lsst td_env && \ 
     mkdir -p $DESC_TD_ENV_DIR && \
     chown lsst $DESC_TD_ENV_DIR && \
-    chgrp lsst $DESC_TD_ENV_DIR
+    chgrp lsst $DESC_TD_ENV_DIR && \
+    apt-get remove --purge -y python3
 
 ARG LSST_USER=lsst
 ARG LSST_GROUP=lsst
