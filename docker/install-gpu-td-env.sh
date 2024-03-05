@@ -38,6 +38,7 @@ mamba install -c conda-forge -y --file $2
 pip install --upgrade "jax[cuda11_pip]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
 pip install --no-cache-dir -r $3 
 
+cd $DESC_TD_ENV_GPU_INSTALL_DIR
 curl -LO https://github.com/bayesn/bayesn/archive/refs/tags/v0.3.1.tar.gz
 tar xzf v0.3.1.tar.gz
 ln -s bayesn-0.3.1 bayesn
