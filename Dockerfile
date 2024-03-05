@@ -41,7 +41,6 @@ ENV PYTHONDONTWRITEBYTECODE 1
 
 RUN cd /tmp/td_env/docker && \ 
     bash install-gpu-td-env.sh /opt/desc/py ../conda/condalist_gpu.txt ../conda/piplist_gpu.txt && \
-    find /$DESC_TD_ENV_DIR -name "*.pyc" -delete && \
     cd /tmp && \
     rm -Rf td_env
     
