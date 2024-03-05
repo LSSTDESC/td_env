@@ -72,10 +72,11 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         context: .
+        load: true
+        tags: ${{ env.TEST_TAG }}
         build-args: |
           GH_SHA=${{ github.sha }}
-          push: true
-          tags: ${{ env.TEST_TAG }}
+         # tags: ${{ env.TEST_TAG }}
 
    
     - name: test image before pushing
