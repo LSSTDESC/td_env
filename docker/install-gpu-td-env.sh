@@ -28,6 +28,7 @@ bash ./Mambaforge-Linux-x86_64.sh -b -p $DESC_TD_ENV_GPU_INSTALL_DIR
 which python
 #export PATH=$1/bin:$PATH
 echo $DESC_TD_ENV_GPU_INSTALL_DIR
+rm ./Mambaforge-Linux-x86_64.sh
 setup_conda
 mamba install -c conda-forge -y mpich=4.1.2.*=external_*
 which python
@@ -44,8 +45,11 @@ tar xzf v0.3.1.tar.gz
 ln -s bayesn-0.3.1 bayesn
 cd bayesn
 python3 -m pip install --no-deps --no-cache-dir .
+cd ..
+rm v0.3.1.tar.gz
 
 conda clean -y -a 
+python -m pip cache purge
 
 conda config --set env_prompt "({name})" --env
 
