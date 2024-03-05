@@ -61,11 +61,11 @@ jobs:
       with: 
         driver: docker 
 
-    - name: pull old build
-      run: |
-        docker pull lsstdesc/td-env-gpu:dev
-        docker tag lsstdesc/td-env-gpu:dev lsstdesc/td-env-gpu:old
-        docker push lsstdesc/td-env-gpu:old
+  ##  - name: pull old build
+  ##    run: |
+    #    docker pull lsstdesc/td-env-gpu:dev
+    #    docker tag lsstdesc/td-env-gpu:dev lsstdesc/td-env-gpu:old
+    #    docker push lsstdesc/td-env-gpu:old
         
     - name: Build 
       id: docker_build
