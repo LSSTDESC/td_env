@@ -58,14 +58,14 @@ jobs:
     - name: Set up Docker Buildx
       id: buildx
       uses: docker/setup-buildx-action@v3
-      with: 
-        driver: docker 
+  #    with: 
+  #      driver: docker 
 
-  ##  - name: pull old build
-  ##    run: |
-    #    docker pull lsstdesc/td-env-gpu:dev
-    #    docker tag lsstdesc/td-env-gpu:dev lsstdesc/td-env-gpu:old
-    #    docker push lsstdesc/td-env-gpu:old
+    - name: pull old build
+      run: |
+        docker pull lsstdesc/td-env-gpu:dev
+        docker tag lsstdesc/td-env-gpu:dev lsstdesc/td-env-gpu:old
+        docker push lsstdesc/td-env-gpu:old
         
     - name: Build 
       id: docker_build
@@ -74,10 +74,9 @@ jobs:
         context: .
         load: true
         tags: ${{ env.TEST_TAG }}
-        build-args: |
-          GH_SHA=${{ github.sha }}
-         # tags: ${{ env.TEST_TAG }}
-
+ #       build-args: |
+ #         GH_SHA=${{ github.sha }}
+     
    
     - name: test image before pushing
       run: |
