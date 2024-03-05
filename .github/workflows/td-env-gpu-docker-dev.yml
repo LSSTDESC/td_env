@@ -19,6 +19,13 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get remove -y '^dotnet-.*'
+  
+    - name: pull old build
+      run: |
+        docker pull lsstdesc/td-env-gpu:dev
+        docker tag lsstdesc/td-env-gpu:dev lsstdesc/td-env-gpu:old
+        docker push lsstdesc/td-env-gpu:old
+        
     - name: Free Disk Space (Ubuntu)
       uses: jlumbroso/free-disk-space@main
       with:
@@ -33,6 +40,7 @@ jobs:
         large-packages: true
         docker-images: true
         swap-storage: true
+
     - name: Check Disk Space
      # run: df -h && sudo apt-get clean && df -h 
       run: df -h    
@@ -60,12 +68,6 @@ jobs:
       uses: docker/setup-buildx-action@v3
   #    with: 
   #      driver: docker 
-
-    - name: pull old build
-      run: |
-        docker pull lsstdesc/td-env-gpu:dev
-        docker tag lsstdesc/td-env-gpu:dev lsstdesc/td-env-gpu:old
-        docker push lsstdesc/td-env-gpu:old
         
     - name: Build 
       id: docker_build
