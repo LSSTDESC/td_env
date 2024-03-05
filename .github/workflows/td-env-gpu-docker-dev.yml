@@ -74,7 +74,7 @@ jobs:
         context: .
         build-args: |
           GH_SHA=${{ github.sha }}
-          load: true
+          push: true
           tags: ${{ env.TEST_TAG }}
 
    
