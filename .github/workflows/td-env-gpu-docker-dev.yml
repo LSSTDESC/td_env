@@ -54,10 +54,12 @@ jobs:
         ls $GITHUB_WORKSPACE
         echo $GITHUB_WORKSPACE
         ls $GITHUB_WORKSPACE/conda
-
+  
     - name: Set up Docker Buildx
       id: buildx
       uses: docker/setup-buildx-action@v3
+      with: 
+        driver: docker 
 
     - name: pull old build
       run: |
