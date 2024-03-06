@@ -1,4 +1,4 @@
-FROM condaforge/mambaforge-pypy3:23.11.0-0
+FROM condaforge/mambaforge:23.11.0-0
 MAINTAINER Heather Kelly <heather@slac.stanford.edu>
 
 ARG PR_BRANCH=dev
