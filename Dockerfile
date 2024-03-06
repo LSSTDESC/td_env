@@ -29,8 +29,9 @@ RUN apt-get update -y  \
     && make install \
     && rm -rf /opt/mpich \
     && /sbin/ldconfig \
-    && apt-get remove --purge -y gcc gfortran \
-    && cd /tmp  \
+    && apt-get remove --purge -y gcc gfortran 
+    
+RUN cd /tmp  \
     && git clone https://github.com/LSSTDESC/td_env  \
     && cd td_env  \
     && git checkout $PR_BRANCH  \
