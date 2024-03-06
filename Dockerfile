@@ -34,7 +34,24 @@ RUN apt-get update -y  \
     && git clone https://github.com/LSSTDESC/td_env  \
     && cd td_env  \
     && git checkout $PR_BRANCH  \
-    && mkdir -p $DESC_TD_ENV_DIR 
+    && conda create -y --name td-gpu python=3.11 \
+    && conda activate td-gpu \
+    && mamba install -c conda-forge -y mpich=4.1.2.*=external_* \
+    && CONDA_OVERRIDE_CUDA="11.8" mamba install -y "tensorflow==2.14.0=cuda118*" -c conda-forge \
+    && mamba install -y  pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia \
+    && mamba install -c conda-forge -y --file ./conda/condalist_gpu.txt \
+    && pip install --upgrade "jax[cuda11_pip]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html \
+    && pip install --no-cache-dir -r ./conda/piplist_gpu.txt \ 
+    && cd .. \
+    && curl -LO https://github.com/bayesn/bayesn/archive/refs/tags/v0.3.1.tar.gz \
+    && tar xzf v0.3.1.tar.gz \
+    && ln -s bayesn-0.3.1 bayesn \
+    && cd bayesn \
+    && python3 -m pip install --no-deps --no-cache-dir . \
+    && cd .. \
+    && rm v0.3.1.tar.gz
+
+    
 
 
 #RUN apt update -y && \
@@ -65,15 +82,15 @@ RUN apt-get update -y  \
 ##ARG LSST_USER=lsst
 #ARG LSST_GROUP=lsst
 
-WORKDIR $DESC_TD_ENV_DIR
+#WORKDIR $DESC_TD_ENV_DIR
    
 #USER lsst
 
-
-RUN cd /tmp/td_env/docker && \ 
-    bash install-gpu-td-env.sh /opt/desc/py ../conda/condalist_gpu.txt ../conda/piplist_gpu.txt && \
-    cd /tmp && \
-    rm -Rf td_env
+#
+##RUN cd /tmp/td_env/docker && \ 
+ #   bash install-gpu-td-env.sh /opt/desc/py ../conda/condalist_gpu.txt ../conda/piplist_gpu.txt && \
+ ##   cd /tmp && \
+  #  rm -Rf td_env
     
 #USER root
 
