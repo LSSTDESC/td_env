@@ -36,6 +36,7 @@ RUN cd /tmp  \
     && cd td_env  \
     && git checkout $PR_BRANCH  \
     && conda create -y --name td-gpu python=3.11 \
+    && conda init \
     && conda activate td-gpu \
     && mamba install -c conda-forge -y mpich=4.1.2.*=external_* \
     && CONDA_OVERRIDE_CUDA="11.8" mamba install -y "tensorflow==2.14.0=cuda118*" -c conda-forge \
