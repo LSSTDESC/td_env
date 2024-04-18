@@ -97,6 +97,8 @@ pytest
 cd ..
 pip install --no-cache-dir git+https://github.com/gbrammer/dust_attenuation.git
 
+pip install --extra-index-url https://gitlab.4most.eu/api/v4/projects/212/packages/pypi/simple qmostetc
+
 # Grab firecrown source so we have the examples subdirectory
 firecrown_ver=$(conda list firecrown | grep firecrown|tr -s " " | cut -d " " -f 2)
 echo $firecrown_ver
