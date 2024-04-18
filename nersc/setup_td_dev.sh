@@ -229,11 +229,12 @@ then
     export TD_GPU_ENV=1
     export SNANA_GPU_ENV=1
     export SNANA_SETUP_COMMAND="source $TD/setup_td_dev.sh -g"
+    export SNANA_IMAGE_DOCKER="lsstdesc/td-env-gpu:dev"
 else
     export SNANA_SETUP_COMMAND="source $TD/setup_td_dev.sh"
+    export SNANA_IMAGE_DOCKER="lsstdesc/td-env-cpu:dev"
 fi
 export TD_SETUP_COMMAND=$SNANA_SETUP_COMMAND
-export SNANA_IMAGE_DOCKER="lsstdesc/td-env:dev"
 
 # Add env var to point to bayeSN install
 #export BAYESN_INSTALL=$DESC_TD_INSTALL/bayesn-public
