@@ -4,7 +4,7 @@
 #module load PrgEnv-gnu
 #module load cpu
 module load gpu
-module load cray-mpich/8.1.25
+module load cray-mpich/8.1.28
 module load evp-patch
 #fi
 
@@ -20,16 +20,33 @@ cd $curBuildDir
 export PYTHONNOUSERSITE=1
 
 source $curBuildDir/conda/etc/profile.d/conda.sh
-conda create -y --name td-gpu python=3.10
+conda create -y --name td-gpu python=3.11
 
 conda activate td-gpu
 
+CONDA_OVERRIDE_CUDA="11.8" mamba install -y "tensorflow==2.14.0=cuda118*" -c conda-forge
+mamba install -y  pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia
+#mamba install -y jaxlib=*=*cuda* jax cuda-nvcc -c conda-forge -c nvidia
 mamba install -c conda-forge -y --file ./condalist_gpu.txt
-# Install pytorch
-mamba install -y  pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia
+#
+#
 # Install mpi4py
-MPICC="cc -shared" pip install --force --no-cache-dir --no-binary=mpi4py mpi4py
+#MPICC="cc -shared" pip install --force --no-cache-dir --no-binary=mpi4py mpi4py
+# Using pip install for jax until I can sort out issue installing alongside 
+# tensorflow using conda-forge
+#
+pip install --upgrade "jax[cuda11_pip]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+
 pip install --no-cache-dir -r ./piplist_gpu.txt
+
+#install bayeSN
+#git clone https://github.com/bayesn/bayesn.git
+# install v0.3.2 version
+curl -LO https://github.com/bayesn/bayesn/archive/refs/tags/v0.3.2.tar.gz
+tar xzf v0.3.2.tar.gz
+ln -s bayesn-0.3.2 bayesn
+cd bayesn
+python3 -m pip install --no-deps --no-cache-dir .
 
 conda clean -y -a 
 

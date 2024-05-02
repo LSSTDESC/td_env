@@ -2,7 +2,7 @@
 
 module load PrgEnv-gnu
 module load cpu
-module load cray-mpich-abi/8.1.25
+module load cray-mpich-abi/8.1.28
 module load evp-patch
 
 
@@ -15,7 +15,7 @@ installFlag=$2
 
 export BUILD_ID_DATE=`echo "$(date "+%F-%M-%S")"`
 
-export CI_COMMIT_REF_NAME=prod
+export CI_COMMIT_REF_NAME=dev
 export CI_PIPELINE_ID=$BUILD_ID_DATE
 
 commonIntBuildDir=/global/common/software/lsst/gitlab/td_env-int
@@ -74,11 +74,10 @@ pip install --no-cache-dir -r ./piplist.txt
 
 conda clean -y -a 
 
-# Hard-coding this for now for building at NERSC
-export PYSYN_CDBS=/global/cfs/cdirs/lsst/groups/TD/SOFTWARE/bayeSN/synphot/grp/redcat/trds
+#export PYSYN_CDBS=/global/cfs/cdirs/lsst/groups/TD/SOFTWARE/bayeSN/synphot/grp/redcat/trds
 
 # Install bayeSN
-git clone https://github.com/bayesn/bayesn-public
+#git clone https://github.com/bayesn/bayesn-public
 
 #Install RESSPECT
 git clone https://github.com/COINtoolbox/resspect
@@ -97,6 +96,8 @@ pip install --no-cache-dir .[test] -r requirements.txt
 pytest
 cd ..
 pip install --no-cache-dir git+https://github.com/gbrammer/dust_attenuation.git
+
+pip install --extra-index-url https://gitlab.4most.eu/api/v4/projects/212/packages/pypi/simple qmostetc
 
 # Grab firecrown source so we have the examples subdirectory
 firecrown_ver=$(conda list firecrown | grep firecrown|tr -s " " | cut -d " " -f 2)
@@ -118,7 +119,7 @@ cd $curBuildDir
 python -m compileall $curBuildDir
 
 #python $curBuildDir/bayesn-public/fit_sn.py --model T21 --metafile $curBuildDir/bayesn-public/demo_lcs/meta/T21_demo_meta.txt --filters griz --opt $curBuildDir/bayesn-public/demo_lcs/Foundation_DR1/Foundation_DR1_ASASSN-16cs.txt .
-python $curBuildDir/bayesn-public/fit_sn.py --model T21 --fittmax 5 --metafile $curBuildDir/bayesn-public/demo_lcs/meta/T21_demo_meta.txt --filters griz --opt $curBuildDir/bayesn-public/demo_lcs/Foundation_DR1/Foundation_DR1_ASASSN-16cs.txt $TMPDIR
+#python $curBuildDir/bayesn-public/fit_sn.py --model T21 --fittmax 5 --metafile $curBuildDir/bayesn-public/demo_lcs/meta/T21_demo_meta.txt --filters griz --opt $curBuildDir/bayesn-public/demo_lcs/Foundation_DR1/Foundation_DR1_ASASSN-16cs.txt $TMPDIR
 
 # Skipping this for now - they files are downloaded to the user's astropy cache
 # Will revisit if it becomes an issue: https://docs.astropy.org/en/stable/utils/data.html

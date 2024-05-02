@@ -1,68 +1,114 @@
-FROM centos:centos7.7.1908
+FROM condaforge/mambaforge:23.11.0-0
 MAINTAINER Heather Kelly <heather@slac.stanford.edu>
 
-ARG GH_SHA
-ARG LSST_TAG=w_2022_32
-ARG LSST_STACK_DIR=/opt/lsst/software/stack
+ARG PR_BRANCH=dev
 
-#RUN pwd && ls && echo $GH_SHA 
+ARG DESC_TD_ENV_DIR=/opt/desc
 
-RUN yum update -y && \
-    yum install -y bash \
-    git \
-    patch \
-    wget \
-    which && \
-    yum clean -y all && \
-    rm -rf /var/cache/yum && \
-    groupadd -g 1000 -r lsst && useradd -u 1000 --no-log-init -m -r -g lsst lsst && \
-    mkdir -p $LSST_STACK_DIR && \
-    chown lsst $LSST_STACK_DIR && \
-    chgrp lsst $LSST_STACK_DIR
+ENV PYTHONDONTWRITEBYTECODE 1
 
-ARG LSST_USER=lsst
-ARG LSST_GROUP=lsst
+# Make, which we will need for everything
+RUN apt-get update -y \
+    && DEBIAN_FRONTEND="noninteractive" apt-get install -y make unzip \
+    && apt-get clean all
 
-USER lsst
+# We need a C compiler temporarily to install MPICH, which we want so that we use
+# vendored MPI with conda. Not sure if we can get away with removing the gcc and g++
+# compilers afterwards to save space but will try. We will use the conda gcc for everything
+# else, though ideally everything would come through conda-forge.
+# I have found that using the conda-forge supplied MPICH does not work
+# with shifter on NERSC.
+RUN apt-get update -y  \
+    && DEBIAN_FRONTEND="noninteractive" apt-get install -y gcc gfortran \
+    && mkdir /opt/mpich \
+    && cd /opt/mpich \
+    && wget http://www.mpich.org/static/downloads/4.1.2/mpich-4.1.2.tar.gz \
+    && tar xvzf mpich-4.1.2.tar.gz \
+    && cd mpich-4.1.2 \
+    && ./configure --disable-wrapper-rpath  --disable-cxx --with-device=ch3 && make -j 4 \
+    && make install \
+    && rm -rf /opt/mpich \
+    && /sbin/ldconfig \
+    && apt-get remove --purge -y gcc gfortran 
+    
+RUN cd /tmp  \
+    && git clone https://github.com/LSSTDESC/td_env  \
+    && cd td_env  \
+    && git checkout $PR_BRANCH  \
+    && . /opt/conda/etc/profile.d/conda.sh && conda activate base \
+    && conda create -y --name td-gpu python=3.11 \
+    && conda activate td-gpu \
+    && mamba install -c conda-forge -y mpich=4.1.2.*=external_* \
+    && CONDA_OVERRIDE_CUDA="11.8" mamba install -y "tensorflow==2.14.0=cuda118*" -c conda-forge \
+    && mamba install -y  pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia \
+    && mamba install -c conda-forge -y --file ./conda/condalist_gpu.txt \
+    && pip install --upgrade "jax[cuda11_pip]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html \
+    && pip install --no-cache-dir -r ./conda/piplist_gpu.txt \ 
+    && cd .. \
+    && wget https://github.com/bayesn/bayesn/archive/refs/tags/v0.3.1.tar.gz \
+    && tar xzf v0.3.1.tar.gz \
+    && ln -s bayesn-0.3.1 bayesn \
+    && cd bayesn \
+    && python3 -m pip install --no-deps --no-cache-dir . \
+    && cd .. \
+    && rm v0.3.1.tar.gz
 
-WORKDIR $LSST_STACK_DIR
-
-RUN echo "Environment: \n" && env | sort && \
-    curl -LO https://ls.st/lsstinstall && \
-    bash ./lsstinstall ${LSST_TAG:+"-X"} $LSST_TAG && \
-    /bin/bash -c 'source ./loadLSST.bash; \
-                  eups distrib install ${LSST_TAG:+"-t"} $LSST_TAG lsst_distrib --nolocks;' && \
-    rm -Rf python/doc && \
-    rm -Rf python/phrasebooks && \
-    find stack -name "*.pyc" -delete && \
-    (find stack -name "*.so" ! -path "*/xpa/*" | xargs strip -s -p) || true && \
-    (find stack -name "src" ! -path "*/Eigen/*" | xargs rm -Rf) || true && \
-    (find stack -name "doc" | xargs rm -Rf) || true && \
-    mkdir -p /tmp/gh && \
-    cd /tmp/gh && \
-    git clone https://github.com/LSSTDESC/td_env && \
-    cd td_env && \
-    git checkout $GH_SHA 
-
-USER root 
-
-RUN cd /tmp/gh/td_env && \
-    bash ./docker/install-mpich.sh
-
-USER lsst
-RUN cd /tmp/gh/td_env/conda && \
-    bash /tmp/gh/td_env/docker/update-docker.sh w_2022_32 && \
-    bash post-conda-build.sh && \
-    echo "source $LSST_STACK_DIR/loadLSST.bash" >> ~/.bashrc && \
-    echo "setup lsst_distrib" >> ~/.bashrc && \
-    rm -Rf /tmp/gh
+    
 
 
+#RUN apt update -y && \
+##    apt install -y curl \
+ ##   build-essential \
+ ##   gfortran \
+ #   git \
+ #   patch \
+ #   python3 \
+ #   unzip \
+ #   wget && \
+ #   apt-get clean  && \
+ #   rm -rf /var/cache/apt && \
+ #   groupadd -g 1000 -r lsst && useradd -u 1000 --no-log-init -m -r -g lsst lsst && \
+ #   usermod --shell /bin/bash lsst && \
+ #   cd /tmp && \
+ #   git clone https://github.com/LSSTDESC/td_env && \
+ #   cd td_env && \
+ #   git checkout $PR_BRANCH && \
+#    bash ./docker/install-mpich-for-gpu.sh && \
+#    cd /tmp && \
+##    chown -R lsst td_env && \ 
+ #   mkdir -p $DESC_TD_ENV_DIR && \
+#    chown lsst $DESC_TD_ENV_DIR && \
+#    chgrp lsst $DESC_TD_ENV_DIR && \
+#    apt-get remove --purge -y python3
+
+##ARG LSST_USER=lsst
+#ARG LSST_GROUP=lsst
+
+#WORKDIR $DESC_TD_ENV_DIR
+   
+#USER lsst
+
+#
+##RUN cd /tmp/td_env/docker && \ 
+ #   bash install-gpu-td-env.sh /opt/desc/py ../conda/condalist_gpu.txt ../conda/piplist_gpu.txt && \
+ ##   cd /tmp && \
+  #  rm -Rf td_env
+    
+#USER root
+
+#RUN ln -s /opt/desc/py /usr/local/py
+
+#USER lsst
+    
 ENV HDF5_USE_FILE_LOCKING FALSE
 ENV PYTHONSTARTUP ''
 
-ENV PATH="${LSST_STACK_DIR}:${PATH}"
+
+#RUN echo "source /opt/desc/py/etc/profile.d/conda.sh" >> ~/.bashrc && \
+#    echo "conda activate base" >> ~/.bashrc
+    
+#ENV PATH="${DESC_TD_ENV_DIR}/${PY_VER}/bin:${PATH}"
+#SHELL ["/bin/bash", "--login", "-c"]
 
 
-CMD ["/bin/bash"]
-
+#CMD ["/bin/bash"]

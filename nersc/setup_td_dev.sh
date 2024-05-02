@@ -61,9 +61,9 @@ export TD_SN=${TD}/SN
 export TD_SOFTWARE=${TD}/SOFTWARE
 export TD_PUBLIC=/global/cfs/cdirs/lsst/www/DESC_TD_PUBLIC
 
-export PYSYN_CDBS=${TD_SOFTWARE}/bayeSN/synphot/grp/redcat/trds
+#export PYSYN_CDBS=${TD_SOFTWARE}/bayeSN/synphot/grp/redcat/trds
 
-export VERSION_LIBPYTHON=3.10
+#export VERSION_LIBPYTHON=3.10
 
 
 if [[ -z "$keepenv" ]] && [[ -z "$gpuenv" ]] && [[ -z $SHIFTER_RUNTIME ]];
@@ -71,67 +71,48 @@ then
   module purge
 fi
 
-# setup without LSST Science Pipelines
-# Broken since March 2022 Cori OS Upgrade
-if [[ $nolsst ]];
+ 
+
+if [ $shifterenv ] || [ $SHIFTER_RUNTIME ]
 then
-  module unload python
-  module unload PrgEnv-intel/6.0.5
-  module load PrgEnv-gnu/6.0.5
-  module swap gcc gcc/9.3.0
-  module rm craype-network-aries
-  module rm cray-libsci
-  module unload craype
-  module load cfitsio/3.47
-  module load gsl
-  module load root/6.18.00-py3
-  module load intel/19.1.3.304  # for CosmoMC (Mar 5 2021)
-  export CC=gcc
-
-  export COSMOMC_DIR="$SN_GROUP/CosmoMCBBC"
-  export PATH=$PATH:${COSMOMC_DIR}
-
-  # Set up SN python
-  export LSST_INST_DIR=/global/common/software/lsst/common/miniconda
-  export SN_PYTHON_VER=sn-py
-  module unload python
-  unset PYTHONHOME
-  unset PYTHONPATH
-  export PYTHONNOUSERSITE=' '
-
-  # Just in case GCRCatalogs is installed
-  export DESC_GCR_SITE='nersc'
-
-  source $LSST_INST_DIR/$SN_PYTHON_VER/etc/profile.d/conda.sh
-  conda activate root
-  OUTPUTPY="$(which python)"
-  echo Now using "${OUTPUTPY}"
-
-  # Aug 24 2020 RK - silly hack for CFITSIO
-  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CFITSIO_DIR/lib
-
-elif [ $shifterenv ] || [ $SHIFTER_RUNTIME ]
-then
-  unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
-  # SHIFTER LSST Sci Pipelines env does not have the "-exact" suffice, while local NERSC builds do (mystery)
-  export LSST_CONDA_ENV_NAME=lsst-scipipe-4.1.0
-  source /opt/lsst/software/stack/loadLSST.bash
-  setup lsst_distrib
+  if [ $gpuenv ]
+  then
+    echo "Setting up TD GPU env in Shifter"
+    export TD_ENV="TD-GPU"
+    export DESC_TD_INSTALL=/opt/desc/py
+    source $DESC_TD_INSTALL/etc/profile.d/conda.sh
+   # source $DESC_TD_INSTALL/bin/activate
+    conda activate td-gpu
+    export GSL_DIR=$CONDA_PREFIX
+    export CFITSIO_DIR=$CONDA_PREFIX
+    export YAML_DIR=$CONDA_PREFIX
+    export ROOT_DIR=$ROOTSYS
+  else
+    export TD_ENV="TD-CPU-SCI-PIPE"
+    unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
+    # SHIFTER LSST Sci Pipelines env does not have the "-exact" suffice, while local NERSC builds do (mystery)
+    export LSST_CONDA_ENV_NAME=lsst-scipipe-4.1.0
+    source /opt/lsst/software/stack/loadLSST.bash
+    setup lsst_distrib
+    export GSL_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
+    export CFITSIO_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
+    export YAML_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
+    export ROOT_DIR=$ROOTSYS
   
-  # For cosmosis and firecrown.  Should try to find a better way to set these
-  export CSL_DIR=$CONDA_PREFIX/lib/python3.10/site-packages/cosmosis/cosmosis-standard-library
-  export FIRECROWN_SITE_PACKAGES=$CONDA_PREFIX/lib/python3.10/site-packages
-  export FIRECROWN_DIR=/opt/lsst/software/stack/firecrown
-  export FIRECROWN_EXAMPLES_DIR=$FIRECROWN_DIR/examples
+    # For cosmosis and firecrown.  Should try to find a better way to set these
+    export CSL_DIR=$CONDA_PREFIX/lib/python3.10/site-packages/cosmosis/cosmosis-standard-library
+    export FIRECROWN_SITE_PACKAGES=$CONDA_PREFIX/lib/python3.10/site-packages
+    export FIRECROWN_DIR=/opt/lsst/software/stack/firecrown
+    export FIRECROWN_EXAMPLES_DIR=$FIRECROWN_DIR/examples
 
-  # Fixes missing support in the Perlmutter libfabric:
-  # https://docs.nersc.gov/development/languages/python/using-python-perlmutter/  #missing-support-for-matched-proberecv
-  export MPI4PY_RC_RECV_MPROBE=0
+    # Fixes missing support in the Perlmutter libfabric:
+    # https://docs.nersc.gov/development/languages/python/using-python-perlmutter/  #missing-support-for-matched-proberecv
+    export MPI4PY_RC_RECV_MPROBE=0
 
-  # Tries to prevent cosmosis from launching any subprocesses, since that is
-  # not allowed on Perlmutter.
-  export COSMOSIS_NO_SUBPROCESS=1
-
+    # Tries to prevent cosmosis from launching any subprocesses, since that is
+    # not allowed on Perlmutter.
+    export COSMOSIS_NO_SUBPROCESS=1
+  fi
 #
 elif [ $gpuenv ]
 then
@@ -140,8 +121,8 @@ then
   # Making sure the absolutely necesary modules are loaded for GPU support
   module load gpu
   module load craype
-  module load cray-mpich/8.1.25
-  module load cudatoolkit/11.7
+  module load cray-mpich
+  module unload cudatoolkit
   module load evp-patch
 
   export DESC_TD_INSTALL=/global/common/software/lsst/gitlab/td_env-dev/dev
@@ -149,6 +130,10 @@ then
   source $DESC_TD_INSTALL/conda/etc/profile.d/conda.sh
   conda activate td-gpu
 
+  export GSL_DIR=$CONDA_PREFIX
+  export CFITSIO_DIR=$CONDA_PREFIX
+  export YAML_DIR=$CONDA_PREFIX
+  export ROOT_DIR=$ROOTSYS
 
 # Setup with LSST Science Pipelines
 elif [ -z "$nolsst" ]
@@ -176,6 +161,11 @@ then
   #fi
 
 fi
+
+# Set this after conda environment is setup
+python_ver_major=$(python -c 'import sys; print(sys.version_info.major)')
+python_ver_minor=$(python -c 'import sys; print(sys.version_info.minor)')
+export VERSION_LIBPYTHON="$python_ver_major.$python_ver_minor"
 
 # DIA Environment Variables
 
@@ -233,15 +223,24 @@ export PIPPIN_OUTPUT="$SNANA_SCRATCH/PIPPIN_OUTPUT"
 export PIPPIN_DIR="$TD_SOFTWARE/Pippin"
 export SBATCH_TEMPLATES="$SNANA_LSST_ROOT/SBATCH_TEMPLATES"
 export SNANA_DEBUG="$SNANA_LSST_USERS/kessler/debug"
-export SNANA_SETUP_COMMAND="source $TD/setup_td_dev.sh"
+
+if [[ "$gpuenv" ]]
+then
+    export TD_GPU_ENV=1
+    export SNANA_GPU_ENV=1
+    export SNANA_SETUP_COMMAND="source $TD/setup_td_dev.sh -g"
+    export SNANA_IMAGE_DOCKER="lsstdesc/td-env-gpu:dev"
+else
+    export SNANA_SETUP_COMMAND="source $TD/setup_td_dev.sh"
+    export SNANA_IMAGE_DOCKER="lsstdesc/td-env-cpu:dev"
+fi
 export TD_SETUP_COMMAND=$SNANA_SETUP_COMMAND
-export SNANA_IMAGE_DOCKER="lsstdesc/td-env:dev"
 
 # Add env var to point to bayeSN install
-export BAYESN_INSTALL=$DESC_TD_INSTALL/bayesn-public
+#export BAYESN_INSTALL=$DESC_TD_INSTALL/bayesn-public
 
 
-export PATH=$PATH:${SNANA_DIR}/bin:${SNANA_DIR}/util:${PIPPIN_DIR}
+export PATH=$PATH:${SNANA_DIR}/bin:${SNANA_DIR}/util:${PIPPIN_DIR}:${SCONE_DIR}
 
 
 # For GCRCatalogs

@@ -1,4 +1,4 @@
-h5py==3.8.0 
-astropy
+#h5py==3.8.0 
+#astropy
 ipdb
 scikit-learn
