@@ -34,10 +34,11 @@ echo "RUNNING TD_ENV DEVELOPMENT VERSION"
 # -h help
 # -n Do not setup the LSST Sci Pipelines
 #while getopts e:n: flag
-while getopts "cghkns" flag
+while getopts "cdghkns" flag
 do
     case "${flag}" in
 	c) cosmosis=1;;
+	d) des=1;;
 	g) gpuenv=1;;
         h) usage;;
         k) keepenv=1;;
@@ -66,14 +67,17 @@ export TD_PUBLIC=/global/cfs/cdirs/lsst/www/DESC_TD_PUBLIC
 #export VERSION_LIBPYTHON=3.10
 
 
-if [[ -z "$keepenv" ]] && [[ -z "$gpuenv" ]] && [[ -z $SHIFTER_RUNTIME ]];
+if [[ -z "$keepenv" ]] && [[ -z "$gpuenv" ]] && [[ -z $SHIFTER_RUNTIME ]] && [[ -z "$des" ]];
 then
   module purge
 fi
 
- 
-
-if [ $shifterenv ] || [ $SHIFTER_RUNTIME ]
+# Check for des first and then move on
+if [[ $des ]]
+then
+  echo "Setting up DES snn_gpu environment"
+  source /global/common/software/lsst/gitlab/td_env-dev/snn/setup.sh
+elif [ $shifterenv ] || [ $SHIFTER_RUNTIME ]
 then
   if [ $gpuenv ]
   then
@@ -230,6 +234,10 @@ then
     export SNANA_GPU_ENV=1
     export SNANA_SETUP_COMMAND="source $TD/setup_td_dev.sh -g"
     export SNANA_IMAGE_DOCKER="lsstdesc/td-env-gpu:dev"
+elif [[ "$des" ]]
+then
+    export SNANA_SETUP_COMMAND="source $TD/setup_td_dev.sh -d"
+    export SNANA_IMAGE_DOCKER="none"
 else
     export SNANA_SETUP_COMMAND="source $TD/setup_td_dev.sh"
     export SNANA_IMAGE_DOCKER="lsstdesc/td-env-cpu:dev"
