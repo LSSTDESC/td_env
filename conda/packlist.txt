@@ -29,7 +29,7 @@ root_base
 sacc
 sncosmo
 tensorflow-cpu
-theano
+#theano
 # adding for lenstonomy
 #corner
 #dynesty
@@ -39,5 +39,9 @@ theano
 #pymultinest
 #pyxdg
 # adding for resspect
+flask==2.3.2
+iminuit>=1.20.0
+progressbar2>=4.2.0
+pytest
 seaborn
 xgboost

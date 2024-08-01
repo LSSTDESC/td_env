@@ -67,7 +67,7 @@ eups distrib install -t $1 lsst_distrib --nolocks
 
 python -m pip cache purge
 
-mamba install -c conda-forge -y mpich=3.4.*=external_*
+mamba install -c conda-forge -y mpich=4.2.2=external_*
 
 mamba install -c conda-forge -y --file ./packlist.txt
 pip install --no-cache-dir -r ./piplist.txt
@@ -80,7 +80,8 @@ conda clean -y -a
 #git clone https://github.com/bayesn/bayesn-public
 
 #Install RESSPECT
-git clone https://github.com/COINtoolbox/resspect
+#git clone https://github.com/COINtoolbox/resspect
+git clone https://github.com/LSSTDESC/resspect
 cd resspect
 #python setup.py install
 python3 -m pip install --no-deps --no-cache-dir .
