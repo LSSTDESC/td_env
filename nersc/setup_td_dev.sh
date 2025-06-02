@@ -129,8 +129,7 @@ then
   module load craype
   module load cray-mpich
   module unload cudatoolkit
-  module load evp-patch
-
+  
   export DESC_TD_INSTALL=/global/common/software/lsst/gitlab/td_env-dev/dev
  
   source $DESC_TD_INSTALL/conda/etc/profile.d/conda.sh
