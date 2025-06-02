@@ -83,7 +83,7 @@ then
   then
     echo "Setting up TD GPU env in Shifter"
     export TD_ENV="TD-GPU"
-    export DESC_TD_INSTALL=/opt/desc/py
+    export DESC_TD_INSTALL=/opt/conda
     source $DESC_TD_INSTALL/etc/profile.d/conda.sh
    # source $DESC_TD_INSTALL/bin/activate
     conda activate td-gpu
