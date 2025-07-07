@@ -2,8 +2,8 @@
 
 module load PrgEnv-gnu
 module load cpu
-module load cray-mpich-abi/8.1.28
-module load evp-patch
+module load cray-mpich-abi/8.1.30
+#module load evp-patch
 
 
 unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
@@ -60,14 +60,15 @@ export CONDA_CACHE_DIR=$curBuildDir/conda/pkgs
 # Build Steps
 curl -LO https://ls.st/lsstinstall
 #export LSST_CONDA_ENV_NAME=lsst-scipipe-$1
-bash ./lsstinstall -X $1 
+#bash ./lsstinstall -X $1 
+bash ./lsstinstall -t $1 
 
 source ./loadLSST.bash
 eups distrib install -t $1 lsst_distrib --nolocks
 
 python -m pip cache purge
 
-mamba install -c conda-forge -y mpich=4.2.2=external_*
+mamba install -c conda-forge -y mpich=3.4.*=external_*
 
 mamba install -c conda-forge -y --file ./packlist.txt
 pip install --no-cache-dir -r ./piplist.txt
@@ -112,7 +113,7 @@ ln -s firecrown-$firecrown_ver firecrown
 bash ./post-conda-build.sh
 
 # Download astrodash models from zenodo as mentioned in astrodash README on github
-cd $CONDA_PREFIX/lib/python3.10/site-packages/astrodash
+cd $CONDA_PREFIX/lib/python3.12/site-packages/astrodash
 curl -LO https://zenodo.org/record/7760927/files/models_v06.zip
 unzip models_v06.zip
 cd $curBuildDir

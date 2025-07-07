@@ -104,12 +104,12 @@ then
     export ROOT_DIR=$ROOTSYS
   
     # For cosmosis and firecrown.  Should try to find a better way to set these
-    export CSL_DIR=$CONDA_PREFIX/lib/python3.10/site-packages/cosmosis/cosmosis-standard-library
-    export FIRECROWN_SITE_PACKAGES=$CONDA_PREFIX/lib/python3.10/site-packages
+    export CSL_DIR=$CONDA_PREFIX/lib/python3.12/site-packages/cosmosis/cosmosis-standard-library
+    export FIRECROWN_SITE_PACKAGES=$CONDA_PREFIX/lib/python3.12/site-packages
     export FIRECROWN_DIR=/opt/lsst/software/stack/firecrown
     export FIRECROWN_EXAMPLES_DIR=$FIRECROWN_DIR/examples
 
-    export TD_ASTRODASH_DIR=$CONDA_PREFIX/lib/python3.10/site-packages/astrodash
+    export TD_ASTRODASH_DIR=$CONDA_PREFIX/lib/python3.12/site-packages/astrodash
 
     # Fixes missing support in the Perlmutter libfabric:
     # https://docs.nersc.gov/development/languages/python/using-python-perlmutter/  #missing-support-for-matched-proberecv

@@ -4,8 +4,8 @@
 #module load PrgEnv-gnu
 #module load cpu
 module load gpu
-module load cray-mpich/8.1.28
-module load evp-patch
+module load cray-mpich/8.1.30
+#module load evp-patch
 #fi
 
 unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH

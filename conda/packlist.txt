@@ -25,6 +25,7 @@ lsstdesc-diffsky
 lsstdesc-gcr-catalogs
 #pygpu
 pyqt
+pyvo
 root_base
 sacc
 sncosmo
