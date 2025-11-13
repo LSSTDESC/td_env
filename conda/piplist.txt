@@ -1,4 +1,5 @@
 astrodash
 chainconsumer
+lsst-rsp
 #gwemlightcurves
 #pysynphot==0.9.14

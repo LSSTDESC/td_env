@@ -4,8 +4,9 @@ bokeh
 cfitsio
 colorama
 coloredlogs
-cudatoolkit==11.8
-extinction
+#cudatoolkit==11.8
+cudatoolkit==12.4
+dust_extinction
 f90nml
 george
 gsl
@@ -16,6 +17,7 @@ lsstdesc-diffsky
 matplotlib
 mpi4py
 mpich=3.4.*=external_*
+# or mpich==4.1.2=external_*
 natsort
 numpyro
 numpy

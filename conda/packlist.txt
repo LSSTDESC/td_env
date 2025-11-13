@@ -3,34 +3,35 @@ celerite
 cmdstan
 cmdstanpy
 coloredlogs
-cosmosis>=2.2.2
-cosmosis-build-standard-library>=1.2
+cosmosis
+cosmosis-build-standard-library
 #cudatoolkit==11.7.0
-lsstdesc-diffsky
-emcee
-extinction
+# already in rubin emcee
+dust_extinction
 f90nml
 firecrown
 george
 gwpy
 ipdb
 ipykernel
-jax
-jaxlib=*=*cpu*
-lalsuite
+# in rubin_env jax
+# in rubin_env jaxlib=*=*cpu*
+# numpy 2 and qp downgrade lalsuite
 lenstronomy
-ligo.skymap
-ligo.em-bright
+# forcing downgrades ligo.skymap
+# forcing downgrdes ligo.em-bright
+lsdb
 lsstdesc-diffsky
 lsstdesc-gcr-catalogs
+polars
+pycryptodome
 #pygpu
 pyqt
 pyvo
 root_base
-sacc
-sncosmo
+# getthis from cosmosis sacc
+# need numpy 2 sncosmo
 tensorflow-cpu
-#theano
 # adding for lenstonomy
 #corner
 #dynesty
@@ -40,9 +41,9 @@ tensorflow-cpu
 #pymultinest
 #pyxdg
 # adding for resspect
-flask==2.3.2
-iminuit>=1.20.0
-progressbar2>=4.2.0
-pytest
-seaborn
+# in rubin_env now flask==2.3.2
+# in rubin_env iminuit>=1.20.0
+# in rubin_env progressbar2>=4.2.0
+# in rubin_env pytest
+# in rubin_env seaborn
 xgboost

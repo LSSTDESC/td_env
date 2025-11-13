@@ -130,7 +130,7 @@ then
   module load cray-mpich
   module unload cudatoolkit
   
-  export DESC_TD_INSTALL=/global/common/software/lsst/gitlab/td_env-dev/dev
+  export DESC_TD_INSTALL=/global/common/software/lsst/gitlab/td_env-dev/dev-gpu
  
   source $DESC_TD_INSTALL/conda/etc/profile.d/conda.sh
   conda activate td-gpu
