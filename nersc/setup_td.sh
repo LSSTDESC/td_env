@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Nov 1 2022: HMK check NERSC_HOST
 # Feb 19 2022: HK Use native install of LSST Sci Pipelines at NERSC
 # Jan 27 2022: HK update to optionally setup LSST Sci Pipelines
 # Mar 05 2021: define few things for CosmoMC (installed by Vivian)
@@ -13,7 +14,6 @@ wrapcosmosis() {
     source cosmosis-configure
 }
 
-
 echo "RUNNING TD_ENV STABLE VERSION"
 
 #SCRIPT=${BASH_SOURCE[0]}
@@ -22,10 +22,11 @@ echo "RUNNING TD_ENV STABLE VERSION"
 #  echo "-c  --Setup cosmosis."
 #  echo -e \\n"Help documentation for ${BOLD}${SCRIPT}"\\n
 #  echo "Command line switches are optional. The following switches are recognized."
+#  echo "-g  --Setup gpu env."
 #  echo "-k  --Setup the env without doing module purge."
 #  echo "-n  --Setup the env without the LSST Sci Pipelines."
 #  echo "-s  --Setup the env for shifter."
-# exit 0
+#  exit 0
 #}
 
 
@@ -33,11 +34,13 @@ echo "RUNNING TD_ENV STABLE VERSION"
 # -h help
 # -n Do not setup the LSST Sci Pipelines
 #while getopts e:n: flag
-while getopts "cghkns" flag
+while getopts "cdghkns" flag
 do
     case "${flag}" in
 	c) cosmosis=1;;
- 	g) gpuenv=1;;
+	d) des=1;;
+	g) gpuenv=1;;
+        h) usage;;
         k) keepenv=1;;
         n) nolsst=1;;
         s) shifterenv=1;;
@@ -45,7 +48,6 @@ do
 done
 
 # Check to see if this setup script has already been run in this shell
-# Disable due to need to setup 2x for shifter runs
 #if [ $TD ]
 #then
 #    echo "td_env is already set up"
@@ -61,20 +63,27 @@ export TD_SOFTWARE=${TD}/SOFTWARE
 export TD_PUBLIC=/global/cfs/cdirs/lsst/www/DESC_TD_PUBLIC
 
 #export PYSYN_CDBS=${TD_SOFTWARE}/bayeSN/synphot/grp/redcat/trds
+
 #export VERSION_LIBPYTHON=3.10
 
-if [[ -z "$keepenv" ]] && [[ -z "$gpuenv" ]] && [[ -z $SHIFTER_RUNTIME ]];
+
+if [[ -z "$keepenv" ]] && [[ -z "$gpuenv" ]] && [[ -z $SHIFTER_RUNTIME ]] && [[ -z "$des" ]];
 then
   module purge
 fi
 
-if [ $shifterenv ] || [ $SHIFTER_RUNTIME ]
+# Check for des first and then move on
+if [[ $des ]]
+then
+  echo "Setting up DES snn_gpu environment"
+  source /global/common/software/lsst/gitlab/td_env-dev/snn/setup.sh
+elif [ $shifterenv ] || [ $SHIFTER_RUNTIME ]
 then
   if [ $gpuenv ]
   then
     echo "Setting up TD GPU env in Shifter"
     export TD_ENV="TD-GPU"
-    export DESC_TD_INSTALL=/opt/desc/py
+    export DESC_TD_INSTALL=/opt/conda
     source $DESC_TD_INSTALL/etc/profile.d/conda.sh
    # source $DESC_TD_INSTALL/bin/activate
     conda activate td-gpu
@@ -93,14 +102,14 @@ then
     export CFITSIO_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
     export YAML_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
     export ROOT_DIR=$ROOTSYS
-
+  
     # For cosmosis and firecrown.  Should try to find a better way to set these
-    export CSL_DIR=$CONDA_PREFIX/lib/python3.10/site-packages/cosmosis/cosmosis-standard-library
-    export FIRECROWN_SITE_PACKAGES=$CONDA_PREFIX/lib/python3.10/site-packages
+    export CSL_DIR=$CONDA_PREFIX/lib/python3.12/site-packages/cosmosis/cosmosis-standard-library
+    export FIRECROWN_SITE_PACKAGES=$CONDA_PREFIX/lib/python3.12/site-packages
     export FIRECROWN_DIR=/opt/lsst/software/stack/firecrown
     export FIRECROWN_EXAMPLES_DIR=$FIRECROWN_DIR/examples
 
-    export TD_ASTRODASH_DIR=$CONDA_PREFIX/lib/python3.10/site-packages/astrodash
+    export TD_ASTRODASH_DIR=$CONDA_PREFIX/lib/python3.12/site-packages/astrodash
 
     # Fixes missing support in the Perlmutter libfabric:
     # https://docs.nersc.gov/development/languages/python/using-python-perlmutter/  #missing-support-for-matched-proberecv
@@ -120,9 +129,8 @@ then
   module load craype
   module load cray-mpich
   module unload cudatoolkit
-  module load evp-patch
-
-  export DESC_TD_INSTALL=/global/common/software/lsst/gitlab/td_env-prod/stable
+  
+  export DESC_TD_INSTALL=/global/common/software/lsst/gitlab/td_env-prod/stable-gpu
  
   source $DESC_TD_INSTALL/conda/etc/profile.d/conda.sh
   conda activate td-gpu
@@ -131,7 +139,6 @@ then
   export CFITSIO_DIR=$CONDA_PREFIX
   export YAML_DIR=$CONDA_PREFIX
   export ROOT_DIR=$ROOTSYS
-
 
 # Setup with LSST Science Pipelines
 elif [ -z "$nolsst" ]
@@ -142,13 +149,11 @@ then
   
   export DESC_TD_INSTALL=/global/common/software/lsst/gitlab/td_env-prod/stable
   source $DESC_TD_INSTALL/setup_td_env.sh
-  export ROOT_DIR=$ROOTSYS
+    
   export GSL_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
   export CFITSIO_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
   export YAML_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
-
-  #export GSL_DIR=$CONDA_PREFIX
-  #export CFITSIO_DIR=$CONDA_PREFIX
+  export ROOT_DIR=$ROOTSYS
 
   export PYTHONPATH=$PYTHONPATH:$DESC_TD_INSTALL
   
@@ -161,12 +166,10 @@ then
 
 fi
 
-
 # Set this after conda environment is setup
 python_ver_major=$(python -c 'import sys; print(sys.version_info.major)')
 python_ver_minor=$(python -c 'import sys; print(sys.version_info.minor)')
 export VERSION_LIBPYTHON="$python_ver_major.$python_ver_minor"
-
 
 # DIA Environment Variables
 
@@ -181,6 +184,7 @@ export PYTHONPATH=$PYTHONPATH:$SNANA_DIR/src
 export CFS_MIRROR=/pscratch/sd/d/desctd/cfs_mirror
 
 export SNDATA_ROOT=$CFS_MIRROR/SNANA/SNDATA_ROOT
+
 export SNANA_TESTS="$TD_SN/SNANA/SNANA_TESTS"
 export SNANA_SURVEYS="$TD_SN/SNANA/SURVEYS"
 
@@ -209,6 +213,10 @@ export SNANA_ROMAN_SIM="$SNANA_SCRATCH/SNANA_ROMAN_SIM"
 export SCONE_DIR="$TD_SOFTWARE/classifiers/scone"
 export SNN_DIR="$TD_SOFTWARE/classifiers/SuperNNova"
 
+export SNANA_DEBASS_ROOT="$TD_SN/SNANA/SURVEYS/DEBASS/ROOT"
+export SNANA_DEBASS_USERS="$TD_SN/SNANA/SURVEYS/DEBASS/USERS"
+export SNANA_DEBASS_SIM="$SNANA_SCRATCH/SNANA_LSST_SIM"
+
 
 if [[ "$cosmosis" ]];
 then
@@ -226,9 +234,6 @@ export SNANA_DEBUG="$SNANA_LSST_USERS/kessler/debug"
 
 export SASSAFRAS_ROOT="$CFS_MIRROR/SNANA/SURVEYS/LSST/ROOT/SASSAFRAS"
 
-export SNANA_DEBASS_ROOT="$TD_SN/SNANA/SURVEYS/DEBASS/ROOT"
-export SNANA_DEBASS_USERS="$TD_SN/SNANA/SURVEYS/DEBASS/USERS"
-export SNANA_DEBASS_SIM="$SNANA_SCRATCH/SNANA_LSST_SIM"
 
 if [[ "$gpuenv" ]]
 then
@@ -236,15 +241,19 @@ then
     export SNANA_GPU_ENV=1
     export SNANA_SETUP_COMMAND="source $TD/setup_td.sh -g"
     export SNANA_IMAGE_DOCKER="lsstdesc/td-env-gpu:dev"
+elif [[ "$des" ]]
+then
+    export SNANA_SETUP_COMMAND="source $TD/setup_td.sh -d"
+    export SNANA_IMAGE_DOCKER="none"
 else
     export SNANA_SETUP_COMMAND="source $TD/setup_td.sh"
-    export SNANA_IMAGE_DOCKER="lsstdesc/td-env-cpu:stable"
+    export SNANA_IMAGE_DOCKER="lsstdesc/td-env-cpu:dev"
 fi
 export TD_SETUP_COMMAND=$SNANA_SETUP_COMMAND
 
-
 # Add env var to point to bayeSN install
 #export BAYESN_INSTALL=$DESC_TD_INSTALL/bayesn-public
+
 
 export PATH=$PATH:${SNANA_DIR}/bin:${SNANA_DIR}/util:${PIPPIN_DIR}:${SCONE_DIR}
 
@@ -253,3 +262,4 @@ export PATH=$PATH:${SNANA_DIR}/bin:${SNANA_DIR}/util:${PIPPIN_DIR}:${SCONE_DIR}
 export DESC_GCR_SITE='nersc'
 
 export HDF5_USE_FILE_LOCKING=FALSE
+
