@@ -1,7 +1,7 @@
 #!/bin/bash
 
 source /opt/lsst/software/stack/loadLSST.bash
-conda install -c conda-forge -y mamba
+#conda install -c conda-forge -y mamba # included with LSST Sci Pipelines
 
 mamba install -c conda-forge/label/mpi-external -y mpich=4.3.2
 
