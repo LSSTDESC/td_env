@@ -2,8 +2,8 @@
 
 module load PrgEnv-gnu
 module load cpu
-module load cray-mpich-abi
-#module load evp-patch
+#module load cray-mpich-abi
+module load mpich/4.3.0
 
 unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
 

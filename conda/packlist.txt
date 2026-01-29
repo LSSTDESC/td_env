@@ -20,9 +20,12 @@ ipykernel
 lenstronomy
 # forcing downgrades ligo.skymap
 # forcing downgrdes ligo.em-bright
+#light-curve-python  # for resspect but has trouble with pyton 3.12
 lsdb
 lsstdesc-diffsky
 lsstdesc-gcr-catalogs
+#mpich=3.4.*=external_*
+#mpich=4.2.*=external_*
 polars
 pycryptodome
 #pygpu

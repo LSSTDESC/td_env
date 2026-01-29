@@ -3,7 +3,7 @@
 module load PrgEnv-gnu
 module load cpu
 module load cray-mpich-abi/8.1.30
-#module load evp-patch
+#module load mpich/4.3.0
 
 
 unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
@@ -60,15 +60,16 @@ export CONDA_CACHE_DIR=$curBuildDir/conda/pkgs
 # Build Steps
 curl -LO https://ls.st/lsstinstall
 #export LSST_CONDA_ENV_NAME=lsst-scipipe-$1
-bash ./lsstinstall -X $1 
-#bash ./lsstinstall -t $1 
+#bash ./lsstinstall -X $1 
+bash ./lsstinstall -T $1
 
 source ./loadLSST.bash
+mamba install -c conda-forge -y mpich=4.3.2=external_*
 eups distrib install -t $1 lsst_distrib --nolocks
 
 python -m pip cache purge
 
-mamba install -c conda-forge -y mpich=3.4.*=external_*
+#mamba install -c conda-forge -y mpich=3.4.*=external_*
 
 mamba install -c conda-forge -y --file ./packlist.txt
 pip install --no-cache-dir -r ./piplist.txt
@@ -80,13 +81,11 @@ conda clean -y -a
 # Install bayeSN
 #git clone https://github.com/bayesn/bayesn-public
 
-#Install RESSPECT
-#git clone https://github.com/COINtoolbox/resspect
-git clone https://github.com/LSSTDESC/resspect
-cd resspect
-#python setup.py install
-python3 -m pip install --no-deps --no-cache-dir .
-cd ..
+#Install RESSPECT  skipping until we can install light-curve-python 
+#git clone https://github.com/LSSTDESC/resspect
+#cd resspect
+#python3 -m pip install --no-deps --no-cache-dir .
+#cd ..
 
 # install eazy from source due to inability to install via pip
 git clone https://github.com/gbrammer/eazy-py.git
@@ -99,7 +98,8 @@ pytest
 cd ..
 pip install --no-cache-dir git+https://github.com/gbrammer/dust_attenuation.git
 
-pip install --extra-index-url https://gitlab.4most.eu/api/v4/projects/212/packages/pypi/simple qmostetc
+# HMK dropping for now, requires numpy < 2
+#pip install --extra-index-url https://gitlab.4most.eu/api/v4/projects/212/packages/pypi/simple qmostetc
 
 # Grab firecrown source so we have the examples subdirectory
 firecrown_ver=$(conda list firecrown | grep firecrown|tr -s " " | cut -d " " -f 2)
