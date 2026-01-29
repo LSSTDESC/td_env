@@ -34,10 +34,11 @@ echo "RUNNING TD_ENV DEVELOPMENT VERSION"
 # -h help
 # -n Do not setup the LSST Sci Pipelines
 #while getopts e:n: flag
-while getopts "cghkns" flag
+while getopts "cdghkns" flag
 do
     case "${flag}" in
 	c) cosmosis=1;;
+	d) des=1;;
 	g) gpuenv=1;;
         h) usage;;
         k) keepenv=1;;
@@ -66,20 +67,23 @@ export TD_PUBLIC=/global/cfs/cdirs/lsst/www/DESC_TD_PUBLIC
 #export VERSION_LIBPYTHON=3.10
 
 
-if [[ -z "$keepenv" ]] && [[ -z "$gpuenv" ]] && [[ -z $SHIFTER_RUNTIME ]];
+if [[ -z "$keepenv" ]] && [[ -z "$gpuenv" ]] && [[ -z $SHIFTER_RUNTIME ]] && [[ -z "$des" ]];
 then
   module purge
 fi
 
- 
-
-if [ $shifterenv ] || [ $SHIFTER_RUNTIME ]
+# Check for des first and then move on
+if [[ $des ]]
+then
+  echo "Setting up DES snn_gpu environment"
+  source /global/common/software/lsst/gitlab/td_env-dev/snn/setup.sh
+elif [ $shifterenv ] || [ $SHIFTER_RUNTIME ]
 then
   if [ $gpuenv ]
   then
     echo "Setting up TD GPU env in Shifter"
     export TD_ENV="TD-GPU"
-    export DESC_TD_INSTALL=/opt/desc/py
+    export DESC_TD_INSTALL=/opt/conda
     source $DESC_TD_INSTALL/etc/profile.d/conda.sh
    # source $DESC_TD_INSTALL/bin/activate
     conda activate td-gpu
@@ -100,10 +104,12 @@ then
     export ROOT_DIR=$ROOTSYS
   
     # For cosmosis and firecrown.  Should try to find a better way to set these
-    export CSL_DIR=$CONDA_PREFIX/lib/python3.10/site-packages/cosmosis/cosmosis-standard-library
-    export FIRECROWN_SITE_PACKAGES=$CONDA_PREFIX/lib/python3.10/site-packages
+    export CSL_DIR=$CONDA_PREFIX/lib/python3.12/site-packages/cosmosis/cosmosis-standard-library
+    export FIRECROWN_SITE_PACKAGES=$CONDA_PREFIX/lib/python3.12/site-packages
     export FIRECROWN_DIR=/opt/lsst/software/stack/firecrown
     export FIRECROWN_EXAMPLES_DIR=$FIRECROWN_DIR/examples
+
+    export TD_ASTRODASH_DIR=$CONDA_PREFIX/lib/python3.12/site-packages/astrodash
 
     # Fixes missing support in the Perlmutter libfabric:
     # https://docs.nersc.gov/development/languages/python/using-python-perlmutter/  #missing-support-for-matched-proberecv
@@ -123,9 +129,8 @@ then
   module load craype
   module load cray-mpich
   module unload cudatoolkit
-  module load evp-patch
-
-  export DESC_TD_INSTALL=/global/common/software/lsst/gitlab/td_env-dev/dev
+  
+  export DESC_TD_INSTALL=/global/common/software/lsst/gitlab/td_env-dev/dev-gpu
  
   source $DESC_TD_INSTALL/conda/etc/profile.d/conda.sh
   conda activate td-gpu
@@ -209,6 +214,10 @@ export SNANA_ROMAN_SIM="$SNANA_SCRATCH/SNANA_ROMAN_SIM"
 export SCONE_DIR="$TD_SOFTWARE/classifiers/scone"
 export SNN_DIR="$TD_SOFTWARE/classifiers/SuperNNova"
 
+export SNANA_DEBASS_ROOT="$TD_SN/SNANA/SURVEYS/DEBASS/ROOT"
+export SNANA_DEBASS_USERS="$TD_SN/SNANA/SURVEYS/DEBASS/USERS"
+export SNANA_DEBASS_SIM="$SNANA_SCRATCH/SNANA_LSST_SIM"
+
 
 if [[ "$cosmosis" ]];
 then
@@ -224,12 +233,19 @@ export PIPPIN_DIR="$TD_SOFTWARE/Pippin"
 export SBATCH_TEMPLATES="$SNANA_LSST_ROOT/SBATCH_TEMPLATES"
 export SNANA_DEBUG="$SNANA_LSST_USERS/kessler/debug"
 
+export SASSAFRAS_ROOT="$CFS_MIRROR/SNANA/SURVEYS/LSST/ROOT/SASSAFRAS"
+
+
 if [[ "$gpuenv" ]]
 then
     export TD_GPU_ENV=1
     export SNANA_GPU_ENV=1
     export SNANA_SETUP_COMMAND="source $TD/setup_td_dev.sh -g"
     export SNANA_IMAGE_DOCKER="lsstdesc/td-env-gpu:dev"
+elif [[ "$des" ]]
+then
+    export SNANA_SETUP_COMMAND="source $TD/setup_td_dev.sh -d"
+    export SNANA_IMAGE_DOCKER="none"
 else
     export SNANA_SETUP_COMMAND="source $TD/setup_td_dev.sh"
     export SNANA_IMAGE_DOCKER="lsstdesc/td-env-cpu:dev"

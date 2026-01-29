@@ -2,8 +2,8 @@
 
 module load PrgEnv-gnu
 module load cpu
-module load cray-mpich-abi
-module load evp-patch
+#module load cray-mpich-abi
+module load mpich/4.3.0
 
 unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
 
@@ -19,11 +19,11 @@ fi
 setup lsst_distrib
 
 # For cosmosis and firecrown.  Should try to find a better way to set these
-export CSL_DIR=$CONDA_PREFIX/lib/python3.10/site-packages/cosmosis/cosmosis-standard-library
-export FIRECROWN_SITE_PACKAGES=$CONDA_PREFIX/lib/python3.10/site-packages
+export CSL_DIR=$CONDA_PREFIX/lib/python3.12/site-packages/cosmosis/cosmosis-standard-library
+export FIRECROWN_SITE_PACKAGES=$CONDA_PREFIX/lib/python3.12/site-packages
 export FIRECROWN_DIR=$DESC_LSST_INSTALL_DIR/firecrown
 export FIRECROWN_EXAMPLES_DIR=$FIRECROWN_DIR/examples
-export TD_ASTRODASH_DIR=$CONDA_PREFIX/lib/python3.10/site-packages/astrodash
+export TD_ASTRODASH_DIR=$CONDA_PREFIX/lib/python3.12/site-packages/astrodash
 
 
 # Fixes missing support in the Perlmutter libfabric:
