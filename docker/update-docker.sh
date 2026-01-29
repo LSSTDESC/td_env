@@ -3,7 +3,7 @@
 source /opt/lsst/software/stack/loadLSST.bash
 conda install -c conda-forge -y mamba
 
-mamba install -c conda-forge -y mpich=4.3.2=external_*
+mamba install -c conda-forge/label/mpi-external -y mpich=4.3.2
 
 mamba install -c conda-forge -y --file ./packlist.txt
 pip install --no-cache-dir -r ./piplist.txt
