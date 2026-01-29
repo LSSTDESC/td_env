@@ -3,7 +3,7 @@
 source /opt/lsst/software/stack/loadLSST.bash
 conda install -c conda-forge -y mamba
 
-mamba install -c conda-forge -y mpich=3.4.*=external_*
+mamba install -c conda-forge -y mpich=4.3.2=external_*
 
 mamba install -c conda-forge -y --file ./packlist.txt
 pip install --no-cache-dir -r ./piplist.txt
@@ -18,10 +18,10 @@ cd /opt/lsst/software/stack
 ## Skipping full set up until we deal with the required data files in $PYSYN_CDBS
 
 #Install RESSPECT
-git clone https://github.com/COINtoolbox/resspect
-cd resspect
-python3 -m pip install --no-deps --no-cache-dir .
-cd ..
+#git clone https://github.com/COINtoolbox/resspect
+#cd resspect
+#python3 -m pip install --no-deps --no-cache-dir .
+#cd ..
 
 # install eazy from source due to inability to install via pip
 git clone https://github.com/gbrammer/eazy-py.git
@@ -43,7 +43,7 @@ tar xvzf v$firecrown_ver.tar.gz
 ln -s firecrown-$firecrown_ver firecrown
 
 # Download astrodash models from zenodo as mentioned in astrodash README on github
-cd $CONDA_PREFIX/lib/python3.10/site-packages/astrodash
+cd $CONDA_PREFIX/lib/python3.12/site-packages/astrodash
 curl -LO https://zenodo.org/record/7760927/files/models_v06.zip
 unzip models_v06.zip
 cd $curBuildDir
