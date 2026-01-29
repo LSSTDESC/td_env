@@ -40,10 +40,10 @@ do
 	c) cosmosis=1;;
 	d) des=1;;
 	g) gpuenv=1;;
-        h) usage;;
-        k) keepenv=1;;
-        n) nolsst=1;;
-        s) shifterenv=1;;
+    h) usage;;
+    k) keepenv=1;;
+    n) nolsst=1;;
+    s) shifterenv=1;;
     esac
 done
 
