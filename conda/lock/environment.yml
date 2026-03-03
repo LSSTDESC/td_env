@@ -16,6 +16,7 @@ dependencies:
   - compilers
   - cosmosis
   - cosmosis-build-standard-library
+  - diffsky
   - dust_extinction
   - emcee
   - f90nml
@@ -33,6 +34,7 @@ dependencies:
   - lsstdesc-gcr-catalogs
   - mpi4py
   - mpich
+  - opencosmo
   - polars
   - pycryptodome
   - pyqt
@@ -47,6 +49,4 @@ dependencies:
     - astrodash
     - chainconsumer
     - eazy
-    - diffsky
     - lsstdesc-dataregistry
-    - opencosmo

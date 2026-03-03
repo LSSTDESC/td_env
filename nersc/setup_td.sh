@@ -14,7 +14,7 @@ wrapcosmosis() {
     source cosmosis-configure
 }
 
-echo "RUNNING TD_ENV STABLE VERSION"
+echo "RUNNING TD_ENV PROD VERSION"
 
 #SCRIPT=${BASH_SOURCE[0]}
 
@@ -147,7 +147,8 @@ then
 
   export TD_ENV="TD-CPU-SCI-PIPE"
   
-  export DESC_TD_INSTALL=/global/common/software/lsst/gitlab/td_env-prod/stable
+  #export DESC_TD_INSTALL=/global/common/software/lsst/gitlab/td_env-prod/stable
+  export DESC_TD_INSTALL=/dvs_ro/cfs/lsst/groups/TD/SOFTWARE/td_env/install/prod
   source $DESC_TD_INSTALL/setup_td_env.sh
     
   export GSL_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
