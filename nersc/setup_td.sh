@@ -64,13 +64,11 @@ export TD_PUBLIC=/global/cfs/cdirs/lsst/www/DESC_TD_PUBLIC
 
 #export PYSYN_CDBS=${TD_SOFTWARE}/bayeSN/synphot/grp/redcat/trds
 
-#export VERSION_LIBPYTHON=3.10
 
-
-if [[ -z "$keepenv" ]] && [[ -z "$gpuenv" ]] && [[ -z $SHIFTER_RUNTIME ]] && [[ -z "$des" ]];
-then
-  module purge
-fi
+#if [[ -z "$keepenv" ]] && [[ -z "$gpuenv" ]] && [[ -z $SHIFTER_RUNTIME ]] && [[ -z "$des" ]];
+#then
+#  module purge
+#fi
 
 # Check for des first and then move on
 if [[ $des ]]
@@ -140,15 +138,14 @@ then
   export YAML_DIR=$CONDA_PREFIX
   export ROOT_DIR=$ROOTSYS
 
-# Setup with LSST Science Pipelines
+# Setup without LSST Science Pipelines
 elif [ -z "$nolsst" ]
 then
-  echo "Setting up TD env with LSST Science Pipelines"
+  echo "Setting up TD env without LSST Science Pipelines"
 
-  export TD_ENV="TD-CPU-SCI-PIPE"
+  export TD_ENV="TD-CPU"
   
-  #export DESC_TD_INSTALL=/global/common/software/lsst/gitlab/td_env-prod/stable
-  export DESC_TD_INSTALL=/dvs_ro/cfs/lsst/groups/TD/SOFTWARE/td_env/install/prod
+  export DESC_TD_INSTALL=/global/common/software/lsst/install/td_env/prod
   source $DESC_TD_INSTALL/setup_td_env.sh
     
   export GSL_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME

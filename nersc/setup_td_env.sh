@@ -2,24 +2,22 @@
 
 module load PrgEnv-gnu
 module load cpu
-#module load cray-mpich-abi
-module load mpich/4.3.0
+module load cray-mpich-abi/9.0.1
+#module load mpich/4.3.0
 
-unset LSST_HOME EUPS_PATH LSST_DEVEL EUPS_PKGROOT REPOSITORY_PATH PYTHONPATH
+unset PYTHONPATH
 
 export DESC_LSST_INSTALL_DIR=$1
 
-curshell=$(echo $0)
-if [ $curshell = bash ];
-then
-  source $DESC_LSST_INSTALL_DIR/loadLSST.bash
-else
-  source $DESC_LSST_INSTALL_DIR/loadLSST.zsh
-fi
-setup lsst_distrib
+setupconda() {
+    source $DESC_LSST_INSTALL_DIR/py/bin/activate
+    conda activate td_env
+}
+
+setupconda
 
 # For cosmosis and firecrown.  Should try to find a better way to set these
-export CSL_DIR=$CONDA_PREFIX/lib/python3.12/site-packages/cosmosis/cosmosis-standard-library
+#export CSL_DIR=$CONDA_PREFIX/lib/python3.12/site-packages/cosmosis/cosmosis-standard-library
 export FIRECROWN_SITE_PACKAGES=$CONDA_PREFIX/lib/python3.12/site-packages
 export FIRECROWN_DIR=$DESC_LSST_INSTALL_DIR/firecrown
 export FIRECROWN_EXAMPLES_DIR=$FIRECROWN_DIR/examples
