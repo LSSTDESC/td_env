@@ -42,6 +42,7 @@ dependencies:
   - sacc
   - seaborn
   - sncosmo
+  - tensorflow-cpu
   - xgboost
   - yaml
   - pip:
