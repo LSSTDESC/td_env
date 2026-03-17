@@ -20,7 +20,7 @@ if [ "$NERSC_HOST" ]
 then
   module unload python
   module unload cray-libsci
-  module load cray-mpich-abi/9.0.1
+  module load cray-mpich-abi/8.1.30
 else
   export PATH=$CONDA_LOCK_INSTALL_DIR:$PATH
 fi
