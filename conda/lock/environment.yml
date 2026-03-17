@@ -46,8 +46,6 @@ dependencies:
   - xgboost
   - yaml
   - pip:
-    - astrodash
     - chainconsumer
     - eazy
     - lsstdesc-dataregistry
-    - tensorflow-cpu # adding here to satisfy conda-lock pip resolver for astrodash
