@@ -50,3 +50,4 @@ dependencies:
     - chainconsumer
     - eazy
     - lsstdesc-dataregistry
+    - "tensorflow==2.21.0" # adding here to satisfy conda-lock pip resolver for astrodash
