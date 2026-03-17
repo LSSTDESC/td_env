@@ -42,7 +42,6 @@ dependencies:
   - sacc
   - seaborn
   - sncosmo
-  - tensorflow-cpu
   - xgboost
   - yaml
   - pip:
@@ -50,4 +49,4 @@ dependencies:
     - chainconsumer
     - eazy
     - lsstdesc-dataregistry
-    - "tensorflow-cpu==2.21.0" # adding here to satisfy conda-lock pip resolver for astrodash
+    - tensorflow-cpu # adding here to satisfy conda-lock pip resolver for astrodash
