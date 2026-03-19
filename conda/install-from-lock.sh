@@ -61,8 +61,9 @@ fi
 
 cp conda/td_env-lock.yml $curBuildDir
 cp conda/pip.config $curBuildDir
+mkdir $curBuildDir/extra
+cp conda/update_package_setup.sh $curBuildDir/extra
 cd $curBuildDir
-mkdir extra
 
 
 # Build Steps
