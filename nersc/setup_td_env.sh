@@ -2,7 +2,7 @@
 
 module load PrgEnv-gnu
 module load cpu
-module load cray-mpich-abi/9.0.1
+module load cray-mpich-abi/8.1.30
 #module load mpich/4.3.0
 
 unset PYTHONPATH

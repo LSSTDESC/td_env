@@ -34,7 +34,7 @@ echo "RUNNING TD_ENV PROD VERSION"
 # -h help
 # -n Do not setup the LSST Sci Pipelines
 #while getopts e:n: flag
-while getopts "cdghkns" flag
+while getopts "cdghkps" flag
 do
     case "${flag}" in
 	c) cosmosis=1;;
@@ -42,7 +42,7 @@ do
 	g) gpuenv=1;;
         h) usage;;
         k) keepenv=1;;
-        n) nolsst=1;;
+	p) previous=1;;
         s) shifterenv=1;;
     esac
 done
@@ -144,8 +144,15 @@ then
   echo "Setting up TD env without LSST Science Pipelines"
 
   export TD_ENV="TD-CPU"
+
   
-  export DESC_TD_INSTALL=/global/common/software/lsst/install/td_env/prod
+  export DESC_TD_TAG=prod
+  if [[ $previous ]]
+  then
+    export DESC_TD_TAG=prev
+  fi
+
+  export DESC_TD_INSTALL=/global/common/software/lsst/install/td_env/$DESC_TD_TAG
   source $DESC_TD_INSTALL/setup_td_env.sh
     
   export GSL_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
@@ -260,4 +267,8 @@ export PATH=$PATH:${SNANA_DIR}/bin:${SNANA_DIR}/util:${PIPPIN_DIR}:${SCONE_DIR}
 export DESC_GCR_SITE='nersc'
 
 export HDF5_USE_FILE_LOCKING=FALSE
+
+export TD_EXTRA_PACKAGES=/global/common/software/lsst/install/td_env/prod/extra
+export PATH=$TD_EXTRA_PACKAGES/bin:$PATH
+export PYTHONPATH=$TD_EXTRA_PACKAGES/lib/python$VERSION_LIBPYTHON/site-packages/:$PYTHONPATH
 

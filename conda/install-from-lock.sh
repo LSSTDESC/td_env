@@ -48,6 +48,8 @@ if [ "$NERSC_HOST" ]
 then
   setfacl -R -m user:desc:rwx $curBuildDir
   setfacl -R -d -m user:desc:rwx $curBuildDir
+  setfacl -R -m user:desctd:rwx $curBuildDir
+  setfacl -R -d -m user:desctd:rwx $curBuildDir
 fi
 
 if [ "$NERSC_HOST" ]
@@ -60,6 +62,7 @@ fi
 cp conda/td_env-lock.yml $curBuildDir
 cp conda/pip.config $curBuildDir
 cd $curBuildDir
+mkdir extra
 
 
 # Build Steps
