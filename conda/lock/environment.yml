@@ -42,11 +42,10 @@ dependencies:
   - sacc
   - seaborn
   - sncosmo
-  - tensorflow-cpu=2.19.1
+  - tensorflow-cpu
   - xgboost
   - yaml
   - pip:
-    - astrodash
     - chainconsumer
     - eazy
     - lsstdesc-dataregistry
