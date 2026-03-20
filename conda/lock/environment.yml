@@ -46,6 +46,7 @@ dependencies:
   - xgboost
   - yaml
   - pip:
+    - astrodash
     - chainconsumer
     - eazy
     - lsstdesc-dataregistry
