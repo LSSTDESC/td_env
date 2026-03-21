@@ -24,7 +24,7 @@ Please post a request on #desc-td-pipelines or [open an issue](https://github.co
 
 ## To Add and Update Packages in the td_env environment 
 
-If you are a member of the td_env team of maintainers, please refer to these instructions.
+If you are a member of the td_env team of maintainers, please refer to [these instructions](./update_env.md).
 
 
 ## Known Issues
