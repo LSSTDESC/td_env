@@ -12,3 +12,9 @@ If you are a member of the td_env maintainence team please follow these instruct
   * To pip install a new package that is not already in td_env, drop the `-U` option:
   
     `pip install --user --no-deps --no-build-isolation <packageName>`
+
+ * Once the pip install is complete, the package is available in the td_env PROD environment immediately.
+ * If there are errors during the installation, we should look at cleaning up the area under $TD_EXTRA_PACKAGES to remove partially installed packages
+
+### Notes
+* When packages that are originally installed from conda-forge and then updated using pip, we will not see the updated package version number when doing `conda list`.  That is ok, the pip installed version will be used.
