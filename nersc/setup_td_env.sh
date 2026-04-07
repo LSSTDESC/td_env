@@ -1,8 +1,11 @@
 #!/bin/bash
 
-module load PrgEnv-gnu
-module load cpu
-module load cray-mpich-abi/8.1.30
+if [[ "$(hostname)" != *dtn* ]]; then
+    module load PrgEnv-gnu
+    module load cpu
+    module load cray-mpich-abi/8.1.30
+fi
+
 #module load mpich/4.3.0
 
 unset PYTHONPATH
@@ -31,4 +34,6 @@ export MPI4PY_RC_RECV_MPROBE=0
 # Tries to prevent cosmosis from launching any subprocesses, since that is 
 # not allowed on Perlmutter.
 export COSMOSIS_NO_SUBPROCESS=1
+
+export DUSTMAPS_CONFIG_FNAME=/global/common/software/lsst/common/miniconda/dustmaps/dustmaps_config.json
 
