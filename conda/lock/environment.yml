@@ -50,3 +50,4 @@ dependencies:
     - chainconsumer
     - eazy
     - lsstdesc-dataregistry
+    - skysurvey
