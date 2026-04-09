@@ -50,4 +50,4 @@ dependencies:
     - chainconsumer
     - eazy
     - lsstdesc-dataregistry
-    - skysurvey
+    - git+https://github.com/MickaelRigault/skysurvey`skysurvey

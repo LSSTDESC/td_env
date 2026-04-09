@@ -50,6 +50,7 @@ then
   setfacl -R -d -m user:desc:rwx $curBuildDir
   setfacl -R -m user:desctd:rwx $curBuildDir
   setfacl -R -d -m user:desctd:rwx $curBuildDir
+  setfacl -R -d -m group::rx $curBuildDir
 fi
 
 if [ "$NERSC_HOST" ]
