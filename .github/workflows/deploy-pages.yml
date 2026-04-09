@@ -24,14 +24,19 @@ jobs:
 
       - name: Resolve symlinks
         run: |
-          # Replace any symlinks with copies of their targets
-          # so Jekyll never encounters them
+          set +e   # don't exit on first error in this block
           find . -type l | while read link; do
-            target=$(readlink -f "$link")
+            target=$(readlink "$link")
+            echo "Symlink: $link -> $target"
             if [ -f "$target" ]; then
+              echo "  Replacing with real file"
               cp --remove-destination "$target" "$link"
+            else
+              echo "  Target not found, removing symlink"
+              rm "$link"
             fi
           done
+          set -e   # restore exit-on-error
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
