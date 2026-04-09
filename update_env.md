@@ -13,6 +13,10 @@ If you are a member of the td_env maintainence team please follow these instruct
   
     `pip install --user --no-deps --no-build-isolation <packageName>`
 
+  * If installing a package from GitHub such as skysurvey:
+ 
+    `pip install -U --user --no-deps --no-build-isolation git+https://github.com/MickaelRigault/skysurvey`
+
  * Once the pip install is complete, the package is available in the td_env PROD environment immediately.
  * If there are errors during the installation, we should look at cleaning up the area under $TD_EXTRA_PACKAGES to remove partially installed packages
 
