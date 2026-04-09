@@ -1,1 +1,7 @@
 markdown: GFM
+exclude:
+  - conda/
+  - docker/
+  - nersc/
+  - Dockerfile
+  - .gitlab-ci.yml
