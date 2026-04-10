@@ -29,6 +29,7 @@ dependencies:
   - jaxlib
   - lalsuite
   - lenstronomy
+  - lightcurvelynx
   - ligo.skymap
   - ligo.em-bright
   - lsdb
