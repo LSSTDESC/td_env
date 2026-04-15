@@ -35,5 +35,6 @@ export MPI4PY_RC_RECV_MPROBE=0
 # not allowed on Perlmutter.
 export COSMOSIS_NO_SUBPROCESS=1
 
-export DUSTMAPS_CONFIG_FNAME=/global/cfs/cdirs/lsst/utilities/env_data/dustmaps/dustmaps_config.json
+export DUSTMAPS_CONFIG_FNAME=$CFS/lsst/utilities/env_data/dustmaps/dustmaps_config.json
+export LIGHTCURVELYNX_DATA_DIR=$CFS/lsst/utilities/env_data/lightcurvelynx
 
