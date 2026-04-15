@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - '**.md'
   workflow_dispatch:   # allows manual trigger from Actions tab
 
 permissions:
