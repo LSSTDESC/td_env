@@ -1,8 +1,8 @@
 #!/bin/bash
 
-wrapsetup() {
-    source $CFS/lsst/groups/TD/setup_td.sh
-}
+#wrapsetup() {
+#    source $CFS/lsst/groups/TD/setup_td.sh
+#}
 
 if [ "$USER" != "desctd" ]; then
     echo "Error: must be run as 'desctd'"
@@ -10,7 +10,7 @@ if [ "$USER" != "desctd" ]; then
     exit 1
 fi
 
-wrapsetup
+#wrapsetup
 
 # Allows --user install
 unset PYTHONNOUSERSITE
