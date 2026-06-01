@@ -115,3 +115,5 @@ conda env export > $curBuildDir/desc-python-nersc-$CI_PIPELINE_ID.yml
 
 python -m compileall $curBuildDir/py/envs/desc-python
 echo "Done compiling"
+chgrp -R lsst $curBuildDir
+
