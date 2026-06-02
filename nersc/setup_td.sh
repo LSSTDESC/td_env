@@ -154,10 +154,12 @@ then
 
   export DESC_TD_INSTALL=/global/common/software/lsst/install/td_env/$DESC_TD_TAG
   source $DESC_TD_INSTALL/setup_td_env.sh
+
+  export LSST_CONDA_ENV_NAME=$CONDA_DEFAULT_ENV
     
-  export GSL_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
-  export CFITSIO_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
-  export YAML_DIR=$DESC_TD_INSTALL/conda/envs/$LSST_CONDA_ENV_NAME
+  export GSL_DIR=$DESC_TD_INSTALL/py/envs/$LSST_CONDA_ENV_NAME
+  export CFITSIO_DIR=$DESC_TD_INSTALL/py/envs/$LSST_CONDA_ENV_NAME
+  export YAML_DIR=$DESC_TD_INSTALL/py/envs/$LSST_CONDA_ENV_NAME
   export ROOT_DIR=$ROOTSYS
 
   export PYTHONPATH=$PYTHONPATH:$DESC_TD_INSTALL
