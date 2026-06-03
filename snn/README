@@ -1,0 +1,25 @@
+3 June 2026
+
+BUILD AREA for SNN environment
+
+snn-stable refers to a stable version of the SNN env meant for production jobs
+Please request that we tag a version of the SNN env
+
+ssn-dev includes an editable SuperNNova pakage under development
+When a version of the environment is to be tagged, we should use snn-stable to denote that.
+
+BUILD SCRIPTS
+
+build-snn.sh  
+builds snn-stable, moving the symlink if the build is successful
+
+snn-dev/build-snn-dev.sh  
+builds the latest dev version and move they "dev" symlink if the build is succsesful
+
+SETUP SCRIPTS
+
+source $CFS/lsst/groups/TD/snn/snn-dev/setup-snn-dev.sh
+sets up the "dev" environment 
+
+
+

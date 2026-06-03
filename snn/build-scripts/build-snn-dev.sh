@@ -69,8 +69,16 @@ conda env config vars set PYTHONNOUSERSITE=1
 conda env export --no-builds > $curBuildDir/snn-dev-nersc-$CI_PIPELINE_ID-nobuildinfo.yml
 conda env export > $curBuildDir/snn-dev-nersc-$CI_PIPELINE_ID.yml
 
-unlink $snnBuildDir/dev
-ln -s $curBuildDir $snnBuildDir/dev
+#Should add a test before updating symlink
+snn --help
+if [[ $? -eq 0 ]]; then
+    echo "snn --help executed successfully."
+    unlink $snnBuildDir/dev
+    ln -s $curBuildDir $snnBuildDir/dev
+else
+    echo "snn --help encountered an error. Exit status: $?"
+fi
+
 
 
 # Set permissions
