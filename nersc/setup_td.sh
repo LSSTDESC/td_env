@@ -74,7 +74,8 @@ export TD_PUBLIC=/global/cfs/cdirs/lsst/www/DESC_TD_PUBLIC
 if [[ $des ]]
 then
   echo "Setting up DES snn_gpu environment"
-  source /global/common/software/lsst/gitlab/td_env-dev/snn/setup.sh
+  #source /global/common/software/lsst/gitlab/td_env-dev/snn/setup.sh
+  source $TD_SOFTWARE/snn/snn-dev/setup-snn-dev.sh
 elif [ $shifterenv ] || [ $SHIFTER_RUNTIME ]
 then
   if [ $gpuenv ]
