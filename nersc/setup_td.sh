@@ -273,5 +273,5 @@ export HDF5_USE_FILE_LOCKING=FALSE
 
 export TD_EXTRA_PACKAGES=/global/common/software/lsst/install/td_env/prod/extra
 export PATH=$TD_EXTRA_PACKAGES/bin:$PATH
-export PYTHONPATH=$TD_EXTRA_PACKAGES/lib/python$VERSION_LIBPYTHON/site-packages/:$PYTHONPATH
+export PYTHONPATH=$TD_EXTRA_PACKAGES/lib/python$VERSION_LIBPYTHON/site-packages/:$PYTHONPATH:$TD_SOFTWARE/fastdb_deployment/fastdb_client
 
