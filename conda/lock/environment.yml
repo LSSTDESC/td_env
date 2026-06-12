@@ -53,3 +53,4 @@ dependencies:
     - lsstdesc-dataregistry
     - git+https://github.com/MickaelRigault/skysurvey
     - git+https://github.com/LSSTDESC/OpSimSummaryV2
+    - sfdmap2
