@@ -8,7 +8,7 @@ dependencies:
   - mamba[version='>=2.1.1']
   - astroplan
   - astropy
-  - camb
+  - camb<2.0
   - celerite
   - cmdstan
   - cmdstanpy
@@ -42,6 +42,7 @@ dependencies:
   - pyqt
   - root_base
   - sacc
+  - scipy=1.17
   - seaborn
   - sncosmo
   - tensorflow-cpu
