@@ -3,7 +3,7 @@ channels:
   - conda-forge/label/mpi-external
   - conda-forge
 dependencies:
-  - python=3.12
+  - python
   - conda[version='>=25.3.0']
   - mamba[version='>=2.1.1']
   - astroplan
@@ -36,13 +36,14 @@ dependencies:
   - lsstdesc-gcr-catalogs
   - mpi4py
   - mpich
+  - numpy<2.4
   - opencosmo
   - polars
   - pycryptodome
   - pyqt
   - root_base
   - sacc
-  - scipy=1.17
+  - scipy<1.18
   - seaborn
   - sncosmo
   - tensorflow-cpu
