@@ -5,7 +5,6 @@ channels:
 dependencies:
   - python
   - conda[version='>=25.3.0']
-  - mamba[version='>=2.1.1']
   - astroplan
   - astropy<8.0.0
   - camb<2.0
