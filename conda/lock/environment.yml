@@ -3,7 +3,7 @@ channels:
   - conda-forge/label/mpi-external
   - conda-forge
 dependencies:
-  - python=3.12
+  - python >=3.12,<3.14
   - conda[version='>=25.3.0']
   - astroplan
   - astropy<8.0.0
